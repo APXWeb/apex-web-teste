@@ -256,32 +256,37 @@
     function resizeCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-      const count = Math.min(110, Math.max(45, Math.round((width * height) / 16000)));
+      const count = Math.min(140, Math.max(55, Math.round((width * height) / 12000)));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 0.35,
         vy: (Math.random() - 0.5) * 0.35,
-        r: Math.random() * 1.8 + 1,
+        r: Math.random() * 1.8 + 1.2,
+        perto: 0,
       }));
     }
 
     function drawParticles() {
       ctx.clearRect(0, 0, width, height);
-      const linkDist = 130;
+      const linkDist = 150;
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
+        p.perto = 0;
 
         if (pointer.active) {
           const dx = p.x - pointer.x;
           const dy = p.y - pointer.y;
           const dist = Math.hypot(dx, dy);
-          const radius = 150;
+          const radius = 170;
           if (dist < radius && dist > 0.01) {
             const force = (1 - dist / radius) * 0.6;
             p.x += (dx / dist) * force;
             p.y += (dy / dist) * force;
+            // as particulas perto do cursor ficam um pouco mais nitidas,
+            // para a reacao ficar visivel sem precisar de um brilho no fundo
+            p.perto = 1 - dist / radius;
           }
         }
 
@@ -298,7 +303,8 @@
           const dy = p.y - q.y;
           const dist = Math.hypot(dx, dy);
           if (dist < linkDist) {
-            ctx.strokeStyle = `rgba(125, 179, 255, ${0.16 * (1 - dist / linkDist)})`;
+            const realce = 1 + Math.max(p.perto, q.perto) * 1.6;
+            ctx.strokeStyle = `rgba(125, 179, 255, ${0.3 * (1 - dist / linkDist) * realce})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
@@ -310,8 +316,8 @@
 
       for (const p of particles) {
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(163, 200, 255, 0.55)';
+        ctx.arc(p.x, p.y, p.r + p.perto * 0.9, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(173, 208, 255, ${Math.min(1, 0.8 + p.perto * 0.2)})`;
         ctx.fill();
       }
     }

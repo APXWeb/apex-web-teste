@@ -5,8 +5,8 @@
   --blue-dark: #061b2b;
   --blue-mid: #092a59;
 
-  --bg: rgba(0, 0, 0, 0.88);
-  --bg-alt: rgba(6, 27, 43, 0.88);
+  --bg: rgba(0, 0, 0, 0.82);
+  --bg-alt: rgba(6, 27, 43, 0.82);
   --text: var(--white);
   --text-muted: #a9b4c2;
   --border: rgba(255, 255, 255, 0.1);
@@ -361,8 +361,8 @@ h2 {
 /* Hero */
 .hero {
   position: relative;
-  padding: 150px 0 130px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.82) 0%, rgba(6, 27, 43, 0.84) 100%);
+  padding: 96px 0 110px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.74) 0%, rgba(6, 27, 43, 0.78) 100%);
   text-align: center;
   overflow: hidden;
 }
@@ -577,7 +577,7 @@ h2 {
 .hero-logo {
   max-width: 420px;
   width: 80%;
-  margin: 0 auto 40px;
+  margin: 0 auto 28px;
 }
 
 .hero h1 {
@@ -1189,7 +1189,7 @@ h2 {
 /* CTA */
 .cta {
   position: relative;
-  background: rgba(0, 0, 0, 0.84);
+  background: rgba(0, 0, 0, 0.78);
   text-align: center;
   overflow: hidden;
 }
@@ -1372,7 +1372,7 @@ h2 {
     padding: 70px 0;
   }
   .hero {
-    padding: 110px 0 80px;
+    padding: 64px 0 70px;
   }
   .team-grid {
     grid-template-columns: 1fr;
