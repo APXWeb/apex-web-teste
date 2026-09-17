@@ -313,7 +313,6 @@
     let h = 0;
     let blobs = [];
     let pulses = [];
-    let trail = [];
     let running = false;
     let rafId = null;
     const pointer = { x: 0.5, y: 0.4, tx: 0.5, ty: 0.4, weight: 0 };
@@ -378,21 +377,12 @@
       blobs.forEach(blob => {
         const baseX = blob.cx + Math.sin(t * blob.sx * Math.PI * 2 + blob.px) * blob.ax;
         const baseY = blob.cy + Math.cos(t * blob.sy * Math.PI * 2 + blob.py) * blob.ay;
-        const pull = pointer.weight * (0.1 + blob.index * 0.035);
+        const pull = pointer.weight * (0.15 + blob.index * 0.05);
         const x = (baseX + (pointer.x - baseX) * pull) * w;
         const y = (baseY + (pointer.y - baseY) * pull) * h;
         const color = mix(BASE_COLORS[blob.index], DEEP_COLORS[blob.index], depth * 0.75);
         light(x, y, blob.r * w, color, blob.a);
       });
-
-      if (pointer.weight > 0.01) {
-        trail.forEach(point => { point.life -= 0.045; });
-        trail = trail.filter(point => point.life > 0);
-        trail.forEach(point => {
-          light(point.x * w, point.y * h, (0.05 + 0.07 * point.life) * w, [130, 190, 255], 0.05 * point.life * pointer.weight);
-        });
-        light(pointer.x * w, pointer.y * h, 0.22 * w, mix([0, 140, 255], [0, 220, 210], depth * 0.75), 0.23 * pointer.weight);
-      }
 
       pulses.forEach(pulse => { pulse.t += 0.018; });
       pulses = pulses.filter(pulse => pulse.t < 1);
@@ -423,7 +413,6 @@
       pointer.tx = e.clientX / window.innerWidth;
       pointer.ty = e.clientY / window.innerHeight;
       pointer.weight = Math.min(1, pointer.weight + 0.08);
-      if (trail.length < 20) trail.push({ x: pointer.x, y: pointer.y, life: 1 });
     }, { passive: true });
 
     window.addEventListener('pointerdown', (e) => {

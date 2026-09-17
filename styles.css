@@ -64,22 +64,21 @@ body {
 }
 
 .cursor-dot {
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
-  background: var(--white);
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  background: rgba(255, 255, 255, 0.85);
   transition: opacity 0.2s ease;
 }
 
 .cursor-ring {
-  width: 34px;
-  height: 34px;
-  margin: -17px 0 0 -17px;
-  border: 1px solid rgba(125, 179, 255, 0.7);
-  background: rgba(0, 98, 255, 0.05);
-  transition: width 0.28s var(--ease), height 0.28s var(--ease),
-              margin 0.28s var(--ease), background 0.28s ease,
-              border-color 0.28s ease, opacity 0.2s ease;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  transition: width 0.25s var(--ease), height 0.25s var(--ease),
+              margin 0.25s var(--ease), border-color 0.25s ease, opacity 0.2s ease;
 }
 
 html.has-cursor .cursor-dot,
@@ -98,18 +97,17 @@ html.has-cursor textarea {
 }
 
 html.has-cursor .cursor-ring.is-hovering {
-  width: 62px;
-  height: 62px;
-  margin: -31px 0 0 -31px;
-  background: rgba(0, 98, 255, 0.14);
-  border-color: var(--blue-bright);
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 html.has-cursor .cursor-ring.is-pressed {
-  width: 22px;
-  height: 22px;
-  margin: -11px 0 0 -11px;
-  background: rgba(0, 98, 255, 0.3);
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border-color: rgba(255, 255, 255, 0.75);
 }
 
 img {
