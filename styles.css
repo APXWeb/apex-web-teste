@@ -5,8 +5,8 @@
   --blue-dark: #061b2b;
   --blue-mid: #092a59;
 
-  --bg: var(--black);
-  --bg-alt: var(--blue-dark);
+  --bg: rgba(0, 0, 0, 0.84);
+  --bg-alt: rgba(6, 27, 43, 0.84);
   --text: var(--white);
   --text-muted: #a9b4c2;
   --border: rgba(255, 255, 255, 0.1);
@@ -25,15 +25,91 @@
 
 html {
   scroll-behavior: smooth;
+  background: var(--black);
 }
 
 body {
-  background: var(--bg);
+  background: transparent;
   color: var(--text);
   font-family: var(--font);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+/* Aurora: fundo de luz que flui e responde ao cursor.
+   O canvas tem resolucao baixa de proposito e e esticado pelo CSS,
+   o que suaviza os degrades de graca em vez de usar blur. */
+#aurora {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+  background: var(--black);
+}
+
+/* Cursor personalizado (so em telas com mouse de verdade e quando o JS carrega) */
+.cursor-dot,
+.cursor-ring {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--white);
+  transition: opacity 0.2s ease;
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1px solid rgba(125, 179, 255, 0.7);
+  background: rgba(0, 98, 255, 0.05);
+  transition: width 0.28s var(--ease), height 0.28s var(--ease),
+              margin 0.28s var(--ease), background 0.28s ease,
+              border-color 0.28s ease, opacity 0.2s ease;
+}
+
+html.has-cursor .cursor-dot,
+html.has-cursor .cursor-ring {
+  display: block;
+}
+
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+html.has-cursor input,
+html.has-cursor textarea {
+  cursor: text !important;
+}
+
+html.has-cursor .cursor-ring.is-hovering {
+  width: 62px;
+  height: 62px;
+  margin: -31px 0 0 -31px;
+  background: rgba(0, 98, 255, 0.14);
+  border-color: var(--blue-bright);
+}
+
+html.has-cursor .cursor-ring.is-pressed {
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  background: rgba(0, 98, 255, 0.3);
 }
 
 img {
@@ -152,6 +228,28 @@ h2 {
   left: 120%;
 }
 
+/* Preenchimento de luz que nasce de onde o cursor entrou no botao */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at var(--bx, 50%) var(--by, 50%), rgba(0, 98, 255, 0.95), rgba(0, 98, 255, 0) 70%);
+  opacity: 0;
+  transform: scale(0.3);
+  transition: opacity 0.35s ease, transform 0.55s var(--ease);
+  pointer-events: none;
+}
+
+.btn:hover::after {
+  opacity: 1;
+  transform: scale(1.8);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
 .btn-primary {
   background: var(--blue-bright);
   color: var(--white);
@@ -217,12 +315,32 @@ h2 {
 }
 
 .nav-links {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 32px;
   list-style: none;
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+/* Sublinhado unico que desliza entre os itens do menu */
+.nav-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--blue-bright);
+  box-shadow: 0 0 12px rgba(0, 98, 255, 0.8);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.38s var(--ease), width 0.38s var(--ease), opacity 0.25s ease, top 0.38s var(--ease);
+}
+
+.nav-links.has-indicator a::after {
+  display: none;
 }
 
 .nav-links a {
@@ -307,7 +425,7 @@ h2 {
 .hero {
   position: relative;
   padding: 150px 0 130px;
-  background: linear-gradient(180deg, var(--black) 0%, var(--blue-dark) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(6, 27, 43, 0.72) 100%);
   text-align: center;
   overflow: hidden;
 }
@@ -531,6 +649,23 @@ h2 {
   margin: 0 auto 20px;
 }
 
+/* As palavras so ficam escondidas depois que o JS marca .words-ready,
+   entao o titulo continua legivel se o script nao rodar. */
+.hero-title .word {
+  display: inline-block;
+}
+
+.hero-title.words-ready .word {
+  opacity: 0;
+  transform: translateY(0.5em) rotate(3deg);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+.hero-title.words-ready.words-in .word {
+  opacity: 1;
+  transform: none;
+}
+
 .text-shine {
   background: linear-gradient(90deg, var(--blue-bright) 20%, #8fbaff 40%, var(--blue-bright) 60%);
   background-size: 200% auto;
@@ -704,8 +839,32 @@ h2 {
   pointer-events: none;
 }
 
+/* Borda que acende no ponto mais proximo do cursor */
+.spec-card::after,
+.portfolio-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(200px circle at var(--mx) var(--my), rgba(125, 179, 255, 0.95), rgba(0, 98, 255, 0.35) 45%, transparent 72%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.spec-card:hover::after,
+.portfolio-card:hover::after {
+  opacity: 1;
+}
+
 .spec-card:hover {
-  border-color: var(--blue-bright);
+  border-color: rgba(0, 98, 255, 0.35);
   transform: translateY(-6px);
   box-shadow: 0 20px 40px -20px rgba(0, 98, 255, 0.4);
 }
@@ -775,8 +934,13 @@ h2 {
   transform: translateY(-4px);
 }
 
-.step:hover::before {
+.step:hover::before,
+.step.is-drawn::before {
   width: 100%;
+}
+
+.step.is-drawn::before {
+  transition-duration: 0.8s;
 }
 
 .step-number {
@@ -786,6 +950,15 @@ h2 {
   font-weight: 700;
   font-size: 1.4rem;
   margin-bottom: 12px;
+  transition: transform 0.45s var(--ease), text-shadow 0.45s ease;
+}
+
+.step.is-drawn .step-number {
+  text-shadow: 0 0 22px rgba(0, 98, 255, 0.55);
+}
+
+.step:hover .step-number {
+  transform: translateX(4px) scale(1.08);
 }
 
 .step h3 {
@@ -818,18 +991,39 @@ h2 {
   background: rgba(255, 255, 255, 0.03);
   overflow: hidden;
   transition: border-color 0.3s ease, transform 0.3s var(--ease), box-shadow 0.3s ease;
+  --mx: 50%;
+  --my: 50%;
 }
 
 .portfolio-card:hover {
-  border-color: var(--blue-bright);
+  border-color: rgba(0, 98, 255, 0.35);
   transform: translateY(-6px);
   box-shadow: 0 20px 40px -20px rgba(0, 98, 255, 0.4);
 }
 
 .portfolio-thumb {
+  position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--blue-dark);
+}
+
+/* Brilho diagonal que varre a imagem no hover */
+.portfolio-thumb::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  bottom: -50%;
+  left: -75%;
+  width: 45%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.75s var(--ease);
+  pointer-events: none;
+}
+
+.portfolio-card:hover .portfolio-thumb::after {
+  left: 130%;
 }
 
 .portfolio-thumb img {
@@ -1058,7 +1252,7 @@ h2 {
 /* CTA */
 .cta {
   position: relative;
-  background: var(--black);
+  background: rgba(0, 0, 0, 0.72);
   text-align: center;
   overflow: hidden;
 }
@@ -1152,9 +1346,38 @@ h2 {
   box-shadow: 0 8px 24px -8px rgba(0, 98, 255, 0.6);
 }
 
-.back-to-top svg {
+.back-to-top .btt-arrow {
   width: 20px;
   height: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Anel que mostra o quanto da pagina ja foi percorrido */
+.btt-ring {
+  position: absolute;
+  inset: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.btt-ring circle {
+  fill: none;
+  stroke-width: 2.5;
+}
+
+.btt-track {
+  stroke: rgba(255, 255, 255, 0.18);
+}
+
+.btt-bar {
+  stroke: var(--white);
+  stroke-linecap: round;
+  stroke-dasharray: 151;
+  stroke-dashoffset: 151;
+  transition: stroke-dashoffset 0.15s linear;
 }
 
 .back-to-top.show {
@@ -1179,19 +1402,6 @@ h2 {
   .portfolio-grid {
     grid-template-columns: 1fr;
   }
-  .nav-links {
-    gap: 18px;
-    font-size: 0.85rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .section {
-    padding: 70px 0;
-  }
-  .hero {
-    padding: 110px 0 80px;
-  }
   .nav-toggle {
     display: flex;
   }
@@ -1204,7 +1414,8 @@ h2 {
     flex-direction: column;
     align-items: center;
     gap: 24px;
-    background: var(--black);
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
     padding: 32px 24px;
     display: none;
@@ -1212,6 +1423,19 @@ h2 {
 
   .nav-links.open {
     display: flex;
+  }
+
+  .nav-indicator {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 70px 0;
+  }
+  .hero {
+    padding: 110px 0 80px;
   }
   .team-grid {
     grid-template-columns: 1fr;
