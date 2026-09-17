@@ -240,166 +240,91 @@
     steps.forEach(step => stepObserver.observe(step));
   }
 
-  // Cursor personalizado: ponto que acompanha na hora + anel que vem atras
-  const cursorDot = document.getElementById('cursor-dot');
-  const cursorRing = document.getElementById('cursor-ring');
-  const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-  if (cursorDot && cursorRing && hasFinePointer && !prefersReducedMotion) {
-    document.documentElement.classList.add('has-cursor');
-
-    let ringX = window.innerWidth / 2;
-    let ringY = window.innerHeight / 2;
-    let mouseX = ringX;
-    let mouseY = ringY;
-
-    cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-    cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
-
-    window.addEventListener('pointermove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-    }, { passive: true });
-
-    (function followCursor() {
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-      cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
-      requestAnimationFrame(followCursor);
-    })();
-
-    const interactive = 'a, button, input, textarea, .spec-card, .portfolio-card, .team-card, label';
-    document.addEventListener('pointerover', (e) => {
-      const target = e.target instanceof Element ? e.target.closest(interactive) : null;
-      cursorRing.classList.toggle('is-hovering', !!target);
-    });
-
-    document.addEventListener('pointerdown', () => cursorRing.classList.add('is-pressed'));
-    document.addEventListener('pointerup', () => cursorRing.classList.remove('is-pressed'));
-
-    document.addEventListener('pointerleave', () => {
-      cursorDot.style.opacity = '0';
-      cursorRing.style.opacity = '0';
-    });
-    document.addEventListener('pointerenter', () => {
-      cursorDot.style.opacity = '1';
-      cursorRing.style.opacity = '1';
-    });
-  }
-
-  // Aurora: o fundo do site. Luzes que flutuam sozinhas, seguem o cursor
-  // e soltam um pulso quando a pessoa clica. O canvas e renderizado em
-  // resolucao baixa e esticado pelo CSS, o que deixa os degrades suaves
-  // sem custar blur.
-  const aurora = document.getElementById('aurora');
-  if (aurora && !prefersReducedMotion) {
-    const actx = aurora.getContext('2d');
-    const SCALE = 0.22;
-    const BASE_COLORS = [
-      [0, 98, 255],
-      [32, 120, 255],
-      [8, 56, 150],
-      [0, 190, 255],
-    ];
-    const DEEP_COLORS = [
-      [64, 60, 220],
-      [0, 150, 220],
-      [16, 40, 130],
-      [0, 220, 200],
-    ];
-
-    let w = 0;
-    let h = 0;
-    let blobs = [];
-    let pulses = [];
+  // Fundo interativo: rede de particulas ligadas por linhas finas.
+  // Elas se movem sozinhas, se afastam de leve quando o cursor chega perto
+  // e ficam fixas atras de todo o conteudo da pagina.
+  const canvas = document.getElementById('bg-canvas');
+  if (canvas && !prefersReducedMotion) {
+    const ctx = canvas.getContext('2d');
+    const pointer = { x: -9999, y: -9999, active: false };
+    let width = 0;
+    let height = 0;
+    let particles = [];
     let running = false;
     let rafId = null;
-    const pointer = { x: 0.5, y: 0.4, tx: 0.5, ty: 0.4, weight: 0 };
 
-    function buildBlobs() {
-      blobs = BASE_COLORS.map((_, i) => ({
-        index: i,
-        cx: 0.2 + Math.random() * 0.6,
-        cy: 0.2 + Math.random() * 0.6,
-        ax: 0.16 + Math.random() * 0.2,
-        ay: 0.14 + Math.random() * 0.18,
-        sx: 0.04 + Math.random() * 0.06,
-        sy: 0.035 + Math.random() * 0.05,
-        px: Math.random() * Math.PI * 2,
-        py: Math.random() * Math.PI * 2,
-        r: 0.42 + Math.random() * 0.3,
-        a: 0.2 + Math.random() * 0.08,
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      const count = Math.min(110, Math.max(45, Math.round((width * height) / 16000)));
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 1.8 + 1,
       }));
     }
 
-    function resizeAurora() {
-      w = aurora.width = Math.max(1, Math.round(window.innerWidth * SCALE));
-      h = aurora.height = Math.max(1, Math.round(window.innerHeight * SCALE));
+    function drawParticles() {
+      ctx.clearRect(0, 0, width, height);
+      const linkDist = 130;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        if (pointer.active) {
+          const dx = p.x - pointer.x;
+          const dy = p.y - pointer.y;
+          const dist = Math.hypot(dx, dy);
+          const radius = 150;
+          if (dist < radius && dist > 0.01) {
+            const force = (1 - dist / radius) * 0.6;
+            p.x += (dx / dist) * force;
+            p.y += (dy / dist) * force;
+          }
+        }
+
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+        p.x = Math.min(Math.max(p.x, 0), width);
+        p.y = Math.min(Math.max(p.y, 0), height);
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const q = particles[j];
+          const dx = p.x - q.x;
+          const dy = p.y - q.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < linkDist) {
+            ctx.strokeStyle = `rgba(125, 179, 255, ${0.16 * (1 - dist / linkDist)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      for (const p of particles) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(163, 200, 255, 0.55)';
+        ctx.fill();
+      }
     }
 
-    function mix(a, b, t) {
-      return [
-        a[0] + (b[0] - a[0]) * t,
-        a[1] + (b[1] - a[1]) * t,
-        a[2] + (b[2] - a[2]) * t,
-      ];
-    }
-
-    function light(x, y, radius, color, alpha) {
-      if (radius <= 0 || alpha <= 0) return;
-      const [r, g, b] = color;
-      const grad = actx.createRadialGradient(x, y, 0, x, y, radius);
-      grad.addColorStop(0, `rgba(${r | 0}, ${g | 0}, ${b | 0}, ${alpha})`);
-      grad.addColorStop(0.45, `rgba(${r | 0}, ${g | 0}, ${b | 0}, ${alpha * 0.34})`);
-      grad.addColorStop(1, `rgba(${r | 0}, ${g | 0}, ${b | 0}, 0)`);
-      actx.fillStyle = grad;
-      actx.beginPath();
-      actx.arc(x, y, radius, 0, Math.PI * 2);
-      actx.fill();
-    }
-
-    function drawAurora(now) {
-      const t = now / 1000;
-
-      // A paleta muda devagar conforme a pessoa desce a pagina
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      const depth = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
-
-      actx.globalCompositeOperation = 'source-over';
-      actx.fillStyle = '#000000';
-      actx.fillRect(0, 0, w, h);
-      actx.globalCompositeOperation = 'lighter';
-
-      pointer.x += (pointer.tx - pointer.x) * 0.09;
-      pointer.y += (pointer.ty - pointer.y) * 0.09;
-
-      blobs.forEach(blob => {
-        const baseX = blob.cx + Math.sin(t * blob.sx * Math.PI * 2 + blob.px) * blob.ax;
-        const baseY = blob.cy + Math.cos(t * blob.sy * Math.PI * 2 + blob.py) * blob.ay;
-        const pull = pointer.weight * (0.15 + blob.index * 0.05);
-        const x = (baseX + (pointer.x - baseX) * pull) * w;
-        const y = (baseY + (pointer.y - baseY) * pull) * h;
-        const color = mix(BASE_COLORS[blob.index], DEEP_COLORS[blob.index], depth * 0.75);
-        light(x, y, blob.r * w, color, blob.a);
-      });
-
-      pulses.forEach(pulse => { pulse.t += 0.018; });
-      pulses = pulses.filter(pulse => pulse.t < 1);
-      pulses.forEach(pulse => {
-        light(pulse.x * w, pulse.y * h, (0.08 + pulse.t * 0.55) * w, [170, 215, 255], 0.28 * (1 - pulse.t));
-      });
-    }
-
-    function loop(now) {
+    function loop() {
       if (!running) return;
-      drawAurora(now);
+      drawParticles();
       rafId = requestAnimationFrame(loop);
     }
 
     function start() {
-      if (running) return;
       running = true;
+      if (rafId !== null) cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(loop);
     }
 
@@ -409,25 +334,21 @@
       rafId = null;
     }
 
-    window.addEventListener('pointermove', (e) => {
-      pointer.tx = e.clientX / window.innerWidth;
-      pointer.ty = e.clientY / window.innerHeight;
-      pointer.weight = Math.min(1, pointer.weight + 0.08);
-    }, { passive: true });
+    function setPointer(e) {
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      pointer.active = true;
+    }
 
-    window.addEventListener('pointerdown', (e) => {
-      if (pulses.length < 6) {
-        pulses.push({ x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight, t: 0 });
-      }
-    }, { passive: true });
+    window.addEventListener('pointermove', setPointer, { passive: true });
+    window.addEventListener('pointerdown', setPointer, { passive: true });
+    document.addEventListener('pointerleave', () => { pointer.active = false; });
 
-    document.addEventListener('pointerleave', () => { pointer.weight = 0; });
-
-    let auroraResizeScheduled = false;
+    let canvasResizeScheduled = false;
     window.addEventListener('resize', () => {
-      if (auroraResizeScheduled) return;
-      auroraResizeScheduled = true;
-      setTimeout(() => { resizeAurora(); auroraResizeScheduled = false; }, 150);
+      if (canvasResizeScheduled) return;
+      canvasResizeScheduled = true;
+      setTimeout(() => { resizeCanvas(); canvasResizeScheduled = false; }, 150);
     });
 
     document.addEventListener('visibilitychange', () => {
@@ -435,8 +356,7 @@
       else start();
     });
 
-    buildBlobs();
-    resizeAurora();
+    resizeCanvas();
     start();
   }
 })();
