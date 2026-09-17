@@ -5,8 +5,8 @@
   --blue-dark: #061b2b;
   --blue-mid: #092a59;
 
-  --bg: var(--black);
-  --bg-alt: var(--blue-dark);
+  --bg: rgba(0, 0, 0, 0.88);
+  --bg-alt: rgba(6, 27, 43, 0.88);
   --text: var(--white);
   --text-muted: #a9b4c2;
   --border: rgba(255, 255, 255, 0.1);
@@ -25,15 +25,27 @@
 
 html {
   scroll-behavior: smooth;
+  background: var(--black);
 }
 
 body {
-  background: var(--bg);
+  background: transparent;
   color: var(--text);
   font-family: var(--font);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+  background: var(--black);
 }
 
 img {
@@ -134,6 +146,11 @@ h2 {
   cursor: pointer;
   overflow: hidden;
   isolation: isolate;
+}
+
+[data-magnetic] {
+  transition: transform 0.25s var(--ease), background 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.25s ease;
+  will-change: transform;
 }
 
 .btn::before {
@@ -307,7 +324,7 @@ h2 {
 .hero {
   position: relative;
   padding: 150px 0 130px;
-  background: linear-gradient(180deg, var(--black) 0%, var(--blue-dark) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.82) 0%, rgba(6, 27, 43, 0.82) 100%);
   text-align: center;
   overflow: hidden;
 }
@@ -680,6 +697,7 @@ h2 {
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   margin-top: 56px;
+  perspective: 1200px;
 }
 
 .spec-card {
@@ -689,7 +707,9 @@ h2 {
   border-radius: 16px;
   padding: 36px 28px;
   overflow: hidden;
-  transition: border-color 0.3s ease, transform 0.3s var(--ease), box-shadow 0.3s ease;
+  transition: border-color 0.3s ease, transform 0.25s var(--ease), box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
   --mx: 50%;
   --my: 50%;
 }
@@ -808,6 +828,7 @@ h2 {
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
   margin-top: 48px;
+  perspective: 1200px;
 }
 
 .portfolio-card {
@@ -817,7 +838,9 @@ h2 {
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.03);
   overflow: hidden;
-  transition: border-color 0.3s ease, transform 0.3s var(--ease), box-shadow 0.3s ease;
+  transition: border-color 0.3s ease, transform 0.25s var(--ease), box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .portfolio-card:hover {
@@ -1058,7 +1081,7 @@ h2 {
 /* CTA */
 .cta {
   position: relative;
-  background: var(--black);
+  background: rgba(0, 0, 0, 0.82);
   text-align: center;
   overflow: hidden;
 }
