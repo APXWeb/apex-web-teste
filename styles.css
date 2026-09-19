@@ -5,8 +5,8 @@
   --blue-dark: #061b2b;
   --blue-mid: #092a59;
 
-  --bg: rgba(0, 0, 0, 0.82);
-  --bg-alt: rgba(6, 27, 43, 0.82);
+  --bg: var(--black);
+  --bg-alt: var(--blue-dark);
   --text: var(--white);
   --text-muted: #a9b4c2;
   --border: rgba(255, 255, 255, 0.1);
@@ -25,28 +25,15 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--black);
 }
 
 body {
-  background: transparent;
+  background: var(--bg);
   color: var(--text);
   font-family: var(--font);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-}
-
-/* Rede de particulas que reage ao cursor, atras de todo o conteudo */
-#bg-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  display: block;
-  pointer-events: none;
-  background: var(--black);
 }
 
 img {
@@ -362,7 +349,7 @@ h2 {
 .hero {
   position: relative;
   padding: 96px 0 110px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.74) 0%, rgba(6, 27, 43, 0.78) 100%);
+  background: linear-gradient(180deg, var(--black) 0%, var(--blue-dark) 100%);
   text-align: center;
   overflow: hidden;
 }
@@ -1189,7 +1176,7 @@ h2 {
 /* CTA */
 .cta {
   position: relative;
-  background: rgba(0, 0, 0, 0.78);
+  background: var(--black);
   text-align: center;
   overflow: hidden;
 }
