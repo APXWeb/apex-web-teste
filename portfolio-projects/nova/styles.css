@@ -213,17 +213,6 @@ h2 {
   background: radial-gradient(closest-side, rgba(75, 75, 216, 0.22), transparent 72%);
   filter: blur(26px); pointer-events: none;
 }
-.hero-grid-lines {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: radial-gradient(ellipse 95% 65% at 45% 30%, #000 45%, transparent 85%);
-  -webkit-mask-image: radial-gradient(ellipse 95% 65% at 45% 30%, #000 45%, transparent 85%);
-  pointer-events: none;
-}
-
 .hero-inner {
   position: relative; z-index: 1;
   width: 100%; max-width: var(--wide); margin: 0 auto;
