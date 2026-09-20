@@ -978,6 +978,12 @@
   function init() {
     aplicarConfig();
     renderTudo();
+
+    // mede o motor de verdade numa passada em seco, para a faixa já abrir com número real
+    const t0 = performance.now();
+    planejar('o que eu tenho pra hoje');
+    $('#proof-latency').textContent = Math.max(1, Math.round(performance.now() - t0)) + 'ms';
+
     rodarDemo('Organize minha semana');
     renderDicas(['Organize minha semana', 'O que eu tenho pra hoje?', 'Gastei 80 no mercado']);
 
