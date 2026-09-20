@@ -93,7 +93,7 @@
       const raw = localStorage.getItem(CFG);
       if (raw) return JSON.parse(raw);
     } catch (e) {}
-    return { nome: 'Luna', dono: '', modo: 'copiloto', criada: false };
+    return { nome: 'Luna', dono: '', email: '', modo: 'copiloto', criada: false, logado: false };
   }
   function saveCfg() {
     try { localStorage.setItem(CFG, JSON.stringify(config)); } catch (e) {}
@@ -643,23 +643,32 @@
 
   /* ================= chat ================= */
 
-  const chat = $('#chat');
+  /* O mesmo motor atende dois chats: o da landing e o de dentro do app.
+     Cada um é descrito por um contexto com os seus elementos. */
+  const chats = {
+    landing: { chat: '#chat', sug: '#suggestions', input: '#input' },
+    app: { chat: '#app-chat', sug: '#app-sugestoes', input: '#app-input' },
+  };
+  const elChat = (ctx) => $(chats[ctx].chat);
 
-  function bolha(tipo, html) {
+  function bolha(tipo, html, ctx = 'landing') {
+    const alvo = elChat(ctx);
+    if (!alvo) return null;
     const wrap = document.createElement('div');
     wrap.className = `msg msg-${tipo}`;
     wrap.innerHTML = `<div class="msg-text">${html}</div>`;
-    chat.appendChild(wrap);
-    chat.scrollTop = chat.scrollHeight;
+    alvo.appendChild(wrap);
+    alvo.scrollTop = alvo.scrollHeight;
     return wrap;
   }
 
-  function pensando() {
+  function pensando(ctx) {
+    const alvo = elChat(ctx);
     const el = document.createElement('div');
     el.className = 'msg msg-ai';
     el.innerHTML = '<div class="msg-text thinking"><span></span><span></span><span></span></div>';
-    chat.appendChild(el);
-    chat.scrollTop = chat.scrollHeight;
+    alvo.appendChild(el);
+    alvo.scrollTop = alvo.scrollHeight;
     return el;
   }
 
@@ -667,7 +676,8 @@
     return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   }
 
-  function renderPlano(wrap, plano, ms) {
+  function renderPlano(wrap, plano, ms, ctx = 'landing') {
+    const alvoChat = elChat(ctx);
     const auto = config.modo === 'autonomo' && plano.ops.every((o) => o.risco === 'baixo');
     const box = document.createElement('div');
     box.className = 'plan';
@@ -726,16 +736,17 @@
         acoes.innerHTML = '';
       });
     }
-    chat.scrollTop = chat.scrollHeight;
+    alvoChat.scrollTop = alvoChat.scrollHeight;
   }
 
-  function responder(texto) {
-    bolha('user', esc(texto));
+  function responder(texto, ctx = 'landing') {
+    const alvoChat = elChat(ctx);
+    bolha('user', esc(texto), ctx);
     // mede só o motor: a pausa visual abaixo é enfeite, não pode entrar na conta
     const t0 = performance.now();
     const plano = planejar(texto);
     const ms = Math.max(1, Math.round(performance.now() - t0));
-    const carregando = pensando();
+    const carregando = pensando(ctx);
 
     setTimeout(() => {
       carregando.remove();
@@ -746,29 +757,32 @@
       if (plano.contexto) partes.push(`<div class="msg-text" style="font-family:var(--mono);font-size:.76rem;color:var(--dim)">contexto · ${esc(plano.contexto)}</div>`);
       partes.push(`<div class="msg-text">${esc(plano.fala)}</div>`);
       wrap.innerHTML = partes.join('');
-      chat.appendChild(wrap);
+      alvoChat.appendChild(wrap);
 
       if (plano.acao === 'undo') {
         if (desfazer()) toast('Desfeito');
       }
-      if (plano.ops && plano.ops.length) renderPlano(wrap, plano, ms);
-      if (plano.dicas && plano.dicas.length) renderDicas(plano.dicas);
+      if (plano.ops && plano.ops.length) renderPlano(wrap, plano, ms, ctx);
+      if (plano.dicas && plano.dicas.length) renderDicas(plano.dicas, ctx);
 
-      $('#proof-latency').textContent = ms + 'ms';
-      $('#agent-status').textContent = `Última resposta em ${ms}ms · ${abertas().length} tarefas abertas`;
-      chat.scrollTop = chat.scrollHeight;
+      const lat = $('#proof-latency');
+      if (lat) lat.textContent = ms + 'ms';
+      const status = $('#agent-status');
+      if (status) status.textContent = `Última resposta em ${ms}ms · ${abertas().length} tarefas abertas`;
+      alvoChat.scrollTop = alvoChat.scrollHeight;
     }, reduceMotion ? 0 : 110);
   }
 
-  function renderDicas(lista) {
-    const box = $('#suggestions');
+  function renderDicas(lista, ctx = 'landing') {
+    const box = $(chats[ctx].sug);
+    if (!box) return;
     box.innerHTML = '';
     lista.forEach((d) => {
       const b = document.createElement('button');
       b.className = 'chip-btn';
       b.type = 'button';
       b.textContent = d;
-      b.addEventListener('click', () => { $('#input').value = d; $('#composer').requestSubmit(); });
+      b.addEventListener('click', () => { $(chats[ctx].input).value = d; responder(d, ctx); $(chats[ctx].input).value = ''; box.innerHTML = ''; });
       box.appendChild(b);
     });
   }
@@ -898,6 +912,7 @@
     renderFinancas(tocados);
     renderContadores();
     renderLog();
+    renderApp();
   }
 
   /* ================= toast ================= */
@@ -931,6 +946,19 @@
     $('#mode-hint').textContent = config.modo === 'copiloto'
       ? 'Pede permissão para tudo'
       : 'Age sozinha no que é de risco baixo';
+
+    // identidade dentro do app
+    $$('.ia-nome, #nav-ia-nome').forEach((el) => { el.textContent = config.nome; });
+    const un = $('#app-user-nome');
+    if (un) {
+      un.textContent = config.dono || 'Você';
+      $('#app-user-email').textContent = config.email || 'conta local';
+      $('#app-user-avatar').textContent = (config.dono || 'V').trim().charAt(0).toUpperCase();
+    }
+    if (appAberto && appAberto() && $('#app-title')) {
+      const view = $('.app-nav-item.is-on')?.dataset.view;
+      if (view === 'chat') $('#app-title').textContent = `Chat com a ${config.nome}`;
+    }
   }
 
   /* ================= demo do hero ================= */
@@ -975,6 +1003,463 @@
   }
 
   /* ================= wiring ================= */
+
+
+  /* ===================== APP (pós-cadastro/login) ===================== */
+
+  const filtros = { area: 'tudo', periodo: 7, tarefa: 'abertas', fin: 'tudo' };
+  const TITULOS = {
+    visao: ['Visão geral', 'Seu contexto de hoje'],
+    agenda: ['Agenda', 'Tudo o que está marcado, por área'],
+    tarefas: ['Tarefas', 'O que precisa sair do papel'],
+    metas: ['Objetivos', 'Progresso do que você quer alcançar'],
+    habitos: ['Hábitos', 'O que sustenta os objetivos'],
+    financas: ['Finanças', 'Entradas, saídas e saldo'],
+    chat: ['Chat', 'Peça e ela executa'],
+    historico: ['Histórico', 'Auditoria das ações da IA'],
+  };
+
+  const appAberto = () => !$('#app').hidden;
+
+  function entrarApp(viewInicial = 'visao') {
+    config.logado = true;
+    saveCfg();
+    $('#app').hidden = false;
+    document.body.style.overflow = 'hidden';
+    aplicarConfig();
+    irPara(viewInicial);
+    renderApp();
+    if (!elChat('app').children.length) {
+      bolha('ai', `Oi${config.dono ? ', ' + esc(config.dono) : ''}! Sou a <strong>${esc(config.nome)}</strong>. Já li o seu workspace: <strong>${abertas().length} tarefas abertas</strong>, ${atrasadas().length} atrasada(s) e ${state.agenda.length} compromissos.`, 'app');
+      renderDicas(['Organize minha semana', 'O que eu tenho pra hoje?', 'Gastei 80 no mercado'], 'app');
+    }
+  }
+
+  function sairApp() {
+    $('#app').hidden = true;
+    $('#app').classList.remove('side-open');
+    document.body.style.overflow = '';
+  }
+
+  function irPara(view) {
+    $$('.app-nav-item').forEach((b) => b.classList.toggle('is-on', b.dataset.view === view));
+    $$('.app-view').forEach((s) => s.classList.toggle('is-on', s.dataset.view === view));
+    const [t, sub] = TITULOS[view] || ['', ''];
+    $('#app-title').textContent = view === 'chat' ? `Chat com a ${config.nome}` : t;
+    $('#app-subtitle').textContent = sub;
+    $('#app').classList.remove('side-open');
+    $('.app-body').scrollTop = 0;
+    if (view === 'chat') setTimeout(() => $('#app-input').focus(), 80);
+  }
+
+  /* ---------- agenda unificada: junta as áreas num só fluxo ---------- */
+  function itensAgenda() {
+    const itens = [];
+    state.agenda.forEach((e) => {
+      itens.push({
+        area: e.foco ? 'foco' : 'evento',
+        rotuloArea: e.foco ? 'foco' : 'compromisso',
+        data: e.data, hora: e.hora, titulo: e.titulo,
+        meta: `${e.dur} min`, id: e.id, feito: false,
+      });
+    });
+    const rotuloPri = { alta: 'alta', media: 'média', baixa: 'baixa' };
+    state.tarefas.forEach((t) => {
+      itens.push({
+        area: 'tarefa', rotuloArea: 'tarefa',
+        data: t.data, hora: '', titulo: t.titulo,
+        meta: `prioridade ${rotuloPri[t.prioridade] || t.prioridade}`, id: t.id, feito: t.feita,
+      });
+    });
+    state.habitos.forEach((hb) => {
+      itens.push({
+        area: 'habito', rotuloArea: 'hábito',
+        data: iso(hoje()), hora: '', titulo: hb.titulo,
+        meta: hb.hoje ? 'feito hoje' : 'pendente hoje', id: hb.id, feito: hb.hoje,
+      });
+    });
+    return itens;
+  }
+
+  function rotuloAtraso(isoStr) {
+    const dias = Math.round((hoje() - fromIso(isoStr)) / 86400000);
+    if (dias === 1) return 'venceu ontem';
+    return `venceu há ${dias} dias`;
+  }
+
+  function linhaHtml(i, h) {
+    return `
+      <div class="linha linha-${i.area} ${i.feito ? 'is-done' : ''}">
+        <span class="linha-hora">${i.hora || '—'}</span>
+        <div class="linha-main">
+          <span class="linha-titulo">${esc(i.titulo)}</span>
+          <span class="linha-meta">
+            <span class="linha-area">${i.rotuloArea}</span>
+            <span>${esc(i.meta)}</span>
+            ${fromIso(i.data) < h && !i.feito && i.area === 'tarefa' ? `<span class="tag tag-alta">${rotuloAtraso(i.data)}</span>` : ''}
+          </span>
+        </div>
+      </div>`;
+  }
+
+  function renderAgendaApp() {
+    const h = hoje();
+    const naArea = itensAgenda().filter((i) => filtros.area === 'tudo' || i.area === filtros.area);
+
+    // atrasado não pertence a nenhum período: vai para um bloco próprio no topo
+    const atrasado = naArea.filter((i) => i.area === 'tarefa' && !i.feito && fromIso(i.data) < h);
+    const limite = filtros.periodo ? addDias(h, filtros.periodo) : null;
+    const futuros = naArea.filter((i) => {
+      const d = fromIso(i.data);
+      if (d < h) return false;
+      return limite ? d < limite : true;
+    });
+
+    const total = atrasado.length + futuros.length;
+    $('#agenda-contagem').textContent = `${total} ${total === 1 ? 'item' : 'itens'}` +
+      (atrasado.length ? ` · ${atrasado.length} atrasado${atrasado.length === 1 ? '' : 's'}` : '');
+
+    const porDia = {};
+    futuros.forEach((i) => { (porDia[i.data] = porDia[i.data] || []).push(i); });
+    const dias = Object.keys(porDia).sort();
+
+    const box = $('#agenda-lista');
+    if (!total) {
+      box.innerHTML = '<p class="empty">Nada nesse filtro. Experimente outro período ou área.</p>';
+      return;
+    }
+
+    const blocoAtrasado = atrasado.length ? `
+      <div class="dia-bloco">
+        <div class="dia-head">
+          <strong>Atrasado</strong>
+          <span class="hoje-tag" style="background:rgba(248,113,113,.18);color:var(--rose)">precisa de decisão</span>
+          <span>${atrasado.length} ${atrasado.length === 1 ? 'item' : 'itens'}</span>
+        </div>
+        ${atrasado.sort((a, b) => a.data.localeCompare(b.data)).map((i) => linhaHtml(i, h)).join('')}
+      </div>` : '';
+
+    box.innerHTML = blocoAtrasado + dias.map((d) => {
+      const data = fromIso(d);
+      const ehHoje = d === iso(h);
+      const lista = porDia[d].sort((a, b) => (a.hora || '99').localeCompare(b.hora || '99'));
+      return `
+        <div class="dia-bloco">
+          <div class="dia-head">
+            <strong>${DIAS[data.getDay()].charAt(0).toUpperCase() + DIAS[data.getDay()].slice(1)}, ${data.getDate()} ${MESES[data.getMonth()]}</strong>
+            ${ehHoje ? '<span class="hoje-tag">hoje</span>' : ''}
+            <span>${lista.length} ${lista.length === 1 ? 'item' : 'itens'}</span>
+          </div>
+          ${lista.map((i) => linhaHtml(i, h)).join('')}
+        </div>`;
+    }).join('');
+  }
+
+  /* ---------- tarefas com filtro ---------- */
+  function renderTarefasApp() {
+    const h = hoje();
+    let lista = [...state.tarefas];
+    switch (filtros.tarefa) {
+      case 'abertas': lista = lista.filter((t) => !t.feita); break;
+      case 'hoje': lista = lista.filter((t) => !t.feita && t.data === iso(h)); break;
+      case 'atrasadas': lista = lista.filter((t) => !t.feita && fromIso(t.data) < h); break;
+      case 'alta': lista = lista.filter((t) => !t.feita && t.prioridade === 'alta'); break;
+      case 'feitas': lista = lista.filter((t) => t.feita); break;
+    }
+    lista.sort((a, b) => (a.feita - b.feita) || a.data.localeCompare(b.data));
+
+    $('#tarefas-contagem').textContent = `${lista.length} ${lista.length === 1 ? 'tarefa' : 'tarefas'}`;
+    $('#app-tarefas').innerHTML = lista.length ? lista.map((t) => `
+      <li class="item ${t.feita ? 'is-done' : ''}">
+        <button class="item-check" type="button" data-toggle="${t.id}" aria-label="${t.feita ? 'Reabrir' : 'Concluir'}">${icone()}</button>
+        <div class="item-main">
+          <span class="item-title">${esc(t.titulo)}</span>
+          <span class="item-meta">
+            <span>${rotuloData(t.data)}</span>
+            <span class="tag tag-${t.prioridade}">${t.prioridade}</span>
+          </span>
+        </div>
+        <button class="item-x" type="button" data-del-tarefa="${t.id}" aria-label="Remover">×</button>
+      </li>`).join('') : '<li class="empty">Nenhuma tarefa nesse filtro.</li>';
+  }
+
+  /* ---------- objetivos ---------- */
+  function renderMetasApp() {
+    const box = $('#app-metas');
+    if (!state.metas.length) { box.innerHTML = '<p class="empty">Nenhum objetivo ainda. Peça para a sua IA criar um.</p>'; return; }
+    box.innerHTML = state.metas.map((m) => {
+      const pct = Math.min(100, Math.round((m.atual / m.alvo) * 100));
+      const fmt = (v) => (m.unidade === 'R$' ? money(v) : `${v}${m.unidade ? ' ' + m.unidade : ''}`);
+      const passo = m.unidade === 'R$' ? 100 : 1;
+      return `
+        <article class="meta-card">
+          <div class="meta-topo">
+            <h4>${esc(m.titulo)}</h4>
+            <span class="meta-pct">${pct}%</span>
+          </div>
+          <span class="meta-valores">${fmt(m.atual)} de ${fmt(m.alvo)}</span>
+          <div class="bar"><span class="bar-fill" style="width:${pct}%"></span></div>
+          <div class="meta-acoes">
+            <button class="btn btn-quiet btn-sm" type="button" data-meta-mais="${m.id}" data-passo="${passo}">+ ${m.unidade === 'R$' ? money(passo) : passo}</button>
+            <button class="btn btn-quiet btn-sm" type="button" data-meta-menos="${m.id}" data-passo="${passo}">−</button>
+            <button class="btn btn-quiet btn-sm" type="button" data-del-meta="${m.id}">Remover</button>
+          </div>
+        </article>`;
+    }).join('');
+  }
+
+  /* ---------- hábitos ---------- */
+  function renderHabitosApp() {
+    const box = $('#app-habitos');
+    if (!state.habitos.length) { box.innerHTML = '<p class="empty">Nenhum hábito em acompanhamento.</p>'; return; }
+    box.innerHTML = state.habitos.map((hb) => `
+      <article class="habito-card">
+        <h4>${esc(hb.titulo)}</h4>
+        <div class="habito-streak">
+          <span class="streak">${hb.dias.map((d) => `<i class="${d ? 'on' : ''}"></i>`).join('')}</span>
+          <span class="habito-dias">${hb.dias.filter(Boolean).length} de 7 dias</span>
+        </div>
+        <div class="habito-acoes">
+          <button class="btn ${hb.hoje ? 'btn-quiet' : 'btn-primary'} btn-sm" type="button" data-habito="${hb.id}" ${hb.hoje ? 'disabled' : ''}>
+            ${hb.hoje ? 'Feito hoje' : 'Marcar hoje'}
+          </button>
+          <button class="btn btn-quiet btn-sm" type="button" data-del-habito="${hb.id}">Remover</button>
+        </div>
+      </article>`).join('');
+  }
+
+  /* ---------- finanças ---------- */
+  function renderFinancasApp() {
+    const ent = state.financas.filter((f) => f.valor > 0).reduce((s, f) => s + f.valor, 0);
+    const sai = state.financas.filter((f) => f.valor < 0).reduce((s, f) => s + f.valor, 0);
+    $('#app-fin-resumo').innerHTML = `
+      <div class="fin-box fin-in"><span>Entradas</span><strong>${money(ent)}</strong></div>
+      <div class="fin-box fin-out"><span>Saídas</span><strong>${money(sai)}</strong></div>
+      <div class="fin-box"><span>Saldo</span><strong>${money(ent + sai)}</strong></div>`;
+
+    let lista = [...state.financas];
+    if (filtros.fin === 'entrada') lista = lista.filter((f) => f.valor > 0);
+    if (filtros.fin === 'saida') lista = lista.filter((f) => f.valor < 0);
+
+    $('#fin-contagem').textContent = `${lista.length} ${lista.length === 1 ? 'lançamento' : 'lançamentos'}`;
+    $('#app-financas').innerHTML = lista.length ? lista.map((f) => `
+      <li class="item">
+        <div class="item-main">
+          <span class="item-title">${esc(f.titulo)}</span>
+          <span class="item-meta">${rotuloData(f.data)}</span>
+        </div>
+        <strong style="font-size:.88rem;font-variant-numeric:tabular-nums;color:${f.valor > 0 ? 'var(--mint)' : 'var(--rose)'}">${money(f.valor)}</strong>
+        <button class="item-x" type="button" data-del-fin="${f.id}" aria-label="Remover">×</button>
+      </li>`).join('') : '<li class="empty">Nenhum lançamento nesse filtro.</li>';
+  }
+
+  /* ---------- visão geral ---------- */
+  function renderVisao() {
+    const h = hoje();
+    const atr = atrasadas();
+    const evsHoje = eventosDe(iso(h));
+    const seq = state.habitos.length
+      ? Math.max(...state.habitos.map((hb) => hb.dias.filter(Boolean).length))
+      : 0;
+
+    $('#kpi-row').innerHTML = `
+      <div class="kpi"><span>Tarefas abertas</span><strong>${abertas().length}</strong><em>${doDia(iso(h)).length} para hoje</em></div>
+      <div class="kpi ${atr.length ? 'kpi-alerta' : 'kpi-bom'}"><span>Atrasadas</span><strong>${atr.length}</strong><em>${atr.length ? 'peça para reorganizar' : 'nada atrasado'}</em></div>
+      <div class="kpi"><span>Compromissos hoje</span><strong>${evsHoje.length}</strong><em>${evsHoje.length ? 'primeiro às ' + evsHoje[0].hora : 'agenda livre'}</em></div>
+      <div class="kpi ${saldo() >= 0 ? 'kpi-bom' : 'kpi-alerta'}"><span>Saldo</span><strong>${money(saldo())}</strong><em>${state.financas.length} lançamentos</em></div>`;
+
+    const d = new Date();
+    $('#visao-data').textContent = `${DIAS[d.getDay()]}, ${d.getDate()} de ${MESES[d.getMonth()]}`;
+
+    const doDiaItens = itensAgenda()
+      .filter((i) => i.data === iso(h) || (i.area === 'tarefa' && !i.feito && fromIso(i.data) < h))
+      .sort((a, b) => (a.hora || '99').localeCompare(b.hora || '99'));
+
+    $('#visao-dia').innerHTML = doDiaItens.length
+      ? `<div class="panel-conteudo">${doDiaItens.map((i) => linhaHtml(i, h)).join('')}</div>`
+      : '<p class="empty">Nada marcado para hoje.</p>';
+
+    $('#visao-metas').innerHTML = state.metas.length
+      ? `<div class="panel-conteudo">${state.metas.map((m) => {
+          const pct = Math.min(100, Math.round((m.atual / m.alvo) * 100));
+          return `<div style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:5px">
+              <span style="font-size:.86rem">${esc(m.titulo)}</span>
+              <span style="font-size:.82rem;color:var(--iris-soft);font-variant-numeric:tabular-nums">${pct}%</span>
+            </div>
+            <div class="bar"><span class="bar-fill" style="width:${pct}%"></span></div>
+          </div>`;
+        }).join('')}</div>`
+      : '<p class="empty">Nenhum objetivo ainda.</p>';
+
+    const log = state.log.slice(0, 6);
+    $('#visao-log').innerHTML = log.length
+      ? log.map((l) => `<li class="audit-item"><span class="audit-time">${l.t}</span><span class="audit-text">${esc(l.texto)}</span></li>`).join('')
+      : '<li class="audit-item"><span class="audit-text" style="color:var(--dim)">Nenhuma ação ainda.</span></li>';
+  }
+
+  function renderApp() {
+    if (!$('#app')) return;
+    renderVisao();
+    renderAgendaApp();
+    renderTarefasApp();
+    renderMetasApp();
+    renderHabitosApp();
+    renderFinancasApp();
+    $('[data-nav-count="agenda"]').textContent = state.agenda.length;
+    $('[data-nav-count="tarefas"]').textContent = abertas().length;
+    $('#app-log').innerHTML = state.log.length
+      ? state.log.map((l) => `<li class="audit-item"><span class="audit-time">${l.t}</span><span class="audit-text">${esc(l.texto)}</span></li>`).join('')
+      : '<li class="audit-item"><span class="audit-text" style="color:var(--dim)">Nenhuma ação registrada ainda.</span></li>';
+    const btn = $('#app-undo');
+    if (btn) btn.disabled = !undoStack.length;
+  }
+
+  function wireApp() {
+    // navegação
+    $$('.app-nav-item').forEach((b) => b.addEventListener('click', () => irPara(b.dataset.view)));
+    $('#app-menu').addEventListener('click', () => $('#app').classList.toggle('side-open'));
+    $('#app-side-close').addEventListener('click', () => $('#app').classList.remove('side-open'));
+    $('#app-voltar').addEventListener('click', sairApp);
+    $('#app-undo').addEventListener('click', () => { if (desfazer()) toast('Desfeito'); });
+
+    $('#app-sair').addEventListener('click', () => {
+      config.logado = false;
+      saveCfg();
+      sairApp();
+      toast('Você saiu da conta');
+    });
+
+    // filtros
+    $$('[data-area]').forEach((b) => b.addEventListener('click', () => {
+      filtros.area = b.dataset.area;
+      $$('[data-area]').forEach((x) => x.classList.toggle('is-on', x === b));
+      renderAgendaApp();
+    }));
+    $$('[data-periodo]').forEach((b) => b.addEventListener('click', () => {
+      filtros.periodo = Number(b.dataset.periodo);
+      $$('[data-periodo]').forEach((x) => x.classList.toggle('is-on', x === b));
+      renderAgendaApp();
+    }));
+    $$('[data-tarefa]').forEach((b) => b.addEventListener('click', () => {
+      filtros.tarefa = b.dataset.tarefa;
+      $$('[data-tarefa]').forEach((x) => x.classList.toggle('is-on', x === b));
+      renderTarefasApp();
+    }));
+    $$('[data-fin]').forEach((b) => b.addEventListener('click', () => {
+      filtros.fin = b.dataset.fin;
+      $$('[data-fin]').forEach((x) => x.classList.toggle('is-on', x === b));
+      renderFinancasApp();
+    }));
+
+    // chat do app
+    $('#app-composer').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const v = $('#app-input').value.trim();
+      if (!v) return;
+      $('#app-input').value = '';
+      $('#app-sugestoes').innerHTML = '';
+      responder(v, 'app');
+    });
+
+    // pedido rápido da visão geral leva para o chat
+    $('#visao-composer').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const v = $('#visao-input').value.trim();
+      if (!v) return;
+      $('#visao-input').value = '';
+      irPara('chat');
+      responder(v, 'app');
+    });
+
+    // ações dentro das telas
+    $('.app-body').addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const d = btn.dataset;
+      const mexer = (fn) => {
+        undoStack.push(clone(state));
+        fn();
+        save(); renderTudo();
+        $('#app-undo').disabled = false;
+      };
+      if (d.toggle) return mexer(() => { const t = state.tarefas.find((x) => x.id === d.toggle); if (t) t.feita = !t.feita; });
+      if (d.delTarefa) return mexer(() => { state.tarefas = state.tarefas.filter((x) => x.id !== d.delTarefa); });
+      if (d.delMeta) return mexer(() => { state.metas = state.metas.filter((x) => x.id !== d.delMeta); });
+      if (d.delHabito) return mexer(() => { state.habitos = state.habitos.filter((x) => x.id !== d.delHabito); });
+      if (d.delFin) return mexer(() => { state.financas = state.financas.filter((x) => x.id !== d.delFin); });
+      if (d.habito) return mexer(() => { const hb = state.habitos.find((x) => x.id === d.habito); if (hb && !hb.hoje) { hb.hoje = true; hb.dias = hb.dias.slice(1).concat(1); } });
+      if (d.metaMais) return mexer(() => { const m = state.metas.find((x) => x.id === d.metaMais); if (m) m.atual = Math.min(m.alvo, m.atual + Number(d.passo)); });
+      if (d.metaMenos) return mexer(() => { const m = state.metas.find((x) => x.id === d.metaMenos); if (m) m.atual = Math.max(0, m.atual - Number(d.passo)); });
+    });
+
+    // cadastro
+    $('#form-signup').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const erro = $('#su-erro');
+      const nome = $('#su-nome').value.trim();
+      const email = $('#su-email').value.trim().toLowerCase();
+      const ia = $('#su-ia').value.trim();
+      if (!nome || !email || !ia) {
+        erro.textContent = 'Preencha todos os campos.';
+        erro.hidden = false;
+        return;
+      }
+      erro.hidden = true;
+      config.dono = nome.slice(0, 24);
+      config.email = email;
+      config.nome = ia.slice(0, 18);
+      config.modo = document.querySelector('input[name="su-modo"]:checked').value;
+      config.criada = true;
+      saveCfg();
+      fechar('#modal-signup');
+      entrarApp('visao');
+      toast(`Conta criada — ${config.nome} está pronta`);
+    });
+
+    // login
+    $('#form-login').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const erro = $('#li-erro');
+      const email = $('#li-email').value.trim().toLowerCase();
+      if (!config.criada || !config.email) {
+        erro.textContent = 'Nenhuma conta foi criada neste navegador ainda. Crie a sua primeiro.';
+        erro.hidden = false;
+        return;
+      }
+      if (email !== config.email) {
+        erro.textContent = 'Esse e-mail não confere com a conta salva neste navegador.';
+        erro.hidden = false;
+        return;
+      }
+      erro.hidden = true;
+      fechar('#modal-login');
+      entrarApp('visao');
+      toast(`Bem-vindo de volta${config.dono ? ', ' + config.dono : ''}`);
+    });
+
+    $('#ir-login').addEventListener('click', () => { fechar('#modal-signup'); abrirLogin(); });
+    $('#ir-signup').addEventListener('click', () => { fechar('#modal-login'); abrirSignup(); });
+  }
+
+  function abrirSignup() {
+    $('#su-erro').hidden = true;
+    $('#su-nome').value = config.dono || '';
+    $('#su-email').value = config.email || '';
+    $('#su-ia').value = config.nome || 'Luna';
+    const r = document.querySelector(`input[name="su-modo"][value="${config.modo}"]`);
+    if (r) r.checked = true;
+    abrir('#modal-signup');
+    setTimeout(() => $('#su-nome').focus(), 60);
+  }
+
+  function abrirLogin() {
+    $('#li-erro').hidden = true;
+    $('#li-email').value = config.email || '';
+    abrir('#modal-login');
+    setTimeout(() => $('#li-email').focus(), 60);
+  }
+
 
   function init() {
     aplicarConfig();
@@ -1075,9 +1560,25 @@
       abrir('#modal-config');
       setTimeout(() => $('#cfg-name').focus(), 60);
     };
-    ['#cta-criar', '#hero-criar', '#cta-final', '#btn-config'].forEach((s) => {
-      const el = $(s); if (el) el.addEventListener('click', abrirConfig);
+    // o engrenagem do workspace da landing segue configurando a IA sem sair da página
+    $('#btn-config').addEventListener('click', abrirConfig);
+
+    // os CTAs levam para o app: quem já tem conta entra direto, quem não tem se cadastra
+    ['#cta-criar', '#hero-criar', '#cta-final'].forEach((s) => {
+      const el = $(s);
+      if (el) el.addEventListener('click', () => {
+        if (config.criada && config.email) entrarApp('visao');
+        else abrirSignup();
+      });
     });
+    $('#cta-entrar').addEventListener('click', () => {
+      if (config.criada && config.email) abrirLogin();
+      else abrirSignup();
+    });
+
+    wireApp();
+    // sessão continua aberta entre visitas, como num app de verdade
+    if (config.logado && config.criada) entrarApp('visao');
 
     $('#form-config').addEventListener('submit', (e) => {
       e.preventDefault();
