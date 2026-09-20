@@ -24,9 +24,9 @@
   --radius: 16px;
   --radius-sm: 10px;
   --container: 1320px;
-  /* topo e hero usam a largura cheia da tela, com teto só para monitores enormes */
-  --wide: 1760px;
-  --gutter: clamp(24px, 4vw, 72px);
+  /* topo e hero respiram mais que o resto do site, mas sem colar nas bordas */
+  --wide: 1480px;
+  --gutter: clamp(24px, 4vw, 56px);
   --ease: cubic-bezier(0.16, 0.84, 0.44, 1);
 }
 

@@ -731,12 +731,13 @@
 
   function responder(texto) {
     bolha('user', esc(texto));
+    // mede só o motor: a pausa visual abaixo é enfeite, não pode entrar na conta
     const t0 = performance.now();
     const plano = planejar(texto);
+    const ms = Math.max(1, Math.round(performance.now() - t0));
     const carregando = pensando();
 
     setTimeout(() => {
-      const ms = Math.max(1, Math.round(performance.now() - t0));
       carregando.remove();
 
       const wrap = document.createElement('div');
