@@ -1074,3 +1074,21 @@ h2 {
   .filtros { padding: 12px 13px; gap: 14px; }
   .filtro-resultado { margin-left: 0; width: 100%; }
 }
+
+.nada {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 34px 20px; text-align: center;
+}
+.nada p { color: var(--dim); font-size: 0.88rem; max-width: 360px; }
+.nada .chip-btn { border-color: rgba(108, 108, 245, 0.4); color: var(--iris-soft); }
+.nada .chip-btn:hover { background: rgba(108, 108, 245, 0.16); }
+.list .nada { padding: 28px 16px; }
+
+.modal-aviso {
+  font-size: 0.82rem; color: var(--amber);
+  padding: 10px 13px; margin-bottom: 18px;
+  border-radius: var(--radius-sm);
+  background: rgba(245, 181, 68, 0.1);
+  border: 1px solid rgba(245, 181, 68, 0.28);
+}
+.modal-aviso[hidden] { display: none; }

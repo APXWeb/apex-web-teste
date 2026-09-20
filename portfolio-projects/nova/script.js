@@ -74,6 +74,12 @@
     };
   }
 
+  /* Conta nova começa do zero: nada de exemplo fictício no workspace de ninguém.
+     O seed acima só existe para a demonstração da landing, antes de criar conta. */
+  function vazio() {
+    return { tarefas: [], agenda: [], metas: [], habitos: [], financas: [], log: [] };
+  }
+
   let state = load();
   let config = loadCfg();
   let undoStack = [];
@@ -1020,6 +1026,8 @@
   };
 
   const appAberto = () => !$('#app').hidden;
+  const vazioTotal = () => !state.tarefas.length && !state.agenda.length &&
+    !state.metas.length && !state.habitos.length && !state.financas.length;
 
   function entrarApp(viewInicial = 'visao') {
     config.logado = true;
@@ -1027,11 +1035,17 @@
     $('#app').hidden = false;
     document.body.style.overflow = 'hidden';
     aplicarConfig();
+    rotularCTAs();
     irPara(viewInicial);
     renderApp();
     if (!elChat('app').children.length) {
-      bolha('ai', `Oi${config.dono ? ', ' + esc(config.dono) : ''}! Sou a <strong>${esc(config.nome)}</strong>. Já li o seu workspace: <strong>${abertas().length} tarefas abertas</strong>, ${atrasadas().length} atrasada(s) e ${state.agenda.length} compromissos.`, 'app');
-      renderDicas(['Organize minha semana', 'O que eu tenho pra hoje?', 'Gastei 80 no mercado'], 'app');
+      if (vazioTotal()) {
+        bolha('ai', `Oi${config.dono ? ', ' + esc(config.dono) : ''}! Sou a <strong>${esc(config.nome)}</strong>. Seu workspace está limpo — nada aqui além do que você criar. Me diz o que você precisa organizar e eu começo a montar.`, 'app');
+        renderDicas(['Adiciona tarefa revisar contrato pra sexta', 'Reunião com o time quarta 15h', 'Meta: guardar 6000', 'Todo dia beber 2L de água'], 'app');
+      } else {
+        bolha('ai', `Oi${config.dono ? ', ' + esc(config.dono) : ''}! Sou a <strong>${esc(config.nome)}</strong>. Já li o seu workspace: <strong>${abertas().length} tarefas abertas</strong>, ${atrasadas().length} atrasada(s) e ${state.agenda.length} compromissos.`, 'app');
+        renderDicas(['Organize minha semana', 'O que eu tenho pra hoje?', 'Gastei 80 no mercado'], 'app');
+      }
     }
   }
 
@@ -1039,6 +1053,7 @@
     $('#app').hidden = true;
     $('#app').classList.remove('side-open');
     document.body.style.overflow = '';
+    rotularCTAs();
   }
 
   function irPara(view) {
@@ -1087,6 +1102,14 @@
     return `venceu há ${dias} dias`;
   }
 
+  /* estado vazio que ensina o próximo passo em vez de só avisar que não tem nada */
+  function nadaAqui(texto, exemplo) {
+    return `<div class="nada">
+      <p>${esc(texto)}</p>
+      ${exemplo ? `<button class="chip-btn" type="button" data-exemplo="${esc(exemplo)}">${esc(exemplo)}</button>` : ''}
+    </div>`;
+  }
+
   function linhaHtml(i, h) {
     return `
       <div class="linha linha-${i.area} ${i.feito ? 'is-done' : ''}">
@@ -1125,7 +1148,9 @@
 
     const box = $('#agenda-lista');
     if (!total) {
-      box.innerHTML = '<p class="empty">Nada nesse filtro. Experimente outro período ou área.</p>';
+      box.innerHTML = vazioTotal()
+        ? nadaAqui('Sua agenda está vazia. Peça algo para a sua IA e ela marca aqui.', 'Reunião com o time quarta 15h')
+        : nadaAqui('Nada nesse filtro. Experimente outro período ou outra área.');
       return;
     }
 
@@ -1180,13 +1205,18 @@
           </span>
         </div>
         <button class="item-x" type="button" data-del-tarefa="${t.id}" aria-label="Remover">×</button>
-      </li>`).join('') : '<li class="empty">Nenhuma tarefa nesse filtro.</li>';
+      </li>`).join('') : `<li>${vazioTotal()
+        ? nadaAqui('Nenhuma tarefa ainda. Diga o que precisa fazer e ela cria.', 'Adiciona tarefa revisar contrato pra sexta')
+        : nadaAqui('Nenhuma tarefa nesse filtro.')}</li>`;
   }
 
   /* ---------- objetivos ---------- */
   function renderMetasApp() {
     const box = $('#app-metas');
-    if (!state.metas.length) { box.innerHTML = '<p class="empty">Nenhum objetivo ainda. Peça para a sua IA criar um.</p>'; return; }
+    if (!state.metas.length) {
+      box.innerHTML = nadaAqui('Nenhum objetivo ainda. Diga o que você quer alcançar.', 'Meta: guardar 6000');
+      return;
+    }
     box.innerHTML = state.metas.map((m) => {
       const pct = Math.min(100, Math.round((m.atual / m.alvo) * 100));
       const fmt = (v) => (m.unidade === 'R$' ? money(v) : `${v}${m.unidade ? ' ' + m.unidade : ''}`);
@@ -1211,7 +1241,10 @@
   /* ---------- hábitos ---------- */
   function renderHabitosApp() {
     const box = $('#app-habitos');
-    if (!state.habitos.length) { box.innerHTML = '<p class="empty">Nenhum hábito em acompanhamento.</p>'; return; }
+    if (!state.habitos.length) {
+      box.innerHTML = nadaAqui('Nenhum hábito em acompanhamento.', 'Todo dia beber 2L de água');
+      return;
+    }
     box.innerHTML = state.habitos.map((hb) => `
       <article class="habito-card">
         <h4>${esc(hb.titulo)}</h4>
@@ -1250,7 +1283,9 @@
         </div>
         <strong style="font-size:.88rem;font-variant-numeric:tabular-nums;color:${f.valor > 0 ? 'var(--mint)' : 'var(--rose)'}">${money(f.valor)}</strong>
         <button class="item-x" type="button" data-del-fin="${f.id}" aria-label="Remover">×</button>
-      </li>`).join('') : '<li class="empty">Nenhum lançamento nesse filtro.</li>';
+      </li>`).join('') : `<li>${vazioTotal()
+        ? nadaAqui('Nenhum lançamento ainda. Conte um gasto ou uma entrada.', 'Gastei 80 no mercado')
+        : nadaAqui('Nenhum lançamento nesse filtro.')}</li>`;
   }
 
   /* ---------- visão geral ---------- */
@@ -1277,7 +1312,9 @@
 
     $('#visao-dia').innerHTML = doDiaItens.length
       ? `<div class="panel-conteudo">${doDiaItens.map((i) => linhaHtml(i, h)).join('')}</div>`
-      : '<p class="empty">Nada marcado para hoje.</p>';
+      : `<div class="panel-conteudo">${vazioTotal()
+        ? nadaAqui('Nada marcado para hoje. Comece dizendo o que você precisa fazer.', 'Adiciona tarefa ligar pro contador amanhã')
+        : nadaAqui('Nada marcado para hoje.')}</div>`;
 
     $('#visao-metas').innerHTML = state.metas.length
       ? `<div class="panel-conteudo">${state.metas.map((m) => {
@@ -1290,7 +1327,7 @@
             <div class="bar"><span class="bar-fill" style="width:${pct}%"></span></div>
           </div>`;
         }).join('')}</div>`
-      : '<p class="empty">Nenhum objetivo ainda.</p>';
+      : `<div class="panel-conteudo">${nadaAqui('Nenhum objetivo ainda.', 'Meta: ler 12 livros')}</div>`;
 
     const log = state.log.slice(0, 6);
     $('#visao-log').innerHTML = log.length
@@ -1377,6 +1414,11 @@
       const btn = e.target.closest('button');
       if (!btn) return;
       const d = btn.dataset;
+      if (d.exemplo) {
+        irPara('chat');
+        responder(d.exemplo, 'app');
+        return;
+      }
       const mexer = (fn) => {
         undoStack.push(clone(state));
         fn();
@@ -1412,6 +1454,12 @@
       config.modo = document.querySelector('input[name="su-modo"]:checked').value;
       config.criada = true;
       saveCfg();
+      // workspace limpo: a pessoa monta o dela do jeito que quiser
+      state = vazio();
+      undoStack = [];
+      save();
+      renderTudo();
+      elChat('app').innerHTML = '';
       fechar('#modal-signup');
       entrarApp('visao');
       toast(`Conta criada — ${config.nome} está pronta`);
@@ -1442,8 +1490,24 @@
     $('#ir-signup').addEventListener('click', () => { fechar('#modal-login'); abrirSignup(); });
   }
 
+  /* os botões do site mudam de texto conforme a pessoa já tenha conta ou sessão aberta */
+  function rotularCTAs() {
+    const logado = config.logado && config.criada;
+    const criar = logado ? 'Abrir meu workspace' : 'Criar minha IA';
+    [['#cta-criar', criar], ['#cta-final', logado ? 'Abrir meu workspace' : 'Criar minha IA']].forEach(([sel, txt]) => {
+      const el = $(sel);
+      if (el) el.textContent = txt;
+    });
+    const heroBtn = $('#hero-criar');
+    if (heroBtn) heroBtn.innerHTML = `${criar} <span aria-hidden="true">→</span>`;
+    const entrar = $('#cta-entrar');
+    if (entrar) entrar.textContent = logado ? 'Voltar ao app' : 'Entrar';
+  }
+
   function abrirSignup() {
     $('#su-erro').hidden = true;
+    const aviso = $('#su-aviso');
+    if (aviso) aviso.hidden = !config.criada;
     $('#su-nome').value = config.dono || '';
     $('#su-email').value = config.email || '';
     $('#su-ia').value = config.nome || 'Luna';
@@ -1544,11 +1608,16 @@
     $('#btn-log').addEventListener('click', () => abrir('#modal-log'));
     $('#btn-reset').addEventListener('click', () => {
       undoStack.push(clone(state));
-      state = seed(); save(); renderTudo();
-      chat.innerHTML = '';
-      bolha('ai', `Workspace reiniciado. Sou a ${esc(config.nome)} — me diz o que precisa.`);
+      // com conta criada, reiniciar limpa — nunca devolve dado de exemplo pra um workspace real
+      const temConta = config.criada;
+      state = temConta ? vazio() : seed();
+      save(); renderTudo();
+      elChat('landing').innerHTML = '';
+      bolha('ai', temConta
+        ? `Workspace limpo. Sou a ${esc(config.nome)} — me diz o que você quer montar.`
+        : `Demonstração reiniciada. Sou a ${esc(config.nome)} — me diz o que precisa.`);
       $('#btn-undo').disabled = false;
-      toast('Demo reiniciada');
+      toast(temConta ? 'Workspace limpo' : 'Demo reiniciada');
     });
 
     // modal config
@@ -1563,18 +1632,20 @@
     // o engrenagem do workspace da landing segue configurando a IA sem sair da página
     $('#btn-config').addEventListener('click', abrirConfig);
 
-    // os CTAs levam para o app: quem já tem conta entra direto, quem não tem se cadastra
+    // quem está logado volta pro próprio workspace; o resto vai pro cadastro
     ['#cta-criar', '#hero-criar', '#cta-final'].forEach((s) => {
       const el = $(s);
       if (el) el.addEventListener('click', () => {
-        if (config.criada && config.email) entrarApp('visao');
+        if (config.logado && config.criada) entrarApp('visao');
         else abrirSignup();
       });
     });
     $('#cta-entrar').addEventListener('click', () => {
-      if (config.criada && config.email) abrirLogin();
+      if (config.logado && config.criada) entrarApp('visao');
+      else if (config.criada && config.email) abrirLogin();
       else abrirSignup();
     });
+    rotularCTAs();
 
     wireApp();
     // sessão continua aberta entre visitas, como num app de verdade
@@ -1585,9 +1656,8 @@
       config.nome = ($('#cfg-name').value.trim() || 'Luna').slice(0, 18);
       config.dono = $('#cfg-owner').value.trim().slice(0, 18);
       config.modo = document.querySelector('input[name="cfg-mode"]:checked').value;
-      config.criada = true;
       saveCfg(); aplicarConfig(); fechar('#modal-config');
-      chat.innerHTML = '';
+      elChat('landing').innerHTML = '';
       bolha('ai', `Prontinho${config.dono ? ', ' + esc(config.dono) : ''}. Sou a <strong>${esc(config.nome)}</strong>, no modo ${config.modo === 'autonomo' ? 'autônomo' : 'copiloto'}. Já estou de olho em ${abertas().length} tarefas abertas — manda o primeiro comando.`);
       renderDicas(['Organize minha semana', 'O que eu tenho pra hoje?']);
       toast(`${config.nome} está pronta`);
