@@ -517,6 +517,10 @@
 
       <!-- AGENDA -->
       <section class="app-view" data-view="agenda">
+        <div class="view-acoes">
+          <button class="btn btn-primary btn-sm" type="button" data-novo="agenda">+ Novo compromisso</button>
+          <button class="btn btn-quiet btn-sm" type="button" data-novo="tarefas">+ Nova tarefa</button>
+        </div>
         <div class="filtros">
           <div class="filtro-grupo" role="group" aria-label="Filtrar por área">
             <span class="filtro-label">Áreas</span>
@@ -540,6 +544,9 @@
 
       <!-- TAREFAS -->
       <section class="app-view" data-view="tarefas">
+        <div class="view-acoes">
+          <button class="btn btn-primary btn-sm" type="button" data-novo="tarefas">+ Nova tarefa</button>
+        </div>
         <div class="filtros">
           <div class="filtro-grupo" role="group" aria-label="Filtrar tarefas">
             <span class="filtro-label">Mostrar</span>
@@ -557,16 +564,25 @@
 
       <!-- OBJETIVOS -->
       <section class="app-view" data-view="metas">
+        <div class="view-acoes">
+          <button class="btn btn-primary btn-sm" type="button" data-novo="metas">+ Novo objetivo</button>
+        </div>
         <div class="app-grid" id="app-metas"></div>
       </section>
 
       <!-- HÁBITOS -->
       <section class="app-view" data-view="habitos">
+        <div class="view-acoes">
+          <button class="btn btn-primary btn-sm" type="button" data-novo="habitos">+ Novo hábito</button>
+        </div>
         <div class="app-grid" id="app-habitos"></div>
       </section>
 
       <!-- FINANÇAS -->
       <section class="app-view" data-view="financas">
+        <div class="view-acoes">
+          <button class="btn btn-primary btn-sm" type="button" data-novo="financas">+ Novo lançamento</button>
+        </div>
         <div class="fin-summary" id="app-fin-resumo"></div>
         <div class="filtros">
           <div class="filtro-grupo" role="group" aria-label="Filtrar lançamentos">
@@ -661,6 +677,21 @@
       <p class="form-erro" id="li-erro" hidden></p>
       <button class="btn btn-primary btn-block" type="submit">Entrar</button>
       <p class="modal-fine">Ainda não tem conta? <button type="button" class="linkish" id="ir-signup">Criar minha IA</button></p>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: criar/editar item manualmente -->
+<div class="modal" id="modal-item" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="item-title">
+    <button class="modal-x" type="button" data-close aria-label="Fechar">&times;</button>
+    <h3 id="item-title">Novo item</h3>
+    <p class="modal-sub" id="item-sub">Preencha à mão, sem passar pela IA.</p>
+    <form id="form-item">
+      <div id="campos-item"></div>
+      <p class="form-erro" id="item-erro" hidden></p>
+      <button class="btn btn-primary btn-block" type="submit" id="item-salvar">Salvar</button>
     </form>
   </div>
 </div>

@@ -210,8 +210,10 @@
     const prefixos = [
       /^(por favor,?\s*)/i,
       /^(um |uma |o |a )/i,
-      /^(nov[ao] )?(tarefa|task|lembrete|compromisso|evento|meta|habito|hábito)\s*(de|:|para|pra)?\s*/i,
-      /^(adiciona|adicionar|adicione|cria|criar|crie|coloca|colocar|marca|marcar|agenda|agendar|anota|anotar|lembra|lembrar|preciso|quero|me lembre|bota|botar|registra|registrar|gastei|paguei|recebi|entrou|ganhei|comprei|custou|faturei)\s*/i,
+      /^(nov[ao] )?(tarefa|task|lembrete|compromisso|evento|meta|habito|hábito)\b\s*(?::|(?:de|para|pra)\s+)?\s*/i,
+      /^(me lembra|me lembre|nao posso esquecer|nao esquece)\b(?:\s+de\b)?\s*/i,
+      /^(adiciona|adicionar|adicione|add|cria|criar|crie|coloca|colocar|marca|marcar|agenda|agendar|anota|anotar|lembra|lembrar|preciso|quero|vou|tenho que|tenho de|tenho|bota na lista|bota|botar|poe|por na lista|registra|registrar|gastei|paguei|recebi|entrou|ganhei|comprei|custou|faturei|vendi)\b(?:\s+de\b)?\s*/i,
+      /^(na lista|pra mim|para mim)\s*:?\s*/i,
     ];
     // várias passadas: "adiciona tarefa X" precisa perder o verbo E o substantivo
     for (let i = 0; i < 4; i++) {
@@ -229,6 +231,8 @@
 
     s = s
       .replace(/(?:r\$\s*)?\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?|\d+,\d{2}|r\$\s*\d+/gi, ' ')
+      .replace(/\b\d+\s*(reais|real|conto|contos|pila|paus)\b/gi, ' ')
+      .replace(/\b(reais|real|conto|contos|pila)\b/gi, ' ')
       .replace(tira('hoje|amanh[aã]|depois de amanh[aã]|semana que vem|pr[oó]xima semana'), '$1')
       .replace(tira('(?:segunda|ter[çc]a|quarta|quinta|sexta|s[aá]bado|domingo)(?:-feira| feira)?'), '$1')
       .replace(tira('dia \\d{1,2}'), '$1')
@@ -238,12 +242,23 @@
       .replace(tira('(?:as|às)\\s+\\d{1,2}'), '$1')
       .replace(tira('(?:de|à|a)\\s*(?:manh[aã]|tarde|noite)|meio-?\\s?dia'), '$1')
       .replace(tira('urgente|importante|prioridade (?:alta|baixa|m[eé]dia)|sem pressa|quando der'), '$1')
+      .replace(tira('a[ií]|pra mim|para mim|pra nois|por favor'), '$1')
       .replace(/\s{2,}/g, ' ')
       .replace(/^[\s,;:.-]+|[\s,;:.-]+$/g, '')
-      .trim()
-      // preposição solta que sobrou na frente ("no mercado" → "mercado") ou no fim ("... pra")
+      .trim();
+
+    // segunda passada: o verbo pode ter ficado no meio antes ("amanhã tenho dentista")
+    for (let i = 0; i < 3; i++) {
+      const antes2 = s;
+      prefixos.forEach((r) => { s = s.replace(r, '').trim(); });
+      s = s.replace(/^(tem|tenho|vou|quero|preciso|ter)\s+/i, '').trim();
+      if (s === antes2) break;
+    }
+
+    s = s
       .replace(/^(de|do|da|para|pra|no|na|em|com|que|um|uma|o|a)\s+/i, '')
-      .replace(/\s+(de|do|da|para|pra|no|na|em|com|e|a|o)$/i, '')
+      .replace(/\s+(de|do|da|para|pra|ate|até|ao|aos|no|na|em|com|e|a|o|que)$/i, '')
+      .replace(/\s{2,}/g, ' ')
       .trim();
     if (!s) return '';
     return s.charAt(0).toUpperCase() + s.slice(1);
@@ -284,7 +299,25 @@
   const V_ADIAR = /\b(adia|adiar|adie|empurra|empurrar|move|mover|mova|remarca|remarcar|passa|passar|joga|jogar|transfere|transferir|reagenda|reagendar)\b/;
   const TUDO = /\b(tudo|todas|todos|geral|inteir[ao]|atrasad[ao]s|pendentes)\b/;
 
+  /* Pergunta nunca pode virar criacao: "quando e minha proxima reuniao?" estava
+     criando um compromisso com esse titulo. */
+  const CRIADORAS = new Set(['criar_tarefa', 'criar_evento', 'criar_meta', 'criar_habito', 'bloco_foco']);
+
+  function ehPergunta(txt) {
+    const n = norm(txt);
+    if (/^tenho (que|de)\b|^preciso\b|^vou\b|^quero\b/.test(n)) return false;
+    if (/\?\s*$/.test(txt.trim())) return true;
+    return /^(o que|oq|que |qual|quais|quando|quant[ao]s?|quanto|onde|como|quem|tem |ha |sera|sobrou|falta|to devendo|estou devendo)/.test(n);
+  }
+
   const INTENTS = [
+    // ---- conversa: sem isso ela parece um robo travado ----
+    { id: 'saudacao',     req: [/^\s*(oi+|ola|opa|e ai|eai|fala|hey|hi|bom dia|boa tarde|boa noite|tudo bem|tudo bom|como vai|beleza)\b/] },
+    { id: 'agradecimento', req: [/^\s*(obrigad\w*|valeu|vlw|brigad\w*|show|perfeito|legal|otimo|massa|top|isso|isso ai|boa)\s*[!.]*\s*$/] },
+    { id: 'identidade',   req: [/\b(quem (e|eh) (voce|vc)|qual (e )?(o )?seu nome|(voce|vc) (e|eh) (real|de verdade|uma ia|um rob|humana?)|o que (voce|vc) (e|eh))\b/] },
+    { id: 'desabafo',     req: [/\b(perdid[oa]|atarefad[oa]|sobrecarregad[oa]|cansad[oa]|enrolad[oa]|afogad[oa]|estressad[oa]|ansios[oa]|sem tempo|com muita coisa|cheio de coisa|muita coisa pra fazer|nao dou conta|nao to dando conta)\b/] },
+    { id: 'sugestao',     req: [/\b(devia|deveria|deveria fazer|fa[cç]o primeiro|fazer primeiro|por onde (eu )?come[cç]|me d[aá] uma ideia|me ajuda a (organizar|priorizar)|prioriza|o que fazer agora|no que (eu )?fo[cç]o)\b/] },
+
     { id: 'desfazer',      req: [/\b(desfaz|desfazer|desfaça|volta atras|voltar atras|cancela a ultima|reverte|reverter)\b/] },
     { id: 'ajuda',         req: [/\bajuda\b|\bo que (voce|vc) (faz|sabe|consegue|pode)\b|\bcomo funciona\b|\bo que da pra (fazer|pedir)\b|\bcomandos\b|\bo que posso pedir\b/] },
 
@@ -299,7 +332,13 @@
     { id: 'gasto_categoria', req: [/\bquanto (eu )?(gast|paguei)\w*\b[^?]*\b(com|no|na|em|de)\b/] },
     { id: 'resumo_financas', req: [/\b(financ|quanto (eu )?gast|meu saldo|saldo do mes|quanto sobrou|quanto entrou|como (estao|tao) (minhas )?financ|extrato|balanco)/] },
     { id: 'resumo_dia',    req: [/\b(o que|oq|que)\b.*\b(hoje|pra hoje|para hoje)\b|\bmeu dia\b|\bresumo do dia\b|\bagenda de hoje\b|\bcomo (esta|ta) meu dia\b/] },
-    { id: 'consultar_dia', req: [/\b(o que|oq|que|tem algo|tenho algo|tem alguma coisa)\b.*\b(amanha|segunda|terca|quarta|quinta|sexta|sabado|domingo|dia \d{1,2}|semana que vem|proxima semana)\b/] },
+    { id: 'consultar_dia', req: [/\b(o que|oq|que|tem algo|tenho algo|tem alguma coisa)\b.*\b(amanha|segunda|terca|quarta|quinta|sexta|sabado|domingo|dia \d{1,2}|semana que vem|proxima semana)\b/],
+      veta: [/\btenho (que|de)\b|\bpreciso\b|\bvou\b|\bmarca\b|\bagenda\b/] },
+    { id: 'proximo_item',  req: [/\b(proxim[ao])\b/] },
+    { id: 'dia_cheio',     req: [/\b(dia (ta|esta|vai estar) cheio|muita coisa (hoje|amanha|essa semana)|to (muito )?ocupad|agenda (ta|esta) (cheia|livre))\b/] },
+    { id: 'devendo',       req: [/\b(devendo|pendente|pendencias?|atrasad[ao]s?)\b/], tambem: [/\?|^\s*(to|estou|tenho|tem|quais|alguma)/] },
+    { id: 'sobrou',        req: [/\b(sobrou|sobra|consigo guardar|da pra guardar|fecho no (azul|vermelho)|to no (azul|vermelho))\b/] },
+    { id: 'listar_area',   req: [/\b(nao (consigo|to conseguindo) lembrar|nao lembro|esqueci)\b[^.]*\b(fazer|tarefas?|compromissos?)\b/] },
     { id: 'listar_area',   req: [/\b(lista|listar|mostra|mostrar|ver|quais|me diz)\b.*\b(tarefas?|compromissos?|eventos?|agenda|metas?|objetivos?|habitos?|financas|gastos?|lancamentos?|atrasad)/] },
 
     { id: 'registrar_gasto', req: [/\b(gastei|paguei|comprei|custou|saiu|torrei)\b/], needValor: true },
@@ -318,23 +357,67 @@
     { id: 'concluir_tarefa', req: [V_CONCLUIR] },
     { id: 'adiar_tarefa',  req: [V_ADIAR] },
     { id: 'bloco_foco',    req: [/\b(bloco de foco|tempo de foco|foco|concentra)\b/] },
-    { id: 'criar_evento',  req: [/\b(reuniao|consulta|call|compromisso|evento|encontro|almoco|jantar|cafe|entrevista|aula|treino|dentista|medico|viagem|visita)\b/] },
-    { id: 'criar_tarefa',  req: [/\b(tarefa|adiciona|adicionar|cria|criar|anota|anotar|lembra|lembrar|preciso|tenho que|coloca|bota|nova tarefa|agenda pra mim)\b/] },
+    { id: 'criar_evento',  req: [/\b(reuni\w*|consult\w*|call|compromiss\w*|event\w*|encontr\w*|almoc\w*|jant\w*|cafe|entrevist\w*|aul\w*|trein\w*|dentista|medic[oa]|viag\w*|visit\w*|aniversari\w*|festa|show|palestra|apresenta\w*)\b/] },
+    { id: 'criar_tarefa',  req: [/\b(tarefa|adiciona|adicionar|add|cria|criar|anota|anotar|lembra|lembrar|preciso|tenho que|tenho de|nao posso esquecer|coloca|bota|poe|nova tarefa|agenda pra mim|na lista)\b/] },
   ];
 
   function entender(texto) {
     const t = norm(texto);
     const valor = extrairValor(texto);
+    const pergunta = ehPergunta(texto);
+
+    // "e amanha?" logo depois de uma consulta: so uma data solta vira consulta de dia
+    const resto = t.replace(/[?!.]/g, '').replace(/^(e|entao|ok|beleza)\s+/, '').replace(/^(na|no|em|pra|para|de)\s+/, '').trim();
+    if (extrairData(texto) && resto.split(/\s+/).length <= 2 &&
+        /^(amanha|hoje|segunda|terca|quarta|quinta|sexta|sabado|domingo|dia \d+|semana que vem|proxima semana)/.test(resto)) {
+      return { id: 'consultar_dia', confianca: 0.85 };
+    }
 
     for (const it of INTENTS) {
       if (!it.req.some((r) => r.test(t))) continue;
       if (it.tambem && !it.tambem.every((r) => r.test(t))) continue;
       if (it.veta && it.veta.some((r) => r.test(t))) continue;
       if (it.needValor && valor === null) continue;
+      // pergunta jamais cria coisa
+      if (pergunta && CRIADORAS.has(it.id)) continue;
       return { id: it.id, confianca: 0.9 };
     }
-    if (valor !== null && /\bno |na |com |de /.test(t)) return { id: 'registrar_gasto', confianca: 0.55 };
+    if (!pergunta && valor !== null && /\bno |na |com |de /.test(t)) return { id: 'registrar_gasto', confianca: 0.55 };
+    if (pergunta) return { id: 'resumo_dia', confianca: 0.4 };
     return { id: null, confianca: 0 };
+  }
+
+  /* "adiciona tarefa X e marca reuniao amanha" sao dois pedidos num texto so */
+  function dividirPedidos(texto) {
+    const bruto = texto.split(/\s*;\s*/).filter(Boolean);
+    const saida = [];
+    const inicioAcao = /^(marca|marcar|cria|criar|adiciona|adicionar|add|agenda|agendar|anota|anotar|coloca|bota|poe|lembra|outra|outro|tambem|depois|gastei|paguei|recebi|ganhei)\b/;
+
+    bruto.forEach((parte) => {
+      const pedacos = parte.split(/\s+e\s+/i);
+      if (pedacos.length < 2) { saida.push(parte.trim()); return; }
+
+      let atual = pedacos[0].trim();
+      const verboFin = (atual.match(/^(gastei|paguei|recebi|ganhei|comprei)\b/i) || [])[0];
+      for (let i = 1; i < pedacos.length; i++) {
+        const prox = pedacos[i].trim();
+        const comecaAcao = inicioAcao.test(norm(prox));
+        // "gastei 50 no mercado e 30 na farmacia": o segundo herda o verbo do primeiro
+        const valorSolto = verboFin && /^\d/.test(prox);
+        const herda = /^(outra|outro|tambem|tb)\b/.test(norm(prox));
+        const verboIni = (pedacos[0].trim().match(/^(cria|criar|adiciona|adicionar|add|marca|marcar|agenda|agendar|anota|anotar)\b/i) || [])[0];
+        if (comecaAcao || valorSolto) {
+          saida.push(atual);
+          if (valorSolto) atual = `${verboFin} ${prox}`;
+          else if (herda && verboIni) atual = `${verboIni} ${prox.replace(/^(outra|outro|tambem|tb)\s*(de\s+)?/i, '')}`;
+          else atual = prox;
+        } else {
+          atual += ` e ${prox}`;
+        }
+      }
+      saida.push(atual);
+    });
+    return saida.filter((x) => x.length > 2);
   }
 
   /* qual área a pessoa está falando; null = todas */
@@ -411,12 +494,28 @@
 
   /* ================= planejamento ================= */
 
+  const vazioTotalSeguro = () => !state.tarefas.length && !state.agenda.length &&
+    !state.metas.length && !state.habitos.length && !state.financas.length;
   const abertas = () => state.tarefas.filter((t) => !t.feita);
   const atrasadas = () => abertas().filter((t) => fromIso(t.data) < hoje());
   const doDia = (isoStr) => abertas().filter((t) => t.data === isoStr);
   const eventosDe = (isoStr) => state.agenda.filter((e) => e.data === isoStr).sort((a, b) => a.hora.localeCompare(b.hora));
 
-  function planejar(texto) {
+  function planejar(texto, semDividir) {
+    if (!semDividir) {
+      const partes = dividirPedidos(texto);
+      if (partes.length > 1) {
+        const planos = partes.map((p) => planejar(p, true)).filter((pl) => pl.ops && pl.ops.length);
+        if (planos.length > 1) {
+          return {
+            contexto: `${planos.length} pedidos no mesmo texto`,
+            fala: 'Peguei mais de um pedido aí — juntei tudo num plano só.',
+            ops: planos.flatMap((pl) => pl.ops),
+          };
+        }
+      }
+    }
+
     const { id, confianca } = entender(texto);
     const data = extrairData(texto);
     const { hora, dur } = extrairTempo(texto);
@@ -438,6 +537,109 @@
 
       case 'desfazer':
         return { fala: undoStack.length ? 'Desfazendo a última execução.' : 'Não há nada para desfazer ainda.', acao: undoStack.length ? 'undo' : null };
+
+      /* ---------- conversa ---------- */
+      case 'saudacao': {
+        const hora = new Date().getHours();
+        const cumprimento = hora < 12 ? 'Bom dia' : hora < 18 ? 'Boa tarde' : 'Boa noite';
+        if (vazioTotalSeguro()) {
+          return {
+            fala: `${cumprimento}${config.dono ? ', ' + config.dono : ''}! Seu workspace ainda está vazio. Me conta o que você precisa organizar que eu começo a montar.`,
+            dicas: ['Adiciona tarefa revisar contrato pra sexta', 'Reunião com o time quarta 15h', 'Meta: guardar 6000'],
+          };
+        }
+        const atr = atrasadas().length;
+        const evs = eventosDe(iso(h)).length;
+        return {
+          fala: `${cumprimento}${config.dono ? ', ' + config.dono : ''}! Hoje você tem ${plural(doDia(iso(h)).length, 'tarefa')} e ${plural(evs, 'compromisso')}${atr ? `, e ${plural(atr, 'tarefa')} em atraso` : ''}. Quer que eu organize alguma coisa?`,
+          dicas: atr ? ['Organize minha semana', 'O que eu tenho pra hoje?'] : ['O que eu tenho pra hoje?', 'Organize minha semana'],
+        };
+      }
+
+      case 'agradecimento':
+        return {
+          fala: 'De nada! Se precisar de mais alguma coisa é só falar.',
+          dicas: ['O que eu tenho pra hoje?', 'Organize minha semana'],
+        };
+
+      case 'identidade':
+        return {
+          fala: `Sou a ${config.nome}, a assistente que você criou aqui na NOVA. Não sou uma pessoa: sou um programa que roda dentro do seu navegador, lê o seu workspace e executa o que você pedir — sempre mostrando o plano antes e deixando você desfazer.`,
+          dicas: ['O que você faz?', 'O que eu tenho pra hoje?'],
+        };
+
+      case 'desabafo': {
+        const atr = atrasadas().length;
+        const ab = abertas().length;
+        if (!ab) {
+          return { fala: 'Entendo. Pelo que vejo aqui, nada está registrado ainda — às vezes tirar tudo da cabeça e colocar numa lista já alivia. Me conta o que está pesando que eu organizo.' };
+        }
+        return {
+          fala: `Entendo — dá para respirar. Você tem ${plural(ab, 'tarefa')} aberta(s)${atr ? `, sendo ${atr} em atraso` : ''}. Se quiser, eu reorganizo a semana, tiro o atraso do caminho e reservo um bloco de foco pra você.`,
+          dicas: ['Organize minha semana', 'O que devo fazer primeiro?'],
+        };
+      }
+
+      case 'sugestao': {
+        const ab = abertas();
+        if (!ab.length) {
+          return { fala: 'Não há nada aberto no momento — você está em dia. Se quiser adiantar algo, me diz o que tem em mente.' };
+        }
+        const peso = (t) => (fromIso(t.data) < h ? 100 : 0) + ({ alta: 30, media: 15, baixa: 5 }[t.prioridade] || 0) - Math.round((fromIso(t.data) - h) / 86400000);
+        const ordenadas = [...ab].sort((a2, b2) => peso(b2) - peso(a2));
+        const top = ordenadas[0];
+        const motivo = fromIso(top.data) < h
+          ? `está atrasada (${rotuloAtraso(top.data)})`
+          : `é prioridade ${top.prioridade} e vence ${rotuloData(top.data)}`;
+        const seguintes = ordenadas.slice(1, 3).map((t) => `“${t.titulo}”`).join(' e ');
+        return {
+          contexto: `${plural(ab.length, 'tarefa')} aberta(s)`,
+          fala: `Eu começaria por “${top.titulo}” — ${motivo}.${seguintes ? ` Depois dela viriam ${seguintes}.` : ''}`,
+          dicas: [`Concluí ${top.titulo.toLowerCase()}`, 'Organize minha semana'],
+        };
+      }
+
+      /* ---------- consultas novas ---------- */
+      case 'proximo_item': {
+        const area = detectarArea(texto);
+        if (area === 'agenda' || /(reuni|compromiss|call|consult)/.test(norm(texto))) {
+          const prox = state.agenda.filter((e) => fromIso(e.data) >= h)
+            .sort((a2, b2) => (a2.data + a2.hora).localeCompare(b2.data + b2.hora))[0];
+          return { fala: prox ? `Seu próximo compromisso é “${prox.titulo}”, ${rotuloData(prox.data)} às ${prox.hora}.` : 'Você não tem nenhum compromisso marcado daqui pra frente.' };
+        }
+        const prox = [...abertas()].sort((a2, b2) => a2.data.localeCompare(b2.data))[0];
+        return { fala: prox ? `A próxima é “${prox.titulo}” (${rotuloData(prox.data)}, prioridade ${prox.prioridade}).` : 'Não há tarefas abertas.' };
+      }
+
+      case 'dia_cheio': {
+        const alvo = data ? data.iso : iso(h);
+        const tar = abertas().filter((t) => t.data === alvo).length;
+        const evs = eventosDe(alvo).length;
+        const carga = tar + evs;
+        const leitura = carga === 0 ? 'está livre' : carga <= 2 ? 'está tranquilo' : carga <= 5 ? 'tem um volume normal' : 'está bem cheio';
+        return { fala: `${rotuloData(alvo).charAt(0).toUpperCase() + rotuloData(alvo).slice(1)} ${leitura}: ${plural(tar, 'tarefa')} e ${plural(evs, 'compromisso')}.` };
+      }
+
+      case 'devendo': {
+        const atr = atrasadas();
+        if (!atr.length) return { fala: 'Nada em atraso — você está em dia.' };
+        return {
+          contexto: `${plural(atr.length, 'tarefa')} em atraso`,
+          fala: `Sim: ${atr.map((t) => `“${t.titulo}” (${rotuloAtraso(t.data)})`).join(', ')}.`,
+          dicas: ['Organize minha semana', 'Adia as atrasadas pra amanhã'],
+        };
+      }
+
+      case 'sobrou': {
+        const total = saldo();
+        return {
+          fala: total > 0
+            ? `Sim, sobrou ${money(total)} considerando tudo que está registrado.`
+            : total === 0
+              ? 'O saldo está zerado: entradas e saídas se anulam.'
+              : `Não: você está ${money(total)} no vermelho considerando o que está registrado.`,
+        };
+      }
 
       /* ---------- ações em lote ---------- */
       case 'remover_tudo': {
@@ -1480,6 +1682,7 @@
             ${fromIso(i.data) < h && !i.feito && i.area === 'tarefa' ? `<span class="tag tag-alta">${rotuloAtraso(i.data)}</span>` : ''}
           </span>
         </div>
+        ${btnEditar(i.area === 'tarefa' ? 'tarefas' : i.area === 'habito' ? 'habitos' : 'agenda', i.id)}
       </div>`;
   }
 
@@ -1562,6 +1765,7 @@
             <span class="tag tag-${t.prioridade}">${t.prioridade}</span>
           </span>
         </div>
+        ${btnEditar('tarefas', t.id)}
         <button class="item-x" type="button" data-del-tarefa="${t.id}" aria-label="Remover">×</button>
       </li>`).join('') : `<li>${vazioTotal()
         ? nadaAqui('Nenhuma tarefa ainda. Diga o que precisa fazer e ela cria.', 'Adiciona tarefa revisar contrato pra sexta')
@@ -1590,6 +1794,7 @@
           <div class="meta-acoes">
             <button class="btn btn-quiet btn-sm" type="button" data-meta-mais="${m.id}" data-passo="${passo}">+ ${m.unidade === 'R$' ? money(passo) : passo}</button>
             <button class="btn btn-quiet btn-sm" type="button" data-meta-menos="${m.id}" data-passo="${passo}">−</button>
+            <button class="btn btn-quiet btn-sm" type="button" data-editar="metas:${m.id}">Editar</button>
             <button class="btn btn-quiet btn-sm" type="button" data-del-meta="${m.id}">Remover</button>
           </div>
         </article>`;
@@ -1614,6 +1819,7 @@
           <button class="btn ${hb.hoje ? 'btn-quiet' : 'btn-primary'} btn-sm" type="button" data-habito="${hb.id}" ${hb.hoje ? 'disabled' : ''}>
             ${hb.hoje ? 'Feito hoje' : 'Marcar hoje'}
           </button>
+          <button class="btn btn-quiet btn-sm" type="button" data-editar="habitos:${hb.id}">Editar</button>
           <button class="btn btn-quiet btn-sm" type="button" data-del-habito="${hb.id}">Remover</button>
         </div>
       </article>`).join('');
@@ -1640,6 +1846,7 @@
           <span class="item-meta">${rotuloData(f.data)}</span>
         </div>
         <strong style="font-size:.88rem;font-variant-numeric:tabular-nums;color:${f.valor > 0 ? 'var(--mint)' : 'var(--rose)'}">${money(f.valor)}</strong>
+        ${btnEditar('financas', f.id)}
         <button class="item-x" type="button" data-del-fin="${f.id}" aria-label="Remover">×</button>
       </li>`).join('') : `<li>${vazioTotal()
         ? nadaAqui('Nenhum lançamento ainda. Conte um gasto ou uma entrada.', 'Gastei 80 no mercado')
@@ -1710,6 +1917,174 @@
     if (btn) btn.disabled = !undoStack.length;
   }
 
+
+  /* ===== criação/edição manual, sem passar pela IA ===== */
+
+  const FORMS = {
+    tarefas: {
+      titulo: 'tarefa',
+      campos: (it) => [
+        { id: 'titulo', rotulo: 'O que precisa ser feito', tipo: 'text', valor: it?.titulo || '', req: true },
+        { id: 'data', rotulo: 'Para quando', tipo: 'date', valor: it?.data || iso(hoje()) },
+        { id: 'prioridade', rotulo: 'Prioridade', tipo: 'select', valor: it?.prioridade || 'media',
+          opcoes: [['alta', 'Alta'], ['media', 'Média'], ['baixa', 'Baixa']] },
+      ],
+      montar: (v, it) => ({ titulo: v.titulo, data: v.data, prioridade: v.prioridade, feita: it ? it.feita : false }),
+    },
+    agenda: {
+      titulo: 'compromisso',
+      campos: (it) => [
+        { id: 'titulo', rotulo: 'Compromisso', tipo: 'text', valor: it?.titulo || '', req: true },
+        { id: 'data', rotulo: 'Dia', tipo: 'date', valor: it?.data || iso(addDias(hoje(), 1)) },
+        { id: 'hora', rotulo: 'Horário', tipo: 'time', valor: it?.hora || '10:00' },
+        { id: 'dur', rotulo: 'Duração (minutos)', tipo: 'number', valor: it?.dur ?? 60, min: 5, step: 5 },
+        { id: 'foco', rotulo: 'É um bloco de foco', tipo: 'check', valor: !!it?.foco },
+      ],
+      montar: (v) => ({ titulo: v.titulo, data: v.data, hora: v.hora, dur: Number(v.dur) || 60, foco: !!v.foco }),
+    },
+    metas: {
+      titulo: 'objetivo',
+      campos: (it) => [
+        { id: 'titulo', rotulo: 'Objetivo', tipo: 'text', valor: it?.titulo || '', req: true },
+        { id: 'alvo', rotulo: 'Meta a alcançar', tipo: 'number', valor: it?.alvo ?? 10, min: 1 },
+        { id: 'atual', rotulo: 'Progresso atual', tipo: 'number', valor: it?.atual ?? 0, min: 0 },
+        { id: 'unidade', rotulo: 'Unidade', tipo: 'select', valor: it?.unidade ?? '',
+          opcoes: [['', 'Sem unidade'], ['R$', 'Reais (R$)'], ['livros', 'Livros'], ['km', 'Quilômetros'], ['kg', 'Quilos'], ['horas', 'Horas']] },
+      ],
+      montar: (v) => ({ titulo: v.titulo, alvo: Number(v.alvo) || 1, atual: Number(v.atual) || 0, unidade: v.unidade }),
+    },
+    habitos: {
+      titulo: 'hábito',
+      campos: (it) => [
+        { id: 'titulo', rotulo: 'Hábito diário', tipo: 'text', valor: it?.titulo || '', req: true },
+        { id: 'hoje', rotulo: 'Já fiz hoje', tipo: 'check', valor: !!it?.hoje },
+      ],
+      montar: (v, it) => ({ titulo: v.titulo, dias: it ? it.dias : [0, 0, 0, 0, 0, 0, 0], hoje: !!v.hoje }),
+    },
+    financas: {
+      titulo: 'lançamento',
+      campos: (it) => [
+        { id: 'titulo', rotulo: 'Descrição', tipo: 'text', valor: it?.titulo || '', req: true },
+        { id: 'tipo', rotulo: 'Tipo', tipo: 'select', valor: it && it.valor > 0 ? 'entrada' : 'saida',
+          opcoes: [['saida', 'Saída (gasto)'], ['entrada', 'Entrada (receita)']] },
+        { id: 'valor', rotulo: 'Valor (R$)', tipo: 'number', valor: it ? Math.abs(it.valor) : '', min: 0, step: '0.01', req: true },
+        { id: 'data', rotulo: 'Data', tipo: 'date', valor: it?.data || iso(hoje()) },
+      ],
+      montar: (v) => {
+        const bruto = Math.abs(Number(String(v.valor).replace(',', '.')) || 0);
+        return { titulo: v.titulo, valor: v.tipo === 'entrada' ? bruto : -bruto, tipo: v.tipo, data: v.data };
+      },
+    },
+  };
+
+  let itemEmEdicao = null; // { area, id }
+
+  function abrirFormItem(area, id) {
+    const cfg = FORMS[area];
+    if (!cfg) return;
+    const it = id ? (state[area] || []).find((x) => x.id === id) : null;
+    itemEmEdicao = { area, id: id || null };
+
+    $('#item-title').textContent = it ? `Editar ${cfg.titulo}` : `Novo ${cfg.titulo}`;
+    $('#item-sub').textContent = it
+      ? 'Altere o que quiser e salve — a IA não precisa participar.'
+      : 'Preencha à mão. Você também pode pedir isso para a sua IA, se preferir.';
+    $('#item-erro').hidden = true;
+
+    $('#campos-item').innerHTML = cfg.campos(it).map((c) => {
+      if (c.tipo === 'check') {
+        return `<label class="radio" style="margin-bottom:14px">
+          <input type="checkbox" id="f-${c.id}" ${c.valor ? 'checked' : ''}>
+          <span>${esc(c.rotulo)}</span>
+        </label>`;
+      }
+      if (c.tipo === 'select') {
+        return `<label class="field"><span>${esc(c.rotulo)}</span>
+          <select id="f-${c.id}">${c.opcoes.map(([v, r]) => `<option value="${esc(v)}" ${String(c.valor) === String(v) ? 'selected' : ''}>${esc(r)}</option>`).join('')}</select>
+        </label>`;
+      }
+      const extra = [
+        c.min !== undefined ? `min="${c.min}"` : '',
+        c.step !== undefined ? `step="${c.step}"` : '',
+        c.req ? 'required' : '',
+      ].join(' ');
+      return `<label class="field"><span>${esc(c.rotulo)}</span>
+        <input type="${c.tipo}" id="f-${c.id}" value="${esc(String(c.valor ?? ''))}" ${extra}>
+      </label>`;
+    }).join('');
+
+    $('#item-salvar').textContent = it ? 'Salvar alterações' : `Criar ${cfg.titulo}`;
+    abrir('#modal-item');
+    setTimeout(() => { const p = $('#campos-item input, #campos-item select'); if (p) p.focus(); }, 60);
+  }
+
+  function salvarItemManual(e) {
+    e.preventDefault();
+    if (!itemEmEdicao) return;
+    const { area, id } = itemEmEdicao;
+    const cfg = FORMS[area];
+    const it = id ? (state[area] || []).find((x) => x.id === id) : null;
+
+    const valores = {};
+    cfg.campos(it).forEach((c) => {
+      const el = $(`#f-${c.id}`);
+      if (!el) return;
+      valores[c.id] = c.tipo === 'check' ? el.checked : el.value;
+    });
+
+    const erro = $('#item-erro');
+    if (!String(valores.titulo || '').trim()) {
+      erro.textContent = 'Dê um nome para esse item.';
+      erro.hidden = false;
+      return;
+    }
+    if (area === 'financas' && !(Math.abs(Number(String(valores.valor).replace(',', '.'))) > 0)) {
+      erro.textContent = 'Informe um valor maior que zero.';
+      erro.hidden = false;
+      return;
+    }
+    erro.hidden = true;
+
+    const dados = cfg.montar(valores, it);
+    undoStack.push(clone(state));
+
+    let tocado;
+    if (it) {
+      Object.assign(it, dados);
+      tocado = it.id;
+      if (area === 'agenda') state.agenda.sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
+    } else {
+      const novo = { id: uid(), ...dados };
+      if (area === 'agenda') {
+        state.agenda.push(novo);
+        state.agenda.sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
+      } else if (area === 'tarefas' || area === 'financas') {
+        state[area].unshift(novo);
+      } else {
+        state[area].push(novo);
+      }
+      tocado = novo.id;
+    }
+
+    state.log.unshift({
+      t: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+      texto: `${it ? 'Editado' : 'Criado'} à mão: ${NOME_AREA[area]} “${dados.titulo}”`,
+      n: 1,
+    });
+
+    save();
+    renderTudo([tocado]);
+    $('#app-undo').disabled = false;
+    fechar('#modal-item');
+    toast(it ? 'Alterações salvas' : `${cfg.titulo.charAt(0).toUpperCase() + cfg.titulo.slice(1)} criado`);
+    itemEmEdicao = null;
+  }
+
+  const btnEditar = (area, id) =>
+    `<button class="item-editar" type="button" data-editar="${area}:${id}" aria-label="Editar" title="Editar">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14.5 5.5l4 4" stroke="currentColor" stroke-width="1.7"/></svg>
+    </button>`;
+
   function wireApp() {
     // navegação
     $$('.app-nav-item').forEach((b) => b.addEventListener('click', () => irPara(b.dataset.view)));
@@ -1772,6 +2147,12 @@
       const btn = e.target.closest('button');
       if (!btn) return;
       const d = btn.dataset;
+      if (d.novo) { abrirFormItem(d.novo); return; }
+      if (d.editar) {
+        const [area, id] = d.editar.split(':');
+        abrirFormItem(area, id);
+        return;
+      }
       if (d.exemplo) {
         irPara('chat');
         responder(d.exemplo, 'app');
@@ -1844,6 +2225,7 @@
       toast(`Bem-vindo de volta${config.dono ? ', ' + config.dono : ''}`);
     });
 
+    $('#form-item').addEventListener('submit', salvarItemManual);
     $('#ir-login').addEventListener('click', () => { fechar('#modal-signup'); abrirLogin(); });
     $('#ir-signup').addEventListener('click', () => { fechar('#modal-login'); abrirSignup(); });
   }

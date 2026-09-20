@@ -1093,3 +1093,39 @@ h2 {
   border: 1px solid rgba(245, 181, 68, 0.28);
 }
 .modal-aviso[hidden] { display: none; }
+
+/* ---- criação/edição manual ---- */
+.view-acoes {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;
+}
+
+.item-editar {
+  border: none; background: transparent; color: var(--dim);
+  padding: 4px; border-radius: 6px; flex-shrink: 0;
+  display: grid; place-items: center;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.item-editar svg { width: 15px; height: 15px; }
+.item-editar:hover { color: var(--iris-soft); background: rgba(108, 108, 245, 0.12); }
+.linha .item-editar { align-self: center; }
+
+#campos-item select,
+#campos-item input[type="date"],
+#campos-item input[type="time"],
+#campos-item input[type="number"],
+#campos-item input[type="text"] {
+  width: 100%; padding: 11px 14px; border-radius: var(--radius-sm);
+  border: 1px solid var(--line); background: rgba(255, 255, 255, 0.04);
+  color: var(--text); font-size: 0.92rem; font-family: inherit;
+}
+#campos-item select:focus,
+#campos-item input:focus {
+  outline: none; border-color: var(--iris); background: rgba(108, 108, 245, 0.07);
+}
+#campos-item select option { background: var(--surface-2); color: var(--text); }
+/* o seletor nativo de data/hora fica escuro junto com o resto */
+#campos-item input[type="date"]::-webkit-calendar-picker-indicator,
+#campos-item input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.6); cursor: pointer;
+}
+#campos-item .radio input { accent-color: var(--iris); }
