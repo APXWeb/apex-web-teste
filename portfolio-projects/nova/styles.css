@@ -519,6 +519,7 @@ h2 {
 }
 .risk-baixo { color: var(--mint); background: rgba(52, 211, 153, 0.12); }
 .risk-medio { color: var(--amber); background: rgba(245, 181, 68, 0.12); }
+.risk-alto { color: var(--rose); background: rgba(248, 113, 113, 0.14); }
 
 .plan-actions { display: flex; gap: 8px; padding: 0 14px 12px; flex-wrap: wrap; }
 

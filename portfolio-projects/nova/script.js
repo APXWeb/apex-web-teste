@@ -194,8 +194,13 @@
 
   function extrairPrioridade(txt) {
     const t = norm(txt);
-    if (/\burgente\b|\bprioridade alta\b|\bimportante\b|\bpra ontem\b/.test(t)) return 'alta';
-    if (/\bprioridade baixa\b|\bquando der\b|\bsem pressa\b/.test(t)) return 'baixa';
+    if (/\burgente\b|\bimportante\b|\bpra ontem\b|\bprioridade alta\b/.test(t)) return 'alta';
+    if (/\bsem pressa\b|\bquando der\b|\bprioridade baixa\b/.test(t)) return 'baixa';
+    // "muda a prioridade de X pra alta": o nivel vem solto, longe da palavra prioridade
+    if (/\bprioridade\b/.test(t)) {
+      if (/\b(pra|para|como|em|de)\s+(alta|maxima)\b|\balta\b/.test(t)) return 'alta';
+      if (/\b(pra|para|como|em|de)\s+(baixa|minima)\b|\bbaixa\b/.test(t)) return 'baixa';
+    }
     return 'media';
   }
 
@@ -246,7 +251,7 @@
 
   /* acha uma tarefa pelo texto (fuzzy por palavras em comum) */
   function acharTarefa(txt) {
-    const alvo = norm(txt);
+    const alvo = textoBusca(txt);
     const palavras = alvo.split(/\s+/).filter((w) => w.length > 3);
     let melhor = null, melhorScore = 0;
     state.tarefas.filter((t) => !t.feita).forEach((t) => {
@@ -273,24 +278,48 @@
 
   /* ================= intenções ================= */
 
+  /* verbos e escopos que aparecem em várias intenções */
+  const V_REMOVER = /\b(tira|tirar|tire|apaga|apagar|apague|remove|remover|remova|deleta|deletar|delete|limpa|limpar|limpe|exclui|excluir|exclua|zera|zerar|cancela|cancelar|cancele|some com)\b/;
+  const V_CONCLUIR = /\b(conclui|concluir|concluido|terminei|terminar|finalizei|finalizar|acabei|acabar|fiz|feito|feita|pronto|prontas|marca como feit|risca|riscar|checa|dar baixa)\b/;
+  const V_ADIAR = /\b(adia|adiar|adie|empurra|empurrar|move|mover|mova|remarca|remarcar|passa|passar|joga|jogar|transfere|transferir|reagenda|reagendar)\b/;
+  const TUDO = /\b(tudo|todas|todos|geral|inteir[ao]|atrasad[ao]s|pendentes)\b/;
+
   const INTENTS = [
-    { id: 'desfazer',      req: [/\bdesfaz|desfazer|volta atras|cancela a ultima\b/] },
-    { id: 'ajuda',         req: [/\bajuda\b|\bo que voce (faz|sabe)\b|\bcomo funciona\b|\bo que da pra fazer\b|\bcomandos\b/] },
+    { id: 'desfazer',      req: [/\b(desfaz|desfazer|desfaça|volta atras|voltar atras|cancela a ultima|reverte|reverter)\b/] },
+    { id: 'ajuda',         req: [/\bajuda\b|\bo que (voce|vc) (faz|sabe|consegue|pode)\b|\bcomo funciona\b|\bo que da pra (fazer|pedir)\b|\bcomandos\b|\bo que posso pedir\b/] },
+
+    // ações em lote vêm antes das individuais: "apaga todas as tarefas" não é "apaga a tarefa X"
+    { id: 'remover_tudo',  req: [V_REMOVER], tambem: [TUDO] },
+    { id: 'concluir_tudo', req: [V_CONCLUIR], tambem: [TUDO] },
+    { id: 'adiar_tudo',    req: [V_ADIAR], tambem: [TUDO] },
+
     { id: 'organizar_semana', req: [/\b(organiz|arrum|planej|ajeit|otimiz)\w*\b[^.]*\bsemana\b|\bsemana\b[^.]*\b(organiz|arrum|planej)\w*/] },
     { id: 'resumo_semana', req: [/\b(como (esta|ta)|resumo d[ao]|visao d[ao]|panorama)\b.*\bsemana\b/] },
-    { id: 'resumo_dia',    req: [/\b(o que|oq).*(hoje|pra hoje|para hoje)\b|\bmeu dia\b|\bresumo do dia\b|\bagenda de hoje\b|\bcomo (esta|ta) meu dia\b/] },
-    { id: 'resumo_financas', req: [/\b(financ|quanto (eu )?gast|meu saldo|saldo do mes|quanto sobrou|como (estao|tao) (minhas )?financ)/] },
+    { id: 'contar',        req: [/\bquant[ao]s?\b/], veta: [/\bquanto (eu )?(gast|paguei|custou|sobrou|recebi|guard)/] },
+    { id: 'gasto_categoria', req: [/\bquanto (eu )?(gast|paguei)\w*\b[^?]*\b(com|no|na|em|de)\b/] },
+    { id: 'resumo_financas', req: [/\b(financ|quanto (eu )?gast|meu saldo|saldo do mes|quanto sobrou|quanto entrou|como (estao|tao) (minhas )?financ|extrato|balanco)/] },
+    { id: 'resumo_dia',    req: [/\b(o que|oq|que)\b.*\b(hoje|pra hoje|para hoje)\b|\bmeu dia\b|\bresumo do dia\b|\bagenda de hoje\b|\bcomo (esta|ta) meu dia\b/] },
+    { id: 'consultar_dia', req: [/\b(o que|oq|que|tem algo|tenho algo|tem alguma coisa)\b.*\b(amanha|segunda|terca|quarta|quinta|sexta|sabado|domingo|dia \d{1,2}|semana que vem|proxima semana)\b/] },
+    { id: 'listar_area',   req: [/\b(lista|listar|mostra|mostrar|ver|quais|me diz)\b.*\b(tarefas?|compromissos?|eventos?|agenda|metas?|objetivos?|habitos?|financas|gastos?|lancamentos?|atrasad)/] },
+
     { id: 'registrar_gasto', req: [/\b(gastei|paguei|comprei|custou|saiu|torrei)\b/], needValor: true },
-    { id: 'registrar_receita', req: [/\b(recebi|entrou|ganhei|caiu|faturei)\b/], needValor: true },
-    { id: 'marcar_habito', req: [/\b(fiz|completei|cumpri|bati)\b.*\b(habito|meta diaria)\b|\bmarca(r)? (o )?habito\b/] },
-    { id: 'criar_habito',  req: [/\b(habito|todo dia|todos os dias|diariamente|toda manha|toda noite)\b/] },
-    { id: 'criar_meta',    req: [/\b(meta|objetivo)\b|\bquero (ler|economizar|guardar|juntar|correr|perder)\b/] },
-    { id: 'concluir_tarefa', req: [/\b(conclui|concluir|terminei|finalizei|acabei|fiz|feito|pronto|marca como feit|risca)\b/] },
-    { id: 'adiar_tarefa',  req: [/\b(adia|adiar|empurra|move|mover|remarca|passa)\b/] },
+    { id: 'registrar_receita', req: [/\b(recebi|entrou|ganhei|caiu|faturei|vendi)\b/], needValor: true },
+    { id: 'progresso_meta', req: [/\b(ja (li|guardei|economizei|corri|fiz|juntei)|adiciona|soma|avanca|avancar|progresso)\b[^.]*\b(meta|objetivo|livros?|km|kg|r\$|reais)\b|\b(meta|objetivo)\b[^.]*\b(mais|avanc|progress)/] },
+
+    { id: 'marcar_habito', req: [/\b(fiz|completei|cumpri|bati|marca(r)?)\b.*\b(habito|meta diaria)\b|\bmarca(r)? (o )?habito\b/] },
+    { id: 'criar_habito',  req: [/\b(habito|todo dia|todos os dias|diariamente|toda manha|toda noite|toda semana)\b/] },
+    { id: 'criar_meta',    req: [/\b(meta|objetivo)\b|\bquero (ler|economizar|guardar|juntar|correr|perder|estudar)\b/] },
+
+    { id: 'mudar_prioridade', req: [/\b(prioridade|urgente|urgencia)\b/], tambem: [/\b(muda|mudar|troca|trocar|marca|marcar|deixa|deixar|poe|por|coloca|passa|vira|virar|tornar?)\b/] },
+    { id: 'mudar_horario', req: [/\b(muda|mudar|troca|trocar|remarca|remarcar|passa|adia|antecipa)\b/], tambem: [/\b(horario|hora|\d{1,2}\s*[:h])\b/] },
+
+    { id: 'remover_item',  req: [V_REMOVER] },
+    { id: 'limpar_feitas', req: [/\b(limpa|limpar|apaga|apagar|tira|tirar|remove|remover)\b.*\b(feitas|concluidas|prontas|finalizadas)\b/] },
+    { id: 'concluir_tarefa', req: [V_CONCLUIR] },
+    { id: 'adiar_tarefa',  req: [V_ADIAR] },
     { id: 'bloco_foco',    req: [/\b(bloco de foco|tempo de foco|foco|concentra)\b/] },
-    { id: 'criar_evento',  req: [/\b(reuniao|consulta|call|compromisso|evento|encontro|almoco|jantar|entrevista|aula|treino|dentista|medico)\b/] },
-    { id: 'criar_tarefa',  req: [/\b(tarefa|adiciona|adicionar|cria|criar|anota|anotar|lembra|lembrar|preciso|coloca|bota|nova tarefa)\b/] },
-    { id: 'limpar_feitas', req: [/\blimpa(r)?\b.*\b(feitas|concluidas|prontas)\b|\bapaga(r)? (as )?concluidas\b/] },
+    { id: 'criar_evento',  req: [/\b(reuniao|consulta|call|compromisso|evento|encontro|almoco|jantar|cafe|entrevista|aula|treino|dentista|medico|viagem|visita)\b/] },
+    { id: 'criar_tarefa',  req: [/\b(tarefa|adiciona|adicionar|cria|criar|anota|anotar|lembra|lembrar|preciso|tenho que|coloca|bota|nova tarefa|agenda pra mim)\b/] },
   ];
 
   function entender(texto) {
@@ -298,13 +327,86 @@
     const valor = extrairValor(texto);
 
     for (const it of INTENTS) {
-      const bate = it.req.some((r) => r.test(t));
-      if (!bate) continue;
+      if (!it.req.some((r) => r.test(t))) continue;
+      if (it.tambem && !it.tambem.every((r) => r.test(t))) continue;
+      if (it.veta && it.veta.some((r) => r.test(t))) continue;
       if (it.needValor && valor === null) continue;
       return { id: it.id, confianca: 0.9 };
     }
     if (valor !== null && /\bno |na |com |de /.test(t)) return { id: 'registrar_gasto', confianca: 0.55 };
     return { id: null, confianca: 0 };
+  }
+
+  /* qual área a pessoa está falando; null = todas */
+  function detectarArea(texto) {
+    const t = norm(texto);
+    if (/\b(tarefas?|afazer|a fazer|pra fazer|para fazer|to-?do|pendencias?)\b/.test(t)) return 'tarefas';
+    if (/\b(compromissos?|eventos?|agenda|reunioes|reuniao|calendario)\b/.test(t)) return 'agenda';
+    if (/\b(metas?|objetivos?)\b/.test(t)) return 'metas';
+    if (/\b(habitos?|rotinas?)\b/.test(t)) return 'habitos';
+    if (/\b(financas|gastos?|despesas?|lancamentos?|receitas?|extrato)\b/.test(t)) return 'financas';
+    return null;
+  }
+
+  const NOME_AREA = {
+    tarefas: 'tarefa', agenda: 'compromisso', metas: 'objetivo',
+    habitos: 'hábito', financas: 'lançamento',
+  };
+  const plural = (n, singular) => {
+    if (n === 1) return `${n} ${singular}`;
+    const p = singular.endsWith('m') ? singular.slice(0, -1) + 'ns' : `${singular}s`;
+    return `${n} ${p}`;
+  };
+
+  /* recorte de tempo dentro da área: hoje, semana, atrasadas... */
+  function filtrarPorTempo(lista, texto, campoData = 'data') {
+    const t = norm(texto);
+    const h = hoje();
+    if (/\batrasad/.test(t)) return lista.filter((i) => fromIso(i[campoData]) < h && !i.feita);
+    if (/\bde hoje\b|\bhoje\b/.test(t)) return lista.filter((i) => i[campoData] === iso(h));
+    if (/\bde amanha\b|\bamanha\b/.test(t)) return lista.filter((i) => i[campoData] === iso(addDias(h, 1)));
+    if (/\b(dessa|desta|da) semana\b/.test(t)) return lista.filter((i) => {
+      const d = fromIso(i[campoData]);
+      return d >= h && d < addDias(h, 7);
+    });
+    const dt = extrairData(texto);
+    if (dt) return lista.filter((i) => i[campoData] === dt.iso);
+    return lista;
+  }
+
+  /* Antes de procurar um item pelo nome, tiro palavras de data/hora e de comando:
+     sem isso, "remarca a consulta pra sexta" casava com uma tarefa cujo titulo
+     continha "sexta". */
+  function textoBusca(txt) {
+    return norm(txt)
+      .replace(/\b(hoje|amanha|depois de amanha|ontem|semana que vem|proxima semana)\b/g, ' ')
+      .replace(/\b(segunda|terca|quarta|quinta|sexta|sabado|domingo)(-feira| feira)?\b/g, ' ')
+      .replace(/\bdia \d{1,2}\b|\b\d{1,2}\s*\/\s*\d{1,2}\b/g, ' ')
+      .replace(/\b\d{1,2}\s*[:h]\s*\d{2}\b|\b\d{1,2}\s*h\b/g, ' ')
+      .replace(/\b(de|da|do|pra|para|no|na|em|as|com|que|meu|minha|meus|minhas)\b/g, ' ')
+      .replace(/\b(tarefa|tarefas|compromisso|evento|meta|objetivo|habito|gasto|lancamento|prioridade|horario)\b/g, ' ')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+  }
+
+  /* acha um item de qualquer area pelo texto */
+  function acharItem(txt, area) {
+    const alvo = textoBusca(txt);
+    const palavras = alvo.split(/\s+/).filter((w) => w.length > 3);
+    const pools = area ? [[area, state[area]]] : Object.entries({
+      tarefas: state.tarefas, agenda: state.agenda, metas: state.metas,
+      habitos: state.habitos, financas: state.financas,
+    });
+    let melhor = null, melhorScore = 0, melhorArea = null;
+    pools.forEach(([nome, lista]) => {
+      (lista || []).forEach((item) => {
+        const tn = norm(item.titulo || '');
+        let score = 0;
+        palavras.forEach((w) => { if (tn.includes(w)) score += w.length; });
+        if (score > melhorScore) { melhorScore = score; melhor = item; melhorArea = nome; }
+      });
+    });
+    return melhorScore >= 4 ? { item: melhor, area: melhorArea } : null;
   }
 
   /* ================= planejamento ================= */
@@ -324,12 +426,216 @@
     switch (id) {
       case 'ajuda':
         return {
-          fala: 'Eu leio o seu workspace e executo mudanças de verdade. Alguns exemplos do que entendo:',
-          dicas: ['Organize minha semana', 'Adiciona tarefa revisar contrato pra sexta', 'Reunião com o time quarta 15h', 'Gastei 80 no mercado', 'Meta: guardar 6000', 'O que eu tenho pra hoje?'],
+          fala: 'Eu leio o seu workspace e executo mudanças de verdade — criar, alterar, concluir, mover, apagar (inclusive em lote) e responder perguntas sobre o que você tem. Alguns exemplos:',
+          dicas: [
+            'Organize minha semana', 'Adiciona tarefa revisar contrato pra sexta',
+            'Reunião com o time quarta 15h', 'Tira tudo que eu tenho pra fazer',
+            'Adia tudo de hoje pra amanhã', 'Quantas tarefas eu tenho?',
+            'O que eu tenho na sexta?', 'Gastei 80 no mercado',
+            'Quanto gastei com mercado?', 'Deixa revisar contrato urgente',
+          ],
         };
 
       case 'desfazer':
         return { fala: undoStack.length ? 'Desfazendo a última execução.' : 'Não há nada para desfazer ainda.', acao: undoStack.length ? 'undo' : null };
+
+      /* ---------- ações em lote ---------- */
+      case 'remover_tudo': {
+        const area = detectarArea(texto);
+        const areas = area ? [area] : ['tarefas', 'agenda', 'metas', 'habitos', 'financas'];
+        const ops = [];
+        let total = 0;
+
+        areas.forEach((a) => {
+          let lista = state[a] || [];
+          if (a === 'tarefas' || a === 'agenda') lista = filtrarPorTempo(lista, texto);
+          if (a === 'tarefas' && /\bfeitas|concluidas|prontas\b/.test(norm(texto))) lista = lista.filter((x) => x.feita);
+          if (!lista.length) return;
+          total += lista.length;
+          ops.push({
+            tipo: 'bulk.remove', area: a, ids: lista.map((x) => x.id), risco: 'alto',
+            label: `Remover ${plural(lista.length, NOME_AREA[a])}`,
+          });
+        });
+
+        if (!total) {
+          return { fala: area ? `Não há nada em ${area} para remover.` : 'Seu workspace já está vazio — não há nada para remover.' };
+        }
+        return {
+          contexto: `${plural(total, 'item')} serão apagados`,
+          fala: `Isso apaga ${plural(total, 'item')} de uma vez e não dá para recuperar depois que você sair da página. Confirma?`,
+          ops,
+        };
+      }
+
+      case 'concluir_tudo': {
+        let lista = filtrarPorTempo(abertas(), texto);
+        if (!lista.length) return { fala: 'Não há tarefas abertas nesse recorte para concluir.' };
+        return {
+          contexto: `${plural(lista.length, 'tarefa')} aberta(s)`,
+          fala: `Vou marcar ${plural(lista.length, 'tarefa')} como concluída(s).`,
+          ops: [{
+            tipo: 'bulk.done', ids: lista.map((t) => t.id), risco: 'medio',
+            label: `Concluir ${plural(lista.length, 'tarefa')}: ${lista.slice(0, 3).map((t) => `“${t.titulo}”`).join(', ')}${lista.length > 3 ? '…' : ''}`,
+          }],
+        };
+      }
+
+      case 'adiar_tudo': {
+        let lista = filtrarPorTempo(abertas(), texto);
+        if (!lista.length) lista = atrasadas();
+        if (!lista.length) return { fala: 'Não há tarefas para mover nesse recorte.' };
+        const destino = data ? data.iso : iso(addDias(h, 1));
+        return {
+          contexto: `${plural(lista.length, 'tarefa')} selecionada(s)`,
+          fala: `Vou mover ${plural(lista.length, 'tarefa')} para ${rotuloData(destino)}.`,
+          ops: [{
+            tipo: 'bulk.move', ids: lista.map((t) => t.id), data: destino, risco: 'medio',
+            label: `Mover ${plural(lista.length, 'tarefa')} para ${rotuloData(destino)}`,
+          }],
+        };
+      }
+
+      /* ---------- consultas ---------- */
+      case 'contar': {
+        const area = detectarArea(texto) || 'tarefas';
+        const mapa = {
+          tarefas: () => filtrarPorTempo(abertas(), texto).length + ' tarefa(s) aberta(s)',
+          agenda: () => filtrarPorTempo(state.agenda, texto).length + ' compromisso(s)',
+          metas: () => state.metas.length + ' objetivo(s)',
+          habitos: () => state.habitos.length + ' hábito(s)',
+          financas: () => state.financas.length + ' lançamento(s)',
+        };
+        return { fala: `Você tem ${mapa[area]()}.` };
+      }
+
+      case 'consultar_dia': {
+        const alvo = data ? data.iso : iso(addDias(h, 1));
+        const tar = abertas().filter((t) => t.data === alvo);
+        const evs = eventosDe(alvo);
+        if (!tar.length && !evs.length) return { fala: `${rotuloData(alvo).charAt(0).toUpperCase() + rotuloData(alvo).slice(1)} está livre: nada marcado.` };
+        const partes = [];
+        if (evs.length) partes.push(evs.map((e) => `${e.hora} ${e.titulo}`).join(', '));
+        if (tar.length) partes.push(`${plural(tar.length, 'tarefa')}: ${tar.map((t) => t.titulo).join(', ')}`);
+        return { fala: `Em ${rotuloData(alvo)}: ${partes.join(' · ')}.` };
+      }
+
+      case 'listar_area': {
+        const area = detectarArea(texto) || 'tarefas';
+        const listas = {
+          tarefas: () => filtrarPorTempo(abertas(), texto).map((t) => `${t.titulo} (${rotuloData(t.data)})`),
+          agenda: () => filtrarPorTempo(state.agenda, texto).map((e) => `${e.titulo} — ${rotuloData(e.data)} ${e.hora}`),
+          metas: () => state.metas.map((m) => `${m.titulo} (${Math.round((m.atual / m.alvo) * 100)}%)`),
+          habitos: () => state.habitos.map((hb) => `${hb.titulo} (${hb.dias.filter(Boolean).length}/7)`),
+          financas: () => state.financas.map((f) => `${f.titulo}: ${money(f.valor)}`),
+        };
+        const itens = listas[area]();
+        if (!itens.length) return { fala: `Nada em ${area} nesse recorte.` };
+        return { fala: `${itens.length === 1 ? 'Item' : 'Itens'} em ${area}: ${itens.slice(0, 8).join(' · ')}${itens.length > 8 ? ` … e mais ${itens.length - 8}` : ''}.` };
+      }
+
+      case 'gasto_categoria': {
+        const termo = norm(texto).replace(/.*\b(com|no|na|em|de)\b\s*/, '').replace(/[?.!]/g, '').trim();
+        if (!termo) return { fala: 'Com o que você quer saber quanto gastou?' };
+        const achados = state.financas.filter((f) => f.valor < 0 && norm(f.titulo).includes(termo.split(' ')[0]));
+        if (!achados.length) return { fala: `Não encontrei saídas relacionadas a “${termo}”.` };
+        const soma = achados.reduce((s, f) => s + Math.abs(f.valor), 0);
+        return { fala: `Você gastou ${money(soma)} em ${plural(achados.length, 'lançamento')} com “${termo}”.` };
+      }
+
+      /* ---------- edições ---------- */
+      case 'progresso_meta': {
+        const alvo = acharItem(texto, 'metas') || (state.metas.length === 1 ? { item: state.metas[0] } : null);
+        if (!alvo) {
+          return {
+            fala: 'Em qual objetivo eu lanço esse progresso?',
+            dicas: state.metas.slice(0, 3).map((m) => `Adiciona progresso em ${m.titulo.toLowerCase()}`),
+          };
+        }
+        const m = alvo.item;
+        const num = texto.match(/\b(\d{1,3}(?:\.\d{3})*|\d+)\b/);
+        const delta = valor !== null ? valor : (num ? Number(num[1].replace(/\./g, '')) : 1);
+        const fmt = (v) => (m.unidade === 'R$' ? money(v) : `${v}${m.unidade ? ' ' + m.unidade : ''}`);
+        return {
+          contexto: `${m.titulo}: ${fmt(m.atual)} de ${fmt(m.alvo)}`,
+          fala: `Vou somar ${fmt(delta)} nesse objetivo.`,
+          ops: [{
+            tipo: 'goal.progress', id: m.id, delta, risco: 'baixo',
+            label: `Somar ${fmt(delta)} em “${m.titulo}” (fica ${fmt(Math.min(m.alvo, m.atual + delta))})`,
+          }],
+        };
+      }
+
+      case 'mudar_prioridade': {
+        const alvo = acharItem(texto, 'tarefas');
+        if (!alvo) {
+          return {
+            fala: 'Qual tarefa muda de prioridade?',
+            dicas: abertas().slice(0, 3).map((t) => `Deixa ${t.titulo.toLowerCase()} urgente`),
+          };
+        }
+        const nova = extrairPrioridade(texto);
+        const t = alvo.item;
+        if (t.prioridade === nova) return { fala: `“${t.titulo}” já está com prioridade ${nova}.` };
+        return {
+          fala: `Ajustando a prioridade de “${t.titulo}”.`,
+          ops: [{
+            tipo: 'task.priority', id: t.id, prioridade: nova, risco: 'baixo',
+            label: `Mudar “${t.titulo}” de prioridade ${t.prioridade} para ${nova}`,
+          }],
+        };
+      }
+
+      case 'mudar_horario': {
+        const alvo = acharItem(texto, 'agenda');
+        if (!alvo) {
+          return {
+            fala: 'Qual compromisso você quer remarcar?',
+            dicas: state.agenda.slice(0, 3).map((e) => `Muda ${e.titulo.toLowerCase()} para 16h`),
+          };
+        }
+        const e = alvo.item;
+        const novaHora = hora || e.hora;
+        const novaData = data ? data.iso : e.data;
+        if (novaHora === e.hora && novaData === e.data) {
+          return { fala: `Para onde eu movo “${e.titulo}”? Diga o dia ou o horário.` };
+        }
+        return {
+          contexto: `Hoje em ${rotuloData(e.data)} às ${e.hora}`,
+          fala: `Vou remarcar “${e.titulo}”.`,
+          ops: [{
+            tipo: 'event.move', id: e.id, data: novaData, hora: novaHora, risco: 'medio',
+            label: `Mover “${e.titulo}” para ${rotuloData(novaData)} às ${novaHora}`,
+          }],
+        };
+      }
+
+      case 'remover_item': {
+        const areaDica = detectarArea(texto);
+        const alvo = acharItem(texto, areaDica);
+        if (!alvo) {
+          // pediu para remover, mas não disse o quê: oferece o caminho em lote
+          if (areaDica) {
+            const lista = state[areaDica] || [];
+            if (!lista.length) return { fala: `Não há nada em ${areaDica} para remover.` };
+            return {
+              fala: `Quer remover algum item específico de ${areaDica} ou tudo?`,
+              dicas: [`Apaga todas as ${areaDica}`, ...lista.slice(0, 2).map((i) => `Apaga ${String(i.titulo).toLowerCase()}`)],
+            };
+          }
+          return {
+            fala: 'O que você quer remover? Diga o nome do item, ou peça para apagar tudo de uma área.',
+            dicas: ['Apaga todas as tarefas', 'Limpa minhas finanças', 'Apaga tudo'],
+          };
+        }
+        return {
+          fala: `Encontrei em ${alvo.area}: “${alvo.item.titulo}”.`,
+          ops: [{
+            tipo: 'item.remove', area: alvo.area, id: alvo.item.id, risco: 'medio',
+            label: `Remover ${NOME_AREA[alvo.area]} “${alvo.item.titulo}”`,
+          }],
+        };
+      }
 
       case 'resumo_dia': {
         const tar = doDia(iso(h));
@@ -440,8 +746,25 @@
       case 'adiar_tarefa': {
         const alvo = acharTarefa(texto);
         if (!alvo) {
+          // "remarca a consulta pra sexta" e evento, nao tarefa
+          const ev = acharItem(texto, 'agenda');
+          if (ev) {
+            const novaData = data ? data.iso : ev.item.data;
+            const novaHora = hora || ev.item.hora;
+            if (novaData === ev.item.data && novaHora === ev.item.hora) {
+              return { fala: `Para quando eu movo “${ev.item.titulo}”?` };
+            }
+            return {
+              contexto: `Hoje em ${rotuloData(ev.item.data)} às ${ev.item.hora}`,
+              fala: `Vou remarcar “${ev.item.titulo}”.`,
+              ops: [{
+                tipo: 'event.move', id: ev.item.id, data: novaData, hora: novaHora, risco: 'medio',
+                label: `Mover “${ev.item.titulo}” para ${rotuloData(novaData)} às ${novaHora}`,
+              }],
+            };
+          }
           return {
-            fala: 'Qual tarefa você quer mover? Me diz o nome dela.',
+            fala: 'Qual item você quer mover? Me diz o nome dele.',
             dicas: abertas().slice(0, 3).map((t) => `Adia ${t.titulo.toLowerCase()} pra sexta`),
           };
         }
@@ -570,8 +893,8 @@
         return {
           fala: confianca > 0
             ? 'Entendi mais ou menos, mas prefiro confirmar a ter certeza errada. Pode reformular?'
-            : 'Ainda não sei fazer isso. Posso cuidar de tarefas, agenda, metas, hábitos e finanças — tenta um destes:',
-          dicas: ['Organize minha semana', 'O que eu tenho pra hoje?', 'Gastei 80 no mercado', 'Reunião com o time quarta 15h'],
+            : 'Não peguei esse pedido. Eu mexo em tarefas, agenda, objetivos, hábitos e finanças — crio, altero, concluo, movo, apago e também respondo perguntas. Alguns exemplos:',
+          dicas: ['O que eu tenho pra hoje?', 'Tira tudo que eu tenho pra fazer', 'Adiciona tarefa ligar pro contador amanhã', 'Quanto gastei esse mês?', 'Ajuda'],
         };
     }
   }
@@ -622,6 +945,41 @@
         case 'fin.add': {
           const f = { id: uid(), ...op.payload };
           state.financas.unshift(f); tocados.push(f.id); break;
+        }
+        case 'bulk.remove': {
+          const fora = new Set(op.ids);
+          state[op.area] = (state[op.area] || []).filter((x) => !fora.has(x.id));
+          break;
+        }
+        case 'bulk.done': {
+          const dentro = new Set(op.ids);
+          state.tarefas.forEach((t) => { if (dentro.has(t.id)) { t.feita = true; tocados.push(t.id); } });
+          break;
+        }
+        case 'bulk.move': {
+          const dentro = new Set(op.ids);
+          state.tarefas.forEach((t) => { if (dentro.has(t.id)) { t.data = op.data; tocados.push(t.id); } });
+          break;
+        }
+        case 'item.remove':
+          state[op.area] = (state[op.area] || []).filter((x) => x.id !== op.id);
+          break;
+        case 'task.priority': {
+          const t = state.tarefas.find((x) => x.id === op.id);
+          if (t) { t.prioridade = op.prioridade; tocados.push(t.id); } break;
+        }
+        case 'event.move': {
+          const e = state.agenda.find((x) => x.id === op.id);
+          if (e) {
+            e.data = op.data; e.hora = op.hora;
+            state.agenda.sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
+            tocados.push(e.id);
+          }
+          break;
+        }
+        case 'goal.progress': {
+          const m = state.metas.find((x) => x.id === op.id);
+          if (m) { m.atual = Math.max(0, Math.min(m.alvo, m.atual + op.delta)); tocados.push(m.id); } break;
         }
       }
     });
