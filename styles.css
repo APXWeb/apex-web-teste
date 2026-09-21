@@ -1315,6 +1315,23 @@ h2 {
   background: var(--blue-dark);
 }
 
+/* Aviso sobre um projeto especifico, por cima da miniatura */
+.portfolio-tag {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  left: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(6, 27, 43, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
 /* Brilho diagonal que varre a imagem no hover */
 .portfolio-thumb::after {
   content: "";
@@ -1358,6 +1375,42 @@ h2 {
   color: var(--text-muted);
   font-size: 0.9rem;
   margin-bottom: 18px;
+}
+
+/* Nota sobre o contexto de um projeto especifico (ex.: empresa encerrada) */
+.portfolio-note {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.55;
+  margin: -8px 0 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+/* Aviso geral abaixo da grade, sobre propostas que ainda nao entraram no portfolio */
+.portfolio-footnote {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 640px;
+  margin: 40px auto 0;
+  padding: 16px 20px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.portfolio-footnote svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--blue-bright);
 }
 
 .portfolio-link {
