@@ -55,19 +55,46 @@
       <span class="hero-veil"></span>
     </div>
 
-    <div class="container hero-grid">
+    <div class="container hero-stage">
 
-      <div class="hero-copy">
-        <div class="hero-top" data-reveal>
+      <ul class="hero-rail hero-rail-left" data-reveal data-delay="4">
+        <li>
+          <span class="rail-ico">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M3 9.5H21" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          Agendamento
+        </li>
+        <li>
+          <span class="rail-ico">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3L20 7V12C20 16.5 16.5 20.5 12 21C7.5 20.5 4 16.5 4 12V7L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M9 12L11 14L15.5 9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Gestão de dados
+        </li>
+      </ul>
+
+      <div class="hero-core">
+        <span class="hero-pill" data-reveal><span class="pulse-dot" aria-hidden="true"></span> Aceitando novos projetos</span>
+
+        <div class="logo-stage" data-reveal data-delay="1">
+          <span class="ring ring-3" aria-hidden="true"></span>
+          <span class="ring ring-2" aria-hidden="true"></span>
+          <span class="ring ring-1" aria-hidden="true"></span>
+          <span class="logo-glow" aria-hidden="true"></span>
           <img src="assets/img/logo-mark.png" alt="APX Web" class="hero-logo">
-          <span class="hero-pill"><span class="pulse-dot" aria-hidden="true"></span> Aceitando novos projetos</span>
         </div>
 
         <h1 class="hero-title"><span class="word">Ideias</span> <span class="word">que</span> <span class="word">constroem</span> <span class="text-shine"><span class="word">o</span> <span class="word">seu</span> <span class="word">futuro</span></span></h1>
 
         <p class="hero-sub" data-reveal data-delay="2">
-          Criamos sites profissionais para pequenos negócios — com agendamento, catálogo
-          e tudo que o seu cliente precisa pra fechar com você. Da ideia ao site no ar.
+          Sites profissionais para pequenos negócios — do agendamento ao catálogo,
+          feitos sob medida e no ar do jeito certo.
         </p>
 
         <div class="hero-actions" data-reveal data-delay="3">
@@ -82,75 +109,75 @@
         </ul>
       </div>
 
-      <div class="hero-showcase" data-reveal data-delay="2">
-        <span class="showcase-halo" aria-hidden="true"></span>
+      <ul class="hero-rail hero-rail-right" data-reveal data-delay="4">
+        <li>
+          <span class="rail-ico">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="6" cy="7" r="2.4" stroke="currentColor" stroke-width="1.6"/>
+              <circle cx="18" cy="7" r="2.4" stroke="currentColor" stroke-width="1.6"/>
+              <circle cx="12" cy="17" r="2.4" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M7.8 8.8L10.5 15M16.2 8.8L13.5 15" stroke="currentColor" stroke-width="1.6"/>
+            </svg>
+          </span>
+          Marketplace
+        </li>
+        <li>
+          <span class="rail-ico">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3L13.5 9L19 10.5L13.5 12L12 18L10.5 12L5 10.5L10.5 9L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M19 15L19.6 17.4L22 18L19.6 18.6L19 21L18.4 18.6L16 18L18.4 17.4L19 15Z" fill="currentColor"/>
+            </svg>
+          </span>
+          Design &amp; animações
+        </li>
+      </ul>
 
-        <div class="showcase-inner" data-parallax data-parallax-strength="16">
-          <div class="browser">
-            <div class="browser-bar">
-              <span class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="browser-url">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <rect x="5" y="10.5" width="14" height="10" rx="2.5" stroke="currentColor" stroke-width="1.6"/>
-                  <path d="M8.5 10.5V7.5a3.5 3.5 0 1 1 7 0v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                </svg>
-                <span id="showcase-url">apxweb.github.io/apex-web/…/arcx-finance</span>
-              </span>
-            </div>
+    </div>
 
-            <div class="browser-screen">
-              <a class="shot is-on" href="portfolio-projects/arcx-finance/index.html" target="_blank" rel="noopener"
-                 data-nome="Arcx Finance" data-desc="Compra e venda de cripto via PIX"
-                 data-url="apxweb.github.io/apex-web/…/arcx-finance">
-                <img src="assets/img/portfolio/arcx.png" alt="Arcx Finance — plataforma de compra e venda de criptomoedas">
-              </a>
-              <a class="shot" href="portfolio-projects/nova/index.html" target="_blank" rel="noopener"
-                 data-nome="NOVA" data-desc="Assistente de IA agêntica pessoal"
-                 data-url="apxweb.github.io/apex-web/…/nova">
-                <img src="assets/img/portfolio/nova.png" alt="NOVA — assistente de IA agêntica pessoal" loading="lazy">
-              </a>
-              <a class="shot" href="portfolio-projects/barbearia/index.html" target="_blank" rel="noopener"
-                 data-nome="Barbearia Império" data-desc="Agendamento online e catálogo"
-                 data-url="apxweb.github.io/apex-web/…/barbearia">
-                <img src="assets/img/portfolio/barbearia.png" alt="Barbearia Império — site com agendamento online" loading="lazy">
-              </a>
-              <a class="shot" href="portfolio-projects/psicologia/index.html" target="_blank" rel="noopener"
-                 data-nome="Ânima Psicologia" data-desc="Agenda e área do paciente"
-                 data-url="apxweb.github.io/apex-web/…/psicologia">
-                <img src="assets/img/portfolio/psicologia.png" alt="Ânima Psicologia — site de consultório com agendamento online" loading="lazy">
-              </a>
-            </div>
+    <div class="hero-strip" data-reveal data-delay="5">
+      <p class="strip-head"><span>Projetos no ar</span></p>
+
+      <div class="marquee" id="marquee">
+        <div class="marquee-track">
+          <div class="marquee-group">
+            <a class="strip-card" href="portfolio-projects/arcx-finance/index.html" target="_blank" rel="noopener">
+              <span class="strip-shot"><img src="assets/img/portfolio/strip/arcx.webp" alt="Arcx Finance — plataforma de compra e venda de criptomoedas"></span>
+              <span class="strip-name">Arcx Finance <em>Cripto via PIX</em></span>
+            </a>
+            <a class="strip-card" href="portfolio-projects/nova/index.html" target="_blank" rel="noopener">
+              <span class="strip-shot"><img src="assets/img/portfolio/strip/nova.webp" alt="NOVA — assistente de IA agêntica pessoal"></span>
+              <span class="strip-name">NOVA <em>Assistente de IA agêntica</em></span>
+            </a>
+            <a class="strip-card" href="portfolio-projects/barbearia/index.html" target="_blank" rel="noopener">
+              <span class="strip-shot"><img src="assets/img/portfolio/strip/barbearia.webp" alt="Barbearia Império — site com agendamento online"></span>
+              <span class="strip-name">Barbearia Império <em>Agendamento online</em></span>
+            </a>
+            <a class="strip-card" href="portfolio-projects/psicologia/index.html" target="_blank" rel="noopener">
+              <span class="strip-shot"><img src="assets/img/portfolio/strip/psicologia.webp" alt="Ânima Psicologia — site de consultório com agendamento online"></span>
+              <span class="strip-name">Ânima Psicologia <em>Agenda e área do paciente</em></span>
+            </a>
           </div>
 
-          <div class="float-note" aria-hidden="true">
-            <div class="float-card-header">
-              <span class="float-dot float-dot-alt"></span>
-              <span>Agendamento</span>
-            </div>
-            <div class="float-card-product">
-              <span class="float-thumb"></span>
-              <div>
-                <strong>Novo horário marcado</strong>
-                <span class="float-muted">Direto pelo site, sem WhatsApp</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="showcase-meta">
-          <p class="showcase-label">
-            <strong id="showcase-nome">Arcx Finance</strong>
-            <span id="showcase-desc">Compra e venda de cripto via PIX</span>
-          </p>
-          <div class="showcase-dots" id="showcase-dots">
-            <button type="button" class="sc-dot is-on" aria-label="Ver Arcx Finance"></button>
-            <button type="button" class="sc-dot" aria-label="Ver NOVA"></button>
-            <button type="button" class="sc-dot" aria-label="Ver Barbearia Império"></button>
-            <button type="button" class="sc-dot" aria-label="Ver Ânima Psicologia"></button>
+          <div class="marquee-group" aria-hidden="true">
+            <a class="strip-card" href="portfolio-projects/arcx-finance/index.html" target="_blank" rel="noopener" tabindex="-1">
+              <span class="strip-shot"><img src="assets/img/portfolio/strip/arcx.webp" alt=""></span>
+              <span class="strip-name">Arcx Finance <em>Cripto via PIX</em></span>
+            </a>
+            <a class="strip-card" href="portfolio-projects/nova/index.html" target="_blank" rel="noopener" tabindex="-1">
+              <span class="strip-shot"><img src="assets/img/portfolio/strip/nova.webp" alt=""></span>
+              <span class="strip-name">NOVA <em>Assistente de IA agêntica</em></span>
+            </a>
+            <a class="strip-card" href="portfolio-projects/barbearia/index.html" target="_blank" rel="noopener" tabindex="-1">
+              <span class="strip-shot"><img src="assets/img/portfolio/strip/barbearia.webp" alt=""></span>
+              <span class="strip-name">Barbearia Império <em>Agendamento online</em></span>
+            </a>
+            <a class="strip-card" href="portfolio-projects/psicologia/index.html" target="_blank" rel="noopener" tabindex="-1">
+              <span class="strip-shot"><img src="assets/img/portfolio/strip/psicologia.webp" alt=""></span>
+              <span class="strip-name">Ânima Psicologia <em>Agenda e área do paciente</em></span>
+            </a>
           </div>
         </div>
       </div>
-
     </div>
 
     <a class="scroll-cue" href="#quem-somos" aria-label="Rolar para a próxima seção"><span aria-hidden="true"></span></a>

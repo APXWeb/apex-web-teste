@@ -226,62 +226,6 @@
     });
   }
 
-  // Vitrine do hero: a "janela de navegador" vai passando pelos projetos reais
-  // do portfolio. Os dados (nome, descricao, url) vivem no proprio HTML, entao
-  // se o script nao rodar a primeira tela continua visivel e clicavel.
-  const shots = Array.from(document.querySelectorAll('.shot'));
-  const showcase = document.querySelector('.hero-showcase');
-
-  if (shots.length > 1 && showcase) {
-    const scDots = Array.from(showcase.querySelectorAll('.sc-dot'));
-    const scNome = document.getElementById('showcase-nome');
-    const scDesc = document.getElementById('showcase-desc');
-    const scUrl = document.getElementById('showcase-url');
-    const INTERVALO = 4600;
-    let atual = 0;
-    let timer = null;
-
-    function mostrarShot(n) {
-      atual = (n + shots.length) % shots.length;
-      shots.forEach((s, i) => s.classList.toggle('is-on', i === atual));
-      scDots.forEach((d, i) => d.classList.toggle('is-on', i === atual));
-
-      const alvo = shots[atual];
-      if (scNome) scNome.textContent = alvo.dataset.nome || '';
-      if (scDesc) scDesc.textContent = alvo.dataset.desc || '';
-      if (scUrl) scUrl.textContent = alvo.dataset.url || '';
-    }
-
-    function pararShots() {
-      if (timer) { clearInterval(timer); timer = null; }
-    }
-
-    function tocarShots() {
-      if (prefersReducedMotion) return;
-      pararShots();
-      timer = setInterval(() => mostrarShot(atual + 1), INTERVALO);
-    }
-
-    scDots.forEach((dot, i) => {
-      dot.addEventListener('click', () => {
-        mostrarShot(i);
-        tocarShots();
-      });
-    });
-
-    // Enquanto o visitante olha ou passa o mouse, a troca automatica pausa.
-    showcase.addEventListener('pointerenter', pararShots);
-    showcase.addEventListener('pointerleave', tocarShots);
-    showcase.addEventListener('focusin', pararShots);
-    showcase.addEventListener('focusout', tocarShots);
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) pararShots(); else tocarShots();
-    });
-
-    mostrarShot(0);
-    tocarShots();
-  }
-
   // Passos do "Como Funcionamos" se desenhando conforme entram na tela
   const steps = Array.from(document.querySelectorAll('.step'));
   if (steps.length && 'IntersectionObserver' in window && !prefersReducedMotion) {
