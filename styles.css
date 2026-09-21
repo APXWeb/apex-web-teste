@@ -840,7 +840,8 @@ h2 {
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee 38s linear infinite;
+  /* o JS calcula --marquee-dur pela largura real da esteira; 38s e so o fallback */
+  animation: marquee var(--marquee-dur, 38s) linear infinite;
 }
 
 .marquee:hover .marquee-track,
