@@ -343,21 +343,25 @@
     const note = $('#composer-note', composer);
     const preview = $('#composer-message', composer);
 
-    const joinList = (items) =>
-      items.length <= 1 ? items.join('') : `${items.slice(0, -1).join(', ')} e ${items[items.length - 1]}`;
-
+    // Mensagem no formato do WhatsApp: *negrito* nos rótulos e um item por linha
     const buildMessage = () => {
       const needs = chips.filter((c) => c.getAttribute('aria-pressed') === 'true').map((c) => c.dataset.value);
       const name = business.value.trim();
       const extra = note.value.trim();
-      let text = 'Olá! Vi o site da APX Web';
-      text += name ? ` e tenho um negócio: ${name}.` : '.';
-      text += needs.length ? ` Preciso de ${joinList(needs)}.` : ' Quero conversar sobre um projeto.';
-      if (extra) text += `\n\n${extra}`;
-      return text;
+      const lines = ['Olá, APX! 👋', 'Vi o site de vocês e quero conversar sobre um projeto.'];
+      const details = [];
+      if (name) details.push(`*Meu negócio:* ${name}`);
+      if (needs.length) details.push('*O que eu preciso:*', ...needs.map((n) => `• ${n}`));
+      if (extra) details.push(`*Detalhes:* ${extra}`);
+      if (details.length) lines.push('', ...details);
+      return lines.join('\n');
     };
 
-    const render = () => { preview.textContent = buildMessage(); };
+    // A prévia imita o WhatsApp: o texto entre asteriscos aparece em negrito
+    const escapeHtml = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+    const render = () => {
+      preview.innerHTML = escapeHtml(buildMessage()).replace(/\*([^*\n]+)\*/g, '<strong>$1</strong>');
+    };
 
     chips.forEach((chip) => chip.addEventListener('click', () => {
       chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true'));
