@@ -3,3 +3,8 @@ portfolio-projects/saint-tropez/
 portfolio-projects/maison-rivier/
 portfolio-projects/intercientifica/
 portfolio-projects/mister-ns/
+
+# Capturas de revisão do Impeccable (geradas)
+.impeccable/review/
+.impeccable/hook.cache.json
+.impeccable/questions/

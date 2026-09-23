@@ -1,0 +1,11 @@
+# GitHub Pages: arquivos de trabalho que não devem ser publicados.
+# Pastas que começam com ponto (.impeccable, .git) já ficam de fora por padrão.
+exclude:
+  - README.md
+  - PRODUCT.md
+  - DESIGN.md
+  - data/
+  - scripts/
+  - templates/
+  # Proveniência das imagens (registro interno, não precisa ir ao ar)
+  - "assets/img/**/*.json"

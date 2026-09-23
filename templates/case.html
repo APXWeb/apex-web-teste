@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{name}} · {{type}} · APX Web</title>
+<meta name="description" content="{{summary}}">
+<meta name="theme-color" content="#0a0a0b">
+<link rel="canonical" href="{{siteUrl}}projetos/{{slug}}/">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon-16.png">
+<link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="{{name}} · APX Web">
+<meta property="og:description" content="{{summary}}">
+<meta property="og:image" content="{{siteUrl}}assets/img/work/{{slug}}/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="preload" as="image" href="../../assets/img/work/{{slug}}/cover.webp" imagesrcset="../../assets/img/work/{{slug}}/cover-720.webp 720w, ../../assets/img/work/{{slug}}/cover.webp 1440w" imagesizes="100vw" fetchpriority="high">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="case" style="--case-accent: {{brand}}">
+
+{{header}}
+
+<main id="conteudo">
+  <section class="case-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Você está em">
+        <a href="../../#trabalho">Trabalho</a>
+        <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+        <span aria-current="page">{{name}}</span>
+      </nav>
+      <div class="case-intro">
+        <div class="case-title">
+          <h1>{{headline}}</h1>
+          <p class="work-meta"><span class="status status-pill" data-status="{{status}}">{{statusLabel}}</span><span>{{type}}</span></p>
+          <p class="lead">{{summary}}</p>
+        </div>
+        <div class="case-side">
+          <dl class="meta">
+            <div><dt>Projeto</dt><dd>{{name}}</dd></div>
+            <div><dt>O que fizemos</dt><dd>{{services}}</dd></div>
+            <div><dt>Tecnologia</dt><dd class="mono">{{stack}}</dd></div>
+          </dl>
+          <div class="case-actions">
+            <a class="btn btn-primary" href="../../{{live}}" target="_blank" rel="noopener">Abrir projeto ao vivo <svg aria-hidden="true"><use href="#i-arrow-out"/></svg></a>
+            <a class="btn btn-secondary" href="{{whatsapp}}" target="_blank" rel="noopener">Quero algo assim</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="case-cover">
+    <div class="container">
+      <div class="frame hero-enter" style="--i:4">
+        <div class="frame-bar" aria-hidden="true"><span class="frame-dots"><span></span><span></span><span></span></span></div>
+        <div class="frame-view">
+          <img src="../../assets/img/work/{{slug}}/cover.webp" srcset="../../assets/img/work/{{slug}}/cover-720.webp 720w, ../../assets/img/work/{{slug}}/cover.webp 1440w" sizes="(min-width: 1280px) 1216px, 100vw" width="1440" height="900" fetchpriority="high" alt="{{coverAlt}}">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" aria-labelledby="historia">
+    <div class="container case-body">
+      <h2 id="historia" class="sr-only">A história do projeto</h2>
+      <div class="case-story">
+        <div class="story-block"><h2>Contexto</h2><p>{{context}}</p></div>
+        <div class="story-block"><h2>Desafio</h2><p>{{challenge}}</p></div>
+        <div class="story-block"><h2>O que a APX fez</h2><p>{{approach}}</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="telas">
+    <div class="container">
+      <h2 id="telas" class="case-section-title">As telas</h2>
+      <div class="gallery">
+{{gallery}}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="funcionalidades">
+    <div class="container">
+      <h2 id="funcionalidades" class="case-section-title">O que ele faz</h2>
+      <div class="features">
+{{features}}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="resultado">
+    <div class="container outcome">
+      <div>
+        <h2 id="resultado" class="case-section-title">Resultado</h2>
+        <p class="big">{{outcome}}</p>
+      </div>
+      <aside class="honesty" aria-label="Sobre a natureza deste projeto">
+        <span class="status" data-status="{{status}}">{{statusLabel}}</span>
+        <p>{{note}}</p>
+        <p>{{statusDescription}}</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-tight" aria-label="Próximo projeto">
+    <div class="container">
+      <a class="next-case" href="../{{nextSlug}}/">
+        <div>
+          <p class="next-case-label">Próximo projeto</p>
+          <p class="next-case-name">{{nextName}} <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></p>
+        </div>
+        <div class="frame" aria-hidden="true">
+          <div class="frame-view"><img src="../../assets/img/work/{{nextSlug}}/cover-720.webp" width="720" height="450" loading="lazy" decoding="async" alt=""></div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cta">
+    <div class="container cta-band">
+      <h2 id="cta">Tem um negócio que precisaria de algo assim?</h2>
+      <p class="lead">Conte como ele funciona. Quem responde é quem vai desenhar e programar.</p>
+      <a class="btn btn-primary" href="{{whatsapp}}" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-chat"/></svg> Conversar no WhatsApp</a>
+    </div>
+  </section>
+</main>
+
+{{footer}}
+
+<script src="../../assets/js/site.js" defer></script>
+</body>
+</html>

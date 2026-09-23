@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "buried-raster",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-23T00:45:43.587Z",
+        "reason": "model decision: stacked crossfade slides in the hero showcase; inactive slides are opacity 0 until selected"
+      }
+    ]
+  }
+}

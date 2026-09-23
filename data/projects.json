@@ -1,0 +1,268 @@
+{
+  "statuses": {
+    "real": {
+      "label": "Projeto real",
+      "short": "Real",
+      "description": "Feito para um cliente de verdade e publicado."
+    },
+    "conceitual": {
+      "label": "Projeto conceitual",
+      "short": "Conceitual",
+      "description": "Produto idealizado pela APX para explorar uma ideia. Funciona, mas não tem cliente."
+    },
+    "demonstracao": {
+      "label": "Demonstração",
+      "short": "Demonstração",
+      "description": "Negócio fictício, sistema funcionando de verdade. Criado para mostrar o que dá para construir."
+    }
+  },
+  "projects": [
+    {
+      "slug": "arcx-finance",
+      "name": "ARCX Finance",
+      "status": "real",
+      "type": "Plataforma financeira",
+      "brand": "#19D37A",
+      "feature": "tela-1",
+      "summary": "Compra e venda de criptomoedas via PIX, com cotação transparente e simulador em tempo real.",
+      "headline": "Cripto via PIX, sem letra miúda.",
+      "context": "A ARCX Finance comprava e vendia criptomoedas pagando e recebendo via PIX. Num mercado em que muita gente desconfia de taxas escondidas, o site precisava explicar a operação inteira antes de pedir qualquer dado.",
+      "challenge": "Transmitir confiança para quem nunca operou cripto: mostrar o custo real antes da decisão e deixar claro o que acontece em cada etapa.",
+      "approach": "Desenhamos a página em torno de um simulador: a pessoa escolhe a moeda, digita o valor e vê cotação, taxa de serviço e custo de rede separados, com contagem regressiva da cotação. O resto do site responde às dúvidas na ordem em que elas aparecem: como funciona, segurança e perguntas frequentes.",
+      "features": [
+        { "title": "Simulador de cotação", "text": "Compra e venda com cotação de referência, taxas separadas e total a pagar via PIX." },
+        { "title": "Cotação com prazo visível", "text": "Contagem regressiva mostra por quanto tempo o valor simulado continua válido." },
+        { "title": "Operação em três etapas", "text": "Solicitação, confirmação e conclusão explicadas antes do cadastro." },
+        { "title": "Camadas de segurança", "text": "Verificação de identidade, autenticação em duas etapas e registro de cada operação." }
+      ],
+      "services": [
+        "Estratégia de conteúdo",
+        "Design de interface",
+        "Desenvolvimento front-end",
+        "Publicação"
+      ],
+      "stack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "outcome": "O site foi ao ar e operou enquanto a empresa existiu. A ARCX encerrou as atividades e o fundador autorizou manter o projeto aqui como demonstração.",
+      "note": "Projeto real. Hoje as cotações e taxas exibidas são fictícias e nenhuma operação é executada.",
+      "live": "portfolio-projects/arcx-finance/index.html",
+      "images": [
+        { "file": "cover", "kind": "desktop", "alt": "Página inicial da ARCX Finance com a chamada para comprar e vender cripto via PIX", "caption": "Primeira dobra: a oferta e o caminho até o simulador." },
+        { "file": "tela-1", "kind": "desktop", "alt": "Simulador da ARCX com cotação, taxa de serviço, custo de rede e total via PIX", "caption": "Simulador: cotação, taxa e custo de rede separados antes da decisão.", "zoom": 1.75, "focus": "50% 100%" },
+        { "file": "tela-2", "kind": "desktop", "alt": "Seção explicando as três etapas de uma operação na ARCX", "caption": "A operação explicada em três etapas." },
+        { "file": "tela-3", "kind": "desktop", "alt": "Seção de segurança com verificação de identidade e autenticação em duas etapas", "caption": "Segurança descrita sem jargão." },
+        { "file": "mobile-1", "kind": "mobile", "alt": "Página inicial da ARCX no celular", "caption": "No celular." },
+        { "file": "mobile-2", "kind": "mobile", "alt": "Simulador da ARCX no celular", "caption": "Simulador no celular." }
+      ]
+    },
+    {
+      "slug": "vanta",
+      "name": "VANTA",
+      "status": "demonstracao",
+      "type": "Marketplace com painel",
+      "brand": "#C6F25E",
+      "feature": "tela-1",
+      "summary": "Loja completa: catálogo, produto, carrinho, checkout em cinco etapas, área do cliente e painel administrativo.",
+      "headline": "Uma loja inteira, do catálogo ao painel.",
+      "context": "Muita loja virtual de demonstração é só a vitrine. A VANTA foi criada para mostrar o sistema completo: quem compra, quem acompanha o pedido e quem administra a loja.",
+      "challenge": "Construir as duas pontas de um e-commerce (a compra e a gestão) com a mesma qualidade, sem depender de plataforma pronta.",
+      "approach": "Estruturamos a loja como um aplicativo de página única, com rotas para catálogo, produto, carrinho, checkout, conta e painel. Os dados ficam no navegador, então tudo pode ser testado: dá para comprar, acompanhar o pedido e mudar a loja pelo painel.",
+      "features": [
+        { "title": "Catálogo com filtros", "text": "Categorias, faixa de preço, marcas e ordenação, com visualização em grade ou lista." },
+        { "title": "Checkout em cinco etapas", "text": "Identificação, endereço, entrega, pagamento e revisão, com resumo do pedido sempre visível." },
+        { "title": "Área do cliente", "text": "Pedidos, favoritos e acompanhamento de cada compra." },
+        { "title": "Painel administrativo", "text": "Dashboard com gráficos de receita e vendas, gestão de produtos, pedidos, clientes e promoções." }
+      ],
+      "services": [
+        "Arquitetura do sistema",
+        "Design de interface",
+        "Desenvolvimento",
+        "Painel administrativo"
+      ],
+      "stack": [
+        "JavaScript (ES modules)",
+        "Rotas próprias",
+        "Gráficos em SVG",
+        "Sem framework"
+      ],
+      "outcome": "Um sistema de e-commerce completo e navegável, com cerca de 8,7 mil linhas de JavaScript escritas à mão.",
+      "note": "Loja fictícia. Produtos, pedidos e números do painel são dados de demonstração.",
+      "live": "portfolio-projects/vanta/index.html",
+      "images": [
+        { "file": "cover", "kind": "desktop", "alt": "Página inicial da VANTA com destaque de produto e chamada para o catálogo", "caption": "Vitrine com produto em destaque e atalhos de categoria." },
+        { "file": "tela-1", "kind": "desktop", "alt": "Painel administrativo da VANTA com receita, pedidos, gráfico de vendas e vendas por categoria", "caption": "Painel: receita, pedidos, ticket médio e vendas por categoria.", "zoom": 1.22, "focus": "100% 0%" },
+        { "file": "tela-2", "kind": "desktop", "alt": "Página de produto da VANTA com galeria, preço, frete e botões de compra", "caption": "Produto com cálculo de frete, estoque e parcelamento." },
+        { "file": "tela-3", "kind": "desktop", "alt": "Checkout da VANTA na etapa de identificação com resumo do pedido", "caption": "Checkout em cinco etapas com resumo sempre visível." },
+        { "file": "mobile-1", "kind": "mobile", "alt": "Página inicial da VANTA no celular", "caption": "Loja no celular." },
+        { "file": "mobile-2", "kind": "mobile", "alt": "Painel administrativo da VANTA no celular", "caption": "O painel também funciona no celular." }
+      ]
+    },
+    {
+      "slug": "norte",
+      "name": "NORTE",
+      "status": "demonstracao",
+      "type": "Plataforma de carreira",
+      "brand": "#1FA6B8",
+      "feature": "tela-3",
+      "summary": "Vagas por profissão e região num mapa, com salário por nível, demanda, formação e o caminho até a carreira.",
+      "headline": "Um produto de dados funcionando de ponta a ponta.",
+      "context": "Quem procura trabalho quer saber onde existem vagas para a sua profissão, quanto pagam e o que falta para chegar lá. A NORTE junta essas respostas num só lugar.",
+      "challenge": "Transformar muita informação (vagas, salários, demanda, formação) numa experiência que dá para entender em segundos, e deixar tudo editável por um painel.",
+      "approach": "Criamos busca por profissão e região, mapa de oportunidades, página de carreira com salário por nível e trilha de estudo, comparação lado a lado e alertas. O painel administrativo edita os dados e a mudança aparece na hora para quem está usando o site.",
+      "features": [
+        { "title": "Busca por profissão e região", "text": "Resultados em mapa e em lista, com filtros que filtram de verdade." },
+        { "title": "Página de carreira", "text": "Salário por nível, demanda do mercado, o que estudar e o caminho até a vaga." },
+        { "title": "Comparação de carreiras", "text": "Até três profissões lado a lado, com os mesmos critérios." },
+        { "title": "Painel administrativo", "text": "Vagas, profissões, empresas e usuários editáveis, com gráficos desenhados em SVG." }
+      ],
+      "services": [
+        "Arquitetura de informação",
+        "Design de produto",
+        "Visualização de dados",
+        "Desenvolvimento"
+      ],
+      "stack": [
+        "JavaScript (ES modules)",
+        "Mapa e gráficos em SVG",
+        "Rotas próprias",
+        "Sem framework"
+      ],
+      "outcome": "Uma plataforma de dados navegável de ponta a ponta, com cerca de 11 mil linhas de JavaScript escritas à mão.",
+      "note": "Projeto fictício. Vagas, empresas e salários são dados de demonstração.",
+      "live": "portfolio-projects/norte/index.html",
+      "images": [
+        { "file": "cover", "kind": "desktop", "alt": "Página inicial da NORTE com busca por profissão e cidade", "caption": "Busca por profissão e região logo na primeira dobra." },
+        { "file": "tela-1", "kind": "desktop", "alt": "Catálogo de profissões da NORTE com filtros por área e salário médio", "caption": "Catálogo de profissões com filtros por área." },
+        { "file": "tela-2", "kind": "desktop", "alt": "Comparação de carreiras lado a lado na NORTE", "caption": "Comparação de carreiras com a mesma régua." },
+        { "file": "tela-3", "kind": "desktop", "alt": "Painel administrativo da NORTE com gráficos de buscas e vagas por área", "caption": "Painel com gráficos desenhados à mão em SVG.", "zoom": 1.22, "focus": "100% 0%" },
+        { "file": "mobile-1", "kind": "mobile", "alt": "Página inicial da NORTE no celular", "caption": "Busca no celular." },
+        { "file": "mobile-2", "kind": "mobile", "alt": "Painel administrativo da NORTE no celular", "caption": "Painel no celular." }
+      ]
+    },
+    {
+      "slug": "nova",
+      "name": "NOVA",
+      "status": "conceitual",
+      "type": "Assistente de IA agêntica",
+      "brand": "#7C6CF2",
+      "feature": "cover",
+      "summary": "Assistente pessoal que entende o pedido em português, monta um plano, pede permissão e executa de forma reversível.",
+      "headline": "Uma IA que age, mas pede licença.",
+      "context": "Chatbots respondem; a NOVA faz. A ideia era explorar como seria uma assistente que mexe de verdade em tarefas, agenda, metas, hábitos e finanças sem tirar o controle da pessoa.",
+      "challenge": "Mostrar autonomia de IA de um jeito que passe segurança: cada ação precisa ser visível, aprovada e desfazível.",
+      "approach": "Construímos um motor que roda no navegador: ele interpreta o texto em português, lê o estado real do workspace, propõe um plano e só executa depois da permissão. Tudo fica num registro de ações com botão de desfazer.",
+      "features": [
+        { "title": "Ciclo em quatro passos", "text": "Contexto, plano, permissão e execução reversível, sempre nessa ordem." },
+        { "title": "Cinco áreas, um contexto", "text": "Tarefas, agenda, metas, hábitos e finanças conversam entre si." },
+        { "title": "Níveis de autonomia", "text": "O que ela faz sozinha, o que sempre pergunta e como tudo volta atrás." },
+        { "title": "Registro de ações", "text": "Cada mudança fica anotada, em ordem, com a opção de desfazer." }
+      ],
+      "services": [
+        "Conceito de produto",
+        "Design de interação",
+        "Desenvolvimento do motor"
+      ],
+      "stack": [
+        "JavaScript",
+        "Interpretação de texto no navegador",
+        "Sem servidor"
+      ],
+      "outcome": "Um protótipo funcional que demonstra o conceito sem servidor: dá para conversar com a assistente e ver ela agir no workspace.",
+      "note": "Projeto conceitual da APX. Não é um produto comercial nem tem clientes.",
+      "live": "portfolio-projects/nova/index.html",
+      "images": [
+        { "file": "cover", "kind": "desktop", "alt": "Página inicial da NOVA com a assistente montando um plano", "caption": "A assistente em ação já na primeira dobra.", "zoom": 1.6, "focus": "4% 30%" },
+        { "file": "tela-1", "kind": "desktop", "alt": "Workspace da NOVA com conversa e lista de tarefas", "caption": "Workspace: fale com ela e veja as tarefas mudarem." },
+        { "file": "tela-2", "kind": "desktop", "alt": "Os quatro passos do ciclo agêntico da NOVA", "caption": "O ciclo agêntico explicado em quatro passos." },
+        { "file": "tela-3", "kind": "desktop", "alt": "Níveis de autonomia da NOVA e registro de ações", "caption": "Autonomia com freio de mão." },
+        { "file": "mobile-1", "kind": "mobile", "alt": "Página inicial da NOVA no celular", "caption": "No celular." },
+        { "file": "mobile-2", "kind": "mobile", "alt": "Workspace da NOVA no celular", "caption": "Workspace no celular." }
+      ]
+    },
+    {
+      "slug": "barbearia",
+      "name": "Barbearia Império",
+      "status": "demonstracao",
+      "type": "Site com agendamento",
+      "brand": "#E3B341",
+      "feature": "cover",
+      "summary": "Site de barbearia com catálogo de serviços, agendamento online e aviso de aberto ou fechado em tempo real.",
+      "headline": "A barbearia que agenda sozinha.",
+      "context": "Barbearia pequena vive de agenda cheia e de WhatsApp lotado. O dono perde tempo respondendo preço e horário, e o cliente desiste quando demora.",
+      "challenge": "Deixar o cliente escolher serviço, dia e horário sozinho, e mostrar preço e funcionamento sem ninguém precisar perguntar.",
+      "approach": "Organizamos o site em torno da decisão do cliente: serviços com preço e filtro, agendamento em três passos com resumo, horários com aviso de aberto ou fechado e localização. A identidade clássica em preto e dourado segura o tom da marca.",
+      "features": [
+        { "title": "Agendamento em três passos", "text": "Serviço, dia e horário, e dados, com resumo e total ao lado." },
+        { "title": "Serviços com filtro", "text": "Cortes, barba e combos com preço e descrição." },
+        { "title": "Aberto ou fechado agora", "text": "O site sabe o horário de funcionamento e avisa quando abre de novo." },
+        { "title": "Contato em um toque", "text": "Botão de WhatsApp sempre à mão e mapa de como chegar." }
+      ],
+      "services": [
+        "Identidade visual",
+        "Design de interface",
+        "Agendamento online",
+        "Desenvolvimento"
+      ],
+      "stack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "outcome": "Um modelo pronto do que uma barbearia de bairro pode ter: menos mensagens repetidas e agenda organizada.",
+      "note": "Negócio fictício. O agendamento funciona, mas fica salvo só no seu navegador.",
+      "live": "portfolio-projects/barbearia/index.html",
+      "images": [
+        { "file": "cover", "kind": "desktop", "alt": "Página inicial da Barbearia Império com chamada para agendar horário", "caption": "Primeira dobra com aviso de aberto ou fechado.", "zoom": 1.55, "focus": "4% 35%" },
+        { "file": "tela-1", "kind": "desktop", "alt": "Catálogo de serviços da Barbearia Império com preços e filtros", "caption": "Serviços com preço e filtro." },
+        { "file": "tela-2", "kind": "desktop", "alt": "Agendamento da Barbearia Império com escolha de serviço e resumo", "caption": "Agendamento em três passos com resumo ao lado." },
+        { "file": "tela-3", "kind": "desktop", "alt": "Horários de funcionamento e mapa da Barbearia Império", "caption": "Horários e localização." },
+        { "file": "mobile-1", "kind": "mobile", "alt": "Página inicial da Barbearia Império no celular", "caption": "No celular." },
+        { "file": "mobile-2", "kind": "mobile", "alt": "Agendamento da Barbearia Império no celular", "caption": "Agendamento no celular." }
+      ]
+    },
+    {
+      "slug": "psicologia",
+      "name": "Ânima Psicologia",
+      "status": "demonstracao",
+      "type": "Site de consultório",
+      "brand": "#3E6B55",
+      "feature": "cover",
+      "summary": "Site de consultório com agendamento online, remarcação, lembrete na agenda, área do paciente e respiração guiada.",
+      "headline": "Acolher antes do primeiro contato.",
+      "context": "Quem procura terapia pela primeira vez costuma adiar. O site de um consultório precisa diminuir essa distância: explicar sem pressão e facilitar o primeiro agendamento.",
+      "challenge": "Criar um ambiente calmo e confiável que, ao mesmo tempo, resolva a parte prática: modalidade, horário, remarcação e lembrete.",
+      "approach": "Usamos tom acolhedor, tipografia serifada e cores de consultório. O agendamento escolhe tipo de atendimento, presencial ou online, dia e horário. Depois, o paciente remarca, baixa o lembrete para a agenda e acessa a própria área. Um exercício de respiração guiada dá um motivo para ficar.",
+      "features": [
+        { "title": "Agendamento completo", "text": "Tipo de atendimento, modalidade, dia, horário e dados em sequência." },
+        { "title": "Lembrete na agenda", "text": "O paciente baixa o compromisso em arquivo de calendário (.ics)." },
+        { "title": "Área do paciente", "text": "Sessões marcadas e remarcação sem precisar ligar." },
+        { "title": "Respiração guiada", "text": "Exercício interativo de um minuto dentro do próprio site." }
+      ],
+      "services": [
+        "Direção de arte",
+        "Design de interface",
+        "Agendamento online",
+        "Desenvolvimento"
+      ],
+      "stack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "outcome": "Um modelo de site para profissionais da saúde que resolve o agendamento sem perder o acolhimento.",
+      "note": "Consultório fictício. Nome, CRP e dados são de demonstração; o agendamento fica salvo só no seu navegador.",
+      "live": "portfolio-projects/psicologia/index.html",
+      "images": [
+        { "file": "cover", "kind": "desktop", "alt": "Página inicial da Ânima Psicologia com a frase um espaço seguro para você se encontrar", "caption": "Primeira dobra com a próxima vaga livre.", "zoom": 1.55, "focus": "4% 40%" },
+        { "file": "tela-1", "kind": "desktop", "alt": "Exercício de respiração guiada da Ânima Psicologia", "caption": "Respiração guiada dentro do site." },
+        { "file": "tela-2", "kind": "desktop", "alt": "Agendamento da Ânima Psicologia com tipo de atendimento e modalidade", "caption": "Agendamento com modalidade presencial ou online." },
+        { "file": "tela-3", "kind": "desktop", "alt": "Especialidades do consultório Ânima Psicologia", "caption": "Especialidades explicadas com calma." },
+        { "file": "mobile-1", "kind": "mobile", "alt": "Página inicial da Ânima Psicologia no celular", "caption": "No celular." },
+        { "file": "mobile-2", "kind": "mobile", "alt": "Respiração guiada da Ânima Psicologia no celular", "caption": "Respiração guiada no celular." }
+      ]
+    }
+  ]
+}

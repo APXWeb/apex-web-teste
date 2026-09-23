@@ -2,474 +2,711 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>APX Web | Ideias que constroem o seu futuro</title>
-<meta name="description" content="APX Web cria sites profissionais para pequenas empresas: agendamento, plataformas P2P, gestão de dados e catálogos.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APX Web · Sites e sistemas sob medida para o seu negócio</title>
+<meta name="description" content="A APX Web é uma dupla de design e desenvolvimento. Criamos sites, agendamento online, lojas, painéis e sistemas sob medida, e quem programa é quem atende você.">
+<meta name="theme-color" content="#0a0a0b">
+<link rel="canonical" href="https://apxweb.github.io/apex-web/">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="APX Web | Ideias que constroem o seu futuro">
-<meta property="og:description" content="Criamos sites profissionais para pequenas empresas: agendamento, plataformas P2P, gestão de dados e catálogos.">
-<meta property="og:image" content="assets/img/og-image.jpg">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="APX Web · Sites e sistemas sob medida">
+<meta property="og:description" content="Sites, agendamento, lojas e painéis feitos sob medida, por quem atende você.">
+<meta property="og:image" content="https://apxweb.github.io/apex-web/assets/img/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="APX Web | Ideias que constroem o seu futuro">
-<meta name="twitter:description" content="Criamos sites profissionais para pequenas empresas: agendamento, plataformas P2P, gestão de dados e catálogos.">
-<meta name="twitter:image" content="assets/img/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="preload" as="image" href="assets/img/work/arcx-finance/cover.webp" imagesrcset="assets/img/work/arcx-finance/cover-720.webp 720w, assets/img/work/arcx-finance/cover.webp 1440w" imagesizes="(min-width: 960px) 70vw, 100vw" fetchpriority="high">
+<link rel="stylesheet" href="assets/css/site.css">
+<script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
 
-<div class="scroll-progress" id="scroll-progress"></div>
+<!-- build:header -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="apx-logo" viewBox="0 0 940 278">
+    <path fill="currentColor" d="M0 276 184 4h16l172 272h-86l-94-150L88 276Z"/>
+    <path style="fill:var(--mark-accent,#0062FF)" d="M186 194 248 276H124Z"/>
+    <path fill="currentColor" d="M322 12h238q64 0 64 64v50q0 64-64 64H408v86h-66V140h204q6 0 6-6V86q0-6-6-6H373Z"/>
+    <path fill="currentColor" d="M598 12h84l118 132-136 132h-92l128-132Z"/>
+    <path style="fill:var(--mark-accent,#0062FF)" d="M840 0h96L807 126l-43-44ZM807 150l-43 44 76 82h96Z"/>
+  </symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-arrow-out" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5Z" fill="currentColor"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 7 9 6 9-6" stroke-linecap="round"/></g></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01" stroke-linecap="round" stroke-width="2.5"/></g></symbol>
+</svg>
+
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
 <header class="site-header" id="site-header">
-  <nav class="container nav">
-    <a href="#" class="nav-logo">
-      <img src="assets/img/logo-icon.png" alt="APX Web">
+  <div class="container nav">
+    <a class="brand" href="#" aria-label="APX Web, página inicial">
+      <svg viewBox="0 0 940 278" aria-hidden="true"><use href="#apx-logo"/></svg>
     </a>
-    <ul class="nav-links" id="nav-links">
-      <span class="nav-indicator" id="nav-indicator" aria-hidden="true"></span>
-      <li><a href="#especialidades">Especialidades</a></li>
-      <li><a href="#como-funciona">Como Funciona</a></li>
-      <li><a href="#trabalhos">Trabalhos</a></li>
-      <li><a href="#depoimentos">Depoimentos</a></li>
-      <li><a href="#contato" class="nav-cta">Fale Conosco</a></li>
-    </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
-      <span></span><span></span><span></span>
+    <nav aria-label="Principal">
+      <ul class="nav-links">
+        <li><a href="#trabalho">Trabalho</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#processo">Processo</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-primary btn-sm nav-cta" href="https://wa.me/5511944815707?text=Ol%C3%A1!%20Vi%20o%20site%20da%20APX%20Web%20e%20quero%20conversar%20sobre%20um%20projeto." target="_blank" rel="noopener">
+      Conversar no WhatsApp
+    </a>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+      <span class="nav-toggle-icon" aria-hidden="true"></span>
+      <span class="nav-toggle-label">Menu</span>
     </button>
-  </nav>
+  </div>
 </header>
 
-<main>
-
-  <section class="hero">
-    <div class="hero-bg" aria-hidden="true">
-      <span class="aurora aurora-1"></span>
-      <span class="aurora aurora-2"></span>
-      <span class="aurora aurora-3"></span>
-      <span class="hero-veil"></span>
+<div class="mobile-menu" id="mobile-menu" hidden>
+  <nav aria-label="Menu móvel">
+    <ul>
+      <li><a href="#trabalho">Trabalho <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li><a href="#servicos">Serviços <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li><a href="#processo">Processo <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li><a href="#contato">Contato <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+    </ul>
+  </nav>
+  <div class="mobile-menu-foot">
+    <a class="btn btn-primary" href="https://wa.me/5511944815707?text=Ol%C3%A1!%20Vi%20o%20site%20da%20APX%20Web%20e%20quero%20conversar%20sobre%20um%20projeto." target="_blank" rel="noopener">
+      <svg aria-hidden="true"><use href="#i-chat"/></svg> Conversar no WhatsApp
+    </a>
+    <div class="mobile-menu-links">
+      <a href="mailto:ppsm2010@gmail.com">E-mail</a>
+      <a href="https://www.instagram.com/apx_.web" target="_blank" rel="noopener">Instagram</a>
     </div>
+  </div>
+</div>
+<!-- /build:header -->
 
-    <div class="container hero-stage">
+<main id="conteudo">
 
-      <ul class="hero-rail hero-rail-left" data-reveal data-delay="4">
-        <li>
-          <span class="rail-ico">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/>
-              <path d="M3 9.5H21" stroke="currentColor" stroke-width="1.6"/>
-              <path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-            </svg>
-          </span>
-          Agendamento
-        </li>
-        <li>
-          <span class="rail-ico">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 3L20 7V12C20 16.5 16.5 20.5 12 21C7.5 20.5 4 16.5 4 12V7L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-              <path d="M9 12L11 14L15.5 9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          Gestão de dados
-        </li>
-      </ul>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <h1 id="hero-title">Sites que trabalham pelo seu negócio.</h1>
+        <p class="lead">Sites e sistemas sob medida: agenda online, loja, painel. A APX é uma dupla de design e desenvolvimento, e quem programa é quem atende você.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contato">
+            <svg aria-hidden="true"><use href="#i-chat"/></svg> Contar sobre o meu projeto
+          </a>
+          <a class="link-arrow is-muted" data-dir="down" href="#trabalho">Ver trabalhos <svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+        </div>
+        <p class="availability"><span class="availability-dot" aria-hidden="true"></span> Agenda aberta para novos projetos</p>
+      </div>
 
-      <div class="hero-core">
-        <span class="hero-pill" data-reveal><span class="pulse-dot" aria-hidden="true"></span> Aceitando novos projetos</span>
+<!-- build:showcase -->
+      <div class="showcase" data-showcase>
+        <div class="showcase-visual">
+          <a class="frame" id="showcase-panel" role="tabpanel" aria-labelledby="showcase-tab-arcx-finance" href="projetos/arcx-finance/" data-cursor>
+            <div class="frame-bar" aria-hidden="true"><span class="frame-dots"><span></span><span></span><span></span></span></div>
+            <div class="frame-view">
+              <img class="showcase-slide is-active" fetchpriority="high" src="assets/img/work/arcx-finance/cover-720.webp" srcset="assets/img/work/arcx-finance/cover-720.webp 720w, assets/img/work/arcx-finance/cover.webp 1440w" sizes="(min-width: 960px) 56vw, 100vw" width="1440" height="900" loading="eager" decoding="async" alt="Página inicial da ARCX Finance com a chamada para comprar e vender cripto via PIX">
+              <img class="showcase-slide" fetchpriority="low" src="assets/img/work/vanta/cover-720.webp" srcset="assets/img/work/vanta/cover-720.webp 720w, assets/img/work/vanta/cover.webp 1440w" sizes="(min-width: 960px) 56vw, 100vw" width="1440" height="900" loading="eager" decoding="async" alt="Página inicial da VANTA com destaque de produto e chamada para o catálogo">
+              <img class="showcase-slide" fetchpriority="low" src="assets/img/work/norte/cover-720.webp" srcset="assets/img/work/norte/cover-720.webp 720w, assets/img/work/norte/cover.webp 1440w" sizes="(min-width: 960px) 56vw, 100vw" width="1440" height="900" loading="eager" decoding="async" alt="Página inicial da NORTE com busca por profissão e cidade">
+              <img class="showcase-slide" fetchpriority="low" src="assets/img/work/nova/cover-720.webp" srcset="assets/img/work/nova/cover-720.webp 720w, assets/img/work/nova/cover.webp 1440w" sizes="(min-width: 960px) 56vw, 100vw" width="1440" height="900" loading="eager" decoding="async" alt="Página inicial da NOVA com a assistente montando um plano">
+              <img class="showcase-slide" fetchpriority="low" src="assets/img/work/barbearia/cover-720.webp" srcset="assets/img/work/barbearia/cover-720.webp 720w, assets/img/work/barbearia/cover.webp 1440w" sizes="(min-width: 960px) 56vw, 100vw" width="1440" height="900" loading="eager" decoding="async" alt="Página inicial da Barbearia Império com chamada para agendar horário">
+              <img class="showcase-slide" fetchpriority="low" src="assets/img/work/psicologia/cover-720.webp" srcset="assets/img/work/psicologia/cover-720.webp 720w, assets/img/work/psicologia/cover.webp 1440w" sizes="(min-width: 960px) 56vw, 100vw" width="1440" height="900" loading="eager" decoding="async" alt="Página inicial da Ânima Psicologia com a frase um espaço seguro para você se encontrar">
+            </div>
+          </a>
+          <div class="showcase-phone" aria-hidden="true">
+            <div class="showcase-phone-space"></div>
+            <div class="phone is-active"><img src="assets/img/work/arcx-finance/mobile-1-390.webp" srcset="assets/img/work/arcx-finance/mobile-1-390.webp 390w, assets/img/work/arcx-finance/mobile-1.webp 780w" sizes="(min-width: 960px) 12rem, 30vw" width="390" height="844" loading="lazy" decoding="async" alt=""></div>
+            <div class="phone"><img src="assets/img/work/vanta/mobile-1-390.webp" srcset="assets/img/work/vanta/mobile-1-390.webp 390w, assets/img/work/vanta/mobile-1.webp 780w" sizes="(min-width: 960px) 12rem, 30vw" width="390" height="844" loading="lazy" decoding="async" alt=""></div>
+            <div class="phone"><img src="assets/img/work/norte/mobile-1-390.webp" srcset="assets/img/work/norte/mobile-1-390.webp 390w, assets/img/work/norte/mobile-1.webp 780w" sizes="(min-width: 960px) 12rem, 30vw" width="390" height="844" loading="lazy" decoding="async" alt=""></div>
+            <div class="phone"><img src="assets/img/work/nova/mobile-1-390.webp" srcset="assets/img/work/nova/mobile-1-390.webp 390w, assets/img/work/nova/mobile-1.webp 780w" sizes="(min-width: 960px) 12rem, 30vw" width="390" height="844" loading="lazy" decoding="async" alt=""></div>
+            <div class="phone"><img src="assets/img/work/barbearia/mobile-1-390.webp" srcset="assets/img/work/barbearia/mobile-1-390.webp 390w, assets/img/work/barbearia/mobile-1.webp 780w" sizes="(min-width: 960px) 12rem, 30vw" width="390" height="844" loading="lazy" decoding="async" alt=""></div>
+            <div class="phone"><img src="assets/img/work/psicologia/mobile-1-390.webp" srcset="assets/img/work/psicologia/mobile-1-390.webp 390w, assets/img/work/psicologia/mobile-1.webp 780w" sizes="(min-width: 960px) 12rem, 30vw" width="390" height="844" loading="lazy" decoding="async" alt=""></div>
+          </div>
+        </div>
+        <div class="showcase-index" role="tablist" aria-label="Projetos em destaque">
+            <button class="showcase-tab" type="button" role="tab" id="showcase-tab-arcx-finance" aria-controls="showcase-panel" aria-selected="true"
+              data-name="ARCX Finance" data-type="Plataforma financeira" data-status="real" data-status-label="Projeto real" data-href="projetos/arcx-finance/">
+              <span class="showcase-tab-name"><span class="status" data-status="real"></span>ARCX Finance</span>
+              <span class="showcase-tab-type">Plataforma financeira</span>
+              <span class="showcase-tab-bar" aria-hidden="true"><span></span></span>
+            </button>
+            <button class="showcase-tab" type="button" role="tab" id="showcase-tab-vanta" aria-controls="showcase-panel" aria-selected="false" tabindex="-1"
+              data-name="VANTA" data-type="Marketplace com painel" data-status="demonstracao" data-status-label="Demonstração" data-href="projetos/vanta/">
+              <span class="showcase-tab-name"><span class="status" data-status="demonstracao"></span>VANTA</span>
+              <span class="showcase-tab-type">Marketplace com painel</span>
+              <span class="showcase-tab-bar" aria-hidden="true"><span></span></span>
+            </button>
+            <button class="showcase-tab" type="button" role="tab" id="showcase-tab-norte" aria-controls="showcase-panel" aria-selected="false" tabindex="-1"
+              data-name="NORTE" data-type="Plataforma de carreira" data-status="demonstracao" data-status-label="Demonstração" data-href="projetos/norte/">
+              <span class="showcase-tab-name"><span class="status" data-status="demonstracao"></span>NORTE</span>
+              <span class="showcase-tab-type">Plataforma de carreira</span>
+              <span class="showcase-tab-bar" aria-hidden="true"><span></span></span>
+            </button>
+            <button class="showcase-tab" type="button" role="tab" id="showcase-tab-nova" aria-controls="showcase-panel" aria-selected="false" tabindex="-1"
+              data-name="NOVA" data-type="Assistente de IA agêntica" data-status="conceitual" data-status-label="Projeto conceitual" data-href="projetos/nova/">
+              <span class="showcase-tab-name"><span class="status" data-status="conceitual"></span>NOVA</span>
+              <span class="showcase-tab-type">Assistente de IA agêntica</span>
+              <span class="showcase-tab-bar" aria-hidden="true"><span></span></span>
+            </button>
+            <button class="showcase-tab" type="button" role="tab" id="showcase-tab-barbearia" aria-controls="showcase-panel" aria-selected="false" tabindex="-1"
+              data-name="Barbearia Império" data-type="Site com agendamento" data-status="demonstracao" data-status-label="Demonstração" data-href="projetos/barbearia/">
+              <span class="showcase-tab-name"><span class="status" data-status="demonstracao"></span>Barbearia Império</span>
+              <span class="showcase-tab-type">Site com agendamento</span>
+              <span class="showcase-tab-bar" aria-hidden="true"><span></span></span>
+            </button>
+            <button class="showcase-tab" type="button" role="tab" id="showcase-tab-psicologia" aria-controls="showcase-panel" aria-selected="false" tabindex="-1"
+              data-name="Ânima Psicologia" data-type="Site de consultório" data-status="demonstracao" data-status-label="Demonstração" data-href="projetos/psicologia/">
+              <span class="showcase-tab-name"><span class="status" data-status="demonstracao"></span>Ânima Psicologia</span>
+              <span class="showcase-tab-type">Site de consultório</span>
+              <span class="showcase-tab-bar" aria-hidden="true"><span></span></span>
+            </button>
+        </div>
+        <div class="showcase-caption">
+          <p class="showcase-caption-text" data-showcase-caption><strong>ARCX Finance</strong><span class="status" data-status="real">Projeto real</span></p>
+          <div class="showcase-caption-actions">
+            <button class="showcase-control" type="button" data-showcase-toggle aria-label="Pausar a troca automática"><svg class="icon-pause" aria-hidden="true"><use href="#i-pause"/></svg><svg class="icon-play" aria-hidden="true"><use href="#i-play"/></svg></button>
+            <a class="link-arrow" href="projetos/arcx-finance/" data-showcase-link>Ver case <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+      </div>
+<!-- /build:showcase -->
+    </div>
+  </section>
 
-        <div class="logo-stage" data-reveal data-delay="1">
-          <span class="ring ring-3" aria-hidden="true"></span>
-          <span class="ring ring-2" aria-hidden="true"></span>
-          <span class="ring ring-1" aria-hidden="true"></span>
-          <span class="logo-glow" aria-hidden="true"></span>
-          <img src="assets/img/logo-mark.png" alt="APX Web" class="hero-logo">
+  <section class="section" id="trabalho" aria-labelledby="trabalho-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2 id="trabalho-title">Trabalho que dá para abrir e usar.</h2>
+          <p class="lead section-sub">Cada projeto aqui funciona de verdade: dá para agendar, comprar, simular e administrar. E cada um diz com clareza o que é.</p>
+        </div>
+        <div class="status-legend">
+          <p class="status-legend-title">Como classificamos os projetos</p>
+          <dl>
+            <div>
+              <dt><span class="status" data-status="real">Projeto real</span></dt>
+              <dd>Feito para um cliente de verdade e publicado.</dd>
+            </div>
+            <div>
+              <dt><span class="status" data-status="conceitual">Conceitual</span></dt>
+              <dd>Ideia de produto da APX. Funciona, mas não tem cliente.</dd>
+            </div>
+            <div>
+              <dt><span class="status" data-status="demonstracao">Demonstração</span></dt>
+              <dd>Negócio fictício com o sistema funcionando por inteiro.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+<!-- build:work -->
+      <div class="work-list">
+        <article class="work" aria-labelledby="work-arcx-finance">
+          <a class="work-media" href="projetos/arcx-finance/" tabindex="-1" aria-hidden="true" data-cursor>
+            <div class="frame" data-reveal="media">
+              <div class="frame-bar" aria-hidden="true"><span class="frame-dots"><span></span><span></span><span></span></span></div>
+              <div class="frame-view" style="--zoom:1.75; --focus:50% 100%"><img src="assets/img/work/arcx-finance/tela-1-720.webp" srcset="assets/img/work/arcx-finance/tela-1-720.webp 720w, assets/img/work/arcx-finance/tela-1.webp 1440w" sizes="(min-width: 1200px) 760px, (min-width: 960px) 58vw, 100vw" width="1440" height="900" loading="lazy" decoding="async" alt=""></div>
+            </div>
+          </a>
+          <div class="work-info">
+            <div class="work-title">
+              <h3 id="work-arcx-finance"><a href="projetos/arcx-finance/">ARCX Finance</a></h3>
+              <p class="work-meta"><span class="status status-pill" data-status="real">Projeto real</span><span>Plataforma financeira</span></p>
+            </div>
+            <p class="work-summary">Compra e venda de criptomoedas via PIX, com cotação transparente e simulador em tempo real.</p>
+            <ul class="work-features">
+              <li>Simulador de cotação</li>
+              <li>Cotação com prazo visível</li>
+              <li>Operação em três etapas</li>
+            </ul>
+            <p class="work-stack">HTML · CSS · JavaScript</p>
+            <div class="work-links">
+              <a class="link-arrow" href="projetos/arcx-finance/">Ver case <svg aria-hidden="true"><use href="#i-arrow"/></svg><span class="sr-only"> de ARCX Finance</span></a>
+              <a class="link-arrow is-muted" data-dir="out" href="portfolio-projects/arcx-finance/index.html" target="_blank" rel="noopener">Abrir ao vivo <svg aria-hidden="true"><use href="#i-arrow-out"/></svg><span class="sr-only"> (ARCX Finance, nova aba)</span></a>
+            </div>
+          </div>
+        </article>
+        <article class="work" aria-labelledby="work-vanta">
+          <a class="work-media" href="projetos/vanta/" tabindex="-1" aria-hidden="true" data-cursor>
+            <div class="frame" data-reveal="media">
+              <div class="frame-bar" aria-hidden="true"><span class="frame-dots"><span></span><span></span><span></span></span></div>
+              <div class="frame-view" style="--zoom:1.22; --focus:100% 0%"><img src="assets/img/work/vanta/tela-1-720.webp" srcset="assets/img/work/vanta/tela-1-720.webp 720w, assets/img/work/vanta/tela-1.webp 1440w" sizes="(min-width: 1200px) 760px, (min-width: 960px) 58vw, 100vw" width="1440" height="900" loading="lazy" decoding="async" alt=""></div>
+            </div>
+          </a>
+          <div class="work-info">
+            <div class="work-title">
+              <h3 id="work-vanta"><a href="projetos/vanta/">VANTA</a></h3>
+              <p class="work-meta"><span class="status status-pill" data-status="demonstracao">Demonstração</span><span>Marketplace com painel</span></p>
+            </div>
+            <p class="work-summary">Loja completa: catálogo, produto, carrinho, checkout em cinco etapas, área do cliente e painel administrativo.</p>
+            <ul class="work-features">
+              <li>Catálogo com filtros</li>
+              <li>Checkout em cinco etapas</li>
+              <li>Área do cliente</li>
+            </ul>
+            <p class="work-stack">JavaScript (ES modules) · Rotas próprias · Gráficos em SVG · Sem framework</p>
+            <div class="work-links">
+              <a class="link-arrow" href="projetos/vanta/">Ver case <svg aria-hidden="true"><use href="#i-arrow"/></svg><span class="sr-only"> de VANTA</span></a>
+              <a class="link-arrow is-muted" data-dir="out" href="portfolio-projects/vanta/index.html" target="_blank" rel="noopener">Abrir ao vivo <svg aria-hidden="true"><use href="#i-arrow-out"/></svg><span class="sr-only"> (VANTA, nova aba)</span></a>
+            </div>
+          </div>
+        </article>
+        <article class="work" aria-labelledby="work-norte">
+          <a class="work-media" href="projetos/norte/" tabindex="-1" aria-hidden="true" data-cursor>
+            <div class="frame" data-reveal="media">
+              <div class="frame-bar" aria-hidden="true"><span class="frame-dots"><span></span><span></span><span></span></span></div>
+              <div class="frame-view" style="--zoom:1.22; --focus:100% 0%"><img src="assets/img/work/norte/tela-3-720.webp" srcset="assets/img/work/norte/tela-3-720.webp 720w, assets/img/work/norte/tela-3.webp 1440w" sizes="(min-width: 1200px) 760px, (min-width: 960px) 58vw, 100vw" width="1440" height="900" loading="lazy" decoding="async" alt=""></div>
+            </div>
+          </a>
+          <div class="work-info">
+            <div class="work-title">
+              <h3 id="work-norte"><a href="projetos/norte/">NORTE</a></h3>
+              <p class="work-meta"><span class="status status-pill" data-status="demonstracao">Demonstração</span><span>Plataforma de carreira</span></p>
+            </div>
+            <p class="work-summary">Vagas por profissão e região num mapa, com salário por nível, demanda, formação e o caminho até a carreira.</p>
+            <ul class="work-features">
+              <li>Busca por profissão e região</li>
+              <li>Página de carreira</li>
+              <li>Comparação de carreiras</li>
+            </ul>
+            <p class="work-stack">JavaScript (ES modules) · Mapa e gráficos em SVG · Rotas próprias · Sem framework</p>
+            <div class="work-links">
+              <a class="link-arrow" href="projetos/norte/">Ver case <svg aria-hidden="true"><use href="#i-arrow"/></svg><span class="sr-only"> de NORTE</span></a>
+              <a class="link-arrow is-muted" data-dir="out" href="portfolio-projects/norte/index.html" target="_blank" rel="noopener">Abrir ao vivo <svg aria-hidden="true"><use href="#i-arrow-out"/></svg><span class="sr-only"> (NORTE, nova aba)</span></a>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="work-more">
+        <div class="work-more-head">
+          <h3>Mais projetos</h3>
+          <p>Cada um com o seu case completo.</p>
+        </div>
+        <div class="work-grid">
+          <article class="work-card" aria-labelledby="work-nova">
+            <a class="work-media" href="projetos/nova/" tabindex="-1" aria-hidden="true" data-cursor>
+              <div class="frame" data-reveal="media">
+                <div class="frame-bar" aria-hidden="true"><span class="frame-dots"><span></span><span></span><span></span></span></div>
+                <div class="frame-view" style="--zoom:1.6; --focus:4% 30%"><img src="assets/img/work/nova/cover-720.webp" srcset="assets/img/work/nova/cover-720.webp 720w, assets/img/work/nova/cover.webp 1440w" sizes="(min-width: 960px) 380px, (min-width: 640px) 50vw, 100vw" width="1440" height="900" loading="lazy" decoding="async" alt=""></div>
+              </div>
+            </a>
+            <div class="work-card-body">
+              <div class="work-title">
+                <h4 id="work-nova"><a href="projetos/nova/">NOVA</a></h4>
+                <p class="work-meta"><span class="status status-pill" data-status="conceitual">Projeto conceitual</span><span>Assistente de IA agêntica</span></p>
+              </div>
+              <p>Assistente pessoal que entende o pedido em português, monta um plano, pede permissão e executa de forma reversível.</p>
+            </div>
+            <div class="work-links">
+              <a class="link-arrow" href="projetos/nova/">Ver case <svg aria-hidden="true"><use href="#i-arrow"/></svg><span class="sr-only"> de NOVA</span></a>
+              <a class="link-arrow is-muted" data-dir="out" href="portfolio-projects/nova/index.html" target="_blank" rel="noopener">Ao vivo <svg aria-hidden="true"><use href="#i-arrow-out"/></svg><span class="sr-only"> (NOVA, nova aba)</span></a>
+            </div>
+          </article>
+          <article class="work-card" aria-labelledby="work-barbearia">
+            <a class="work-media" href="projetos/barbearia/" tabindex="-1" aria-hidden="true" data-cursor>
+              <div class="frame" data-reveal="media">
+                <div class="frame-bar" aria-hidden="true"><span class="frame-dots"><span></span><span></span><span></span></span></div>
+                <div class="frame-view" style="--zoom:1.55; --focus:4% 35%"><img src="assets/img/work/barbearia/cover-720.webp" srcset="assets/img/work/barbearia/cover-720.webp 720w, assets/img/work/barbearia/cover.webp 1440w" sizes="(min-width: 960px) 380px, (min-width: 640px) 50vw, 100vw" width="1440" height="900" loading="lazy" decoding="async" alt=""></div>
+              </div>
+            </a>
+            <div class="work-card-body">
+              <div class="work-title">
+                <h4 id="work-barbearia"><a href="projetos/barbearia/">Barbearia Império</a></h4>
+                <p class="work-meta"><span class="status status-pill" data-status="demonstracao">Demonstração</span><span>Site com agendamento</span></p>
+              </div>
+              <p>Site de barbearia com catálogo de serviços, agendamento online e aviso de aberto ou fechado em tempo real.</p>
+            </div>
+            <div class="work-links">
+              <a class="link-arrow" href="projetos/barbearia/">Ver case <svg aria-hidden="true"><use href="#i-arrow"/></svg><span class="sr-only"> de Barbearia Império</span></a>
+              <a class="link-arrow is-muted" data-dir="out" href="portfolio-projects/barbearia/index.html" target="_blank" rel="noopener">Ao vivo <svg aria-hidden="true"><use href="#i-arrow-out"/></svg><span class="sr-only"> (Barbearia Império, nova aba)</span></a>
+            </div>
+          </article>
+          <article class="work-card" aria-labelledby="work-psicologia">
+            <a class="work-media" href="projetos/psicologia/" tabindex="-1" aria-hidden="true" data-cursor>
+              <div class="frame" data-reveal="media">
+                <div class="frame-bar" aria-hidden="true"><span class="frame-dots"><span></span><span></span><span></span></span></div>
+                <div class="frame-view" style="--zoom:1.55; --focus:4% 40%"><img src="assets/img/work/psicologia/cover-720.webp" srcset="assets/img/work/psicologia/cover-720.webp 720w, assets/img/work/psicologia/cover.webp 1440w" sizes="(min-width: 960px) 380px, (min-width: 640px) 50vw, 100vw" width="1440" height="900" loading="lazy" decoding="async" alt=""></div>
+              </div>
+            </a>
+            <div class="work-card-body">
+              <div class="work-title">
+                <h4 id="work-psicologia"><a href="projetos/psicologia/">Ânima Psicologia</a></h4>
+                <p class="work-meta"><span class="status status-pill" data-status="demonstracao">Demonstração</span><span>Site de consultório</span></p>
+              </div>
+              <p>Site de consultório com agendamento online, remarcação, lembrete na agenda, área do paciente e respiração guiada.</p>
+            </div>
+            <div class="work-links">
+              <a class="link-arrow" href="projetos/psicologia/">Ver case <svg aria-hidden="true"><use href="#i-arrow"/></svg><span class="sr-only"> de Ânima Psicologia</span></a>
+              <a class="link-arrow is-muted" data-dir="out" href="portfolio-projects/psicologia/index.html" target="_blank" rel="noopener">Ao vivo <svg aria-hidden="true"><use href="#i-arrow-out"/></svg><span class="sr-only"> (Ânima Psicologia, nova aba)</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+<!-- /build:work -->
+
+      <p class="work-footnote">Também temos sites prontos que ainda são propostas em conversa com clientes. Eles só entram aqui quando o projeto estiver fechado.</p>
+    </div>
+  </section>
+
+  <section class="section" id="servicos" aria-labelledby="servicos-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="servicos-title">Do problema ao produto.</h2>
+        <p class="lead">Não começamos pelo layout. Começamos pelo que atrapalha o seu negócio hoje, e o site ou sistema sai dessa resposta. Abaixo, o caminho completo com a Barbearia Império, um dos nossos projetos de demonstração.</p>
+      </div>
+
+      <div class="flow" data-flow>
+        <div class="flow-steps" role="tablist" aria-label="Etapas de um projeto">
+          <button class="flow-step" role="tab" id="flow-tab-1" aria-controls="flow-panel-1" aria-selected="true" type="button">
+            Problema
+          </button>
+          <button class="flow-step" role="tab" id="flow-tab-2" aria-controls="flow-panel-2" aria-selected="false" tabindex="-1" type="button">
+            Estratégia
+          </button>
+          <button class="flow-step" role="tab" id="flow-tab-3" aria-controls="flow-panel-3" aria-selected="false" tabindex="-1" type="button">
+            Design
+          </button>
+          <button class="flow-step" role="tab" id="flow-tab-4" aria-controls="flow-panel-4" aria-selected="false" tabindex="-1" type="button">
+            Desenvolvimento
+          </button>
+          <button class="flow-step" role="tab" id="flow-tab-5" aria-controls="flow-panel-5" aria-selected="false" tabindex="-1" type="button">
+            Produto
+          </button>
         </div>
 
-        <h1 class="hero-title"><span class="word">Ideias</span> <span class="word">que</span> <span class="word">constroem</span> <span class="text-shine"><span class="word">o</span> <span class="word">seu</span> <span class="word">futuro</span></span></h1>
+        <div class="flow-panels">
+          <div class="flow-panel" role="tabpanel" id="flow-panel-1" aria-labelledby="flow-tab-1" tabindex="0">
+            <div class="flow-copy">
+              <h3>O WhatsApp virou a recepção.</h3>
+              <p>O dono passa o dia respondendo preço, horário e se ainda tem vaga. Enquanto isso, o cliente que não recebe resposta rápida marca em outro lugar.</p>
+            </div>
+            <div class="flow-visual">
+              <div class="chat">
+                <p class="chat-bubble">Quanto tá o corte + barba?<small>09:12</small></p>
+                <p class="chat-bubble">Tem horário hoje à tarde?<small>09:40</small></p>
+                <p class="chat-bubble">Vocês abrem domingo?<small>11:05</small></p>
+                <p class="chat-bubble">Ainda tem vaga pras 18h?<small>13:22</small></p>
+                <p class="chat-count">Ilustração · Barbearia Império · as mesmas quatro perguntas, todo dia</p>
+              </div>
+            </div>
+          </div>
 
-        <p class="hero-sub" data-reveal data-delay="2">
-          Sites profissionais para pequenos negócios: do agendamento ao catálogo,
-          feitos sob medida e no ar do jeito certo.
-        </p>
+          <div class="flow-panel" role="tabpanel" id="flow-panel-2" aria-labelledby="flow-tab-2" tabindex="0" hidden>
+            <div class="flow-copy">
+              <h3>Responder antes da pergunta.</h3>
+              <p>A estratégia foi tirar do WhatsApp o que se repete. Cada pergunta frequente virou uma parte do site, na ordem em que o cliente decide.</p>
+            </div>
+            <div class="flow-visual">
+              <ol class="sitemap" aria-label="Estrutura do site">
+                <li>Serviços e preços <span>“quanto é?”</span></li>
+                <li class="is-key">Agendar horário <span>“tem vaga?”</span></li>
+                <li>Horários e localização <span>“abre domingo?”</span></li>
+                <li>Dúvidas <span>o resto</span></li>
+              </ol>
+            </div>
+          </div>
 
-        <div class="hero-actions" data-reveal data-delay="3">
-          <a href="#contato" class="btn btn-primary">Vamos conversar?</a>
-          <a href="#trabalhos" class="btn btn-ghost">Ver portfólio</a>
+          <div class="flow-panel" role="tabpanel" id="flow-panel-3" aria-labelledby="flow-tab-3" tabindex="0" hidden>
+            <div class="flow-copy">
+              <h3>Uma cara que combina com a cadeira de barbeiro.</h3>
+              <p>Preto e dourado, tipografia clássica e o botão de agendar sempre à vista. O design precisa parecer com o lugar e deixar a próxima ação óbvia.</p>
+            </div>
+            <div class="flow-visual">
+              <div class="frame">
+                <div class="frame-bar" aria-hidden="true"><span class="frame-dots"><span></span><span></span><span></span></span></div>
+                <div class="frame-view"><img src="assets/img/work/barbearia/tela-1-720.webp" srcset="assets/img/work/barbearia/tela-1-720.webp 720w, assets/img/work/barbearia/tela-1.webp 1440w" sizes="(min-width: 960px) 40vw, 100vw" width="1440" height="900" loading="lazy" decoding="async" alt="Catálogo de serviços da Barbearia Império com preços e filtros"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-panel" role="tabpanel" id="flow-panel-4" aria-labelledby="flow-tab-4" tabindex="0" hidden>
+            <div class="flow-copy">
+              <h3>O site sabe se a barbearia está aberta.</h3>
+              <p>O aviso de “aberto agora” é calculado pelo horário de São Paulo, e o agendamento só oferece horários que existem. Ao lado, o trecho real do código que faz isso.</p>
+            </div>
+            <div class="flow-visual">
+              <figure class="code-card">
+                <figcaption class="code-card-head"><span>barbearia/script.js</span><span>JavaScript</span></figcaption>
+<pre><code><span class="c">// seg 9h–18h · ter a sex 9h–20h · sáb 8h–18h</span>
+<span class="k">const</span> HOURS = { <span class="n">0</span>: <span class="k">null</span>, <span class="n">1</span>: [<span class="n">540</span>, <span class="n">1080</span>], <span class="n">6</span>: [<span class="n">480</span>, <span class="n">1080</span>], … };
+
+<span class="k">function</span> getStatus() {
+  <span class="k">const</span> now = nowInSaoPaulo();
+  <span class="k">const</span> today = HOURS[now.dow];
+  <span class="k">if</span> (today &amp;&amp; now.minutes &gt;= today[<span class="n">0</span>]
+      &amp;&amp; now.minutes &lt; today[<span class="n">1</span>]) {
+    <span class="k">return</span> { open: <span class="k">true</span>, title: <span class="s">'Aberto agora'</span> };
+  }
+  <span class="c">// senão, procura o próximo dia com expediente</span>
+}</code></pre>
+              </figure>
+            </div>
+          </div>
+
+          <div class="flow-panel" role="tabpanel" id="flow-panel-5" aria-labelledby="flow-tab-5" tabindex="0" hidden>
+            <div class="flow-copy">
+              <h3>Um site que agenda sozinho.</h3>
+              <p>O cliente escolhe serviço, dia e horário em três passos, e o dono para de responder a mesma pergunta o dia inteiro.</p>
+              <a class="link-arrow" href="projetos/barbearia/">Ver o case completo <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+            <div class="flow-visual">
+              <div class="flow-shot-pair">
+                <div class="frame">
+                  <div class="frame-bar" aria-hidden="true"><span class="frame-dots"><span></span><span></span><span></span></span></div>
+                  <div class="frame-view"><img src="assets/img/work/barbearia/cover-720.webp" srcset="assets/img/work/barbearia/cover-720.webp 720w, assets/img/work/barbearia/cover.webp 1440w" sizes="(min-width: 960px) 32vw, 70vw" width="1440" height="900" loading="lazy" decoding="async" alt="Página inicial da Barbearia Império"></div>
+                </div>
+                <div class="phone"><img src="assets/img/work/barbearia/mobile-2-390.webp" width="390" height="844" loading="lazy" decoding="async" alt="Agendamento da Barbearia Império no celular"></div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <ul class="hero-badges" data-reveal data-delay="4">
-          <li><span class="badge-check">✓</span> Sites responsivos</li>
-          <li><span class="badge-check">✓</span> Entrega ágil</li>
-          <li><span class="badge-check">✓</span> Suporte direto com quem programou</li>
+      <div class="capabilities">
+        <div class="capabilities-head">
+          <h3>O que dá para construir</h3>
+          <p>Com o projeto onde você pode ver funcionando.</p>
+        </div>
+        <ul class="capability-list">
+          <li class="capability">
+            <h4>Sites institucionais</h4>
+            <p>Apresentam o negócio com clareza e levam direto ao contato.</p>
+            <p class="capability-proof">Veja: <a href="projetos/psicologia/">Ânima</a> <a href="projetos/arcx-finance/">ARCX</a></p>
+          </li>
+          <li class="capability">
+            <h4>Agendamento online</h4>
+            <p>Clientes marcam sozinhos, só em horários que existem, com lembrete na agenda.</p>
+            <p class="capability-proof">Veja: <a href="projetos/barbearia/">Barbearia Império</a> <a href="projetos/psicologia/">Ânima</a></p>
+          </li>
+          <li class="capability">
+            <h4>Lojas e marketplaces</h4>
+            <p>Catálogo, carrinho, checkout e acompanhamento de pedidos.</p>
+            <p class="capability-proof">Veja: <a href="projetos/vanta/">VANTA</a></p>
+          </li>
+          <li class="capability">
+            <h4>Plataformas e painéis</h4>
+            <p>Dados organizados, gráficos e áreas administrativas para tocar a operação.</p>
+            <p class="capability-proof">Veja: <a href="projetos/norte/">NORTE</a> <a href="projetos/vanta/">VANTA</a></p>
+          </li>
+          <li class="capability">
+            <h4>Produtos com IA</h4>
+            <p>Interfaces que entendem pedidos em português e agem com permissão.</p>
+            <p class="capability-proof">Veja: <a href="projetos/nova/">NOVA</a></p>
+          </li>
+          <li class="capability">
+            <h4>Identidade e movimento</h4>
+            <p>Cores, tipografia e animações que dão cara ao negócio sem pesar o site.</p>
+            <p class="capability-proof">Veja: <a href="projetos/barbearia/">Barbearia Império</a> <a href="projetos/psicologia/">Ânima</a></p>
+          </li>
         </ul>
       </div>
-
-      <ul class="hero-rail hero-rail-right" data-reveal data-delay="4">
-        <li>
-          <span class="rail-ico">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="6" cy="7" r="2.4" stroke="currentColor" stroke-width="1.6"/>
-              <circle cx="18" cy="7" r="2.4" stroke="currentColor" stroke-width="1.6"/>
-              <circle cx="12" cy="17" r="2.4" stroke="currentColor" stroke-width="1.6"/>
-              <path d="M7.8 8.8L10.5 15M16.2 8.8L13.5 15" stroke="currentColor" stroke-width="1.6"/>
-            </svg>
-          </span>
-          Marketplace
-        </li>
-        <li>
-          <span class="rail-ico">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 3L13.5 9L19 10.5L13.5 12L12 18L10.5 12L5 10.5L10.5 9L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-              <path d="M19 15L19.6 17.4L22 18L19.6 18.6L19 21L18.4 18.6L16 18L18.4 17.4L19 15Z" fill="currentColor"/>
-            </svg>
-          </span>
-          Design &amp; animações
-        </li>
-      </ul>
-
-    </div>
-
-    <div class="hero-strip" data-reveal data-delay="5">
-      <p class="strip-head"><span>Projetos no ar</span></p>
-
-      <div class="marquee" id="marquee">
-        <div class="marquee-track">
-          <div class="marquee-group">
-            <a class="strip-card" href="portfolio-projects/arcx-finance/index.html" target="_blank" rel="noopener">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/arcx.webp" alt="Arcx Finance: plataforma de compra e venda de criptomoedas"></span>
-              <span class="strip-name">Arcx Finance <em>Cripto via PIX</em></span>
-            </a>
-            <a class="strip-card" href="portfolio-projects/nova/index.html" target="_blank" rel="noopener">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/nova.webp" alt="NOVA: assistente de IA agêntica pessoal"></span>
-              <span class="strip-name">NOVA <em>Assistente de IA agêntica</em></span>
-            </a>
-            <a class="strip-card" href="portfolio-projects/barbearia/index.html" target="_blank" rel="noopener">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/barbearia.webp" alt="Barbearia Império: site com agendamento online"></span>
-              <span class="strip-name">Barbearia Império <em>Agendamento online</em></span>
-            </a>
-            <a class="strip-card" href="portfolio-projects/psicologia/index.html" target="_blank" rel="noopener">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/psicologia.webp" alt="Ânima Psicologia: site de consultório com agendamento online"></span>
-              <span class="strip-name">Ânima Psicologia <em>Agenda e área do paciente</em></span>
-            </a>
-            <a class="strip-card" href="portfolio-projects/vanta/index.html" target="_blank" rel="noopener">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/vanta.webp" alt="VANTA: marketplace com loja, checkout e painel administrativo"></span>
-              <span class="strip-name">VANTA <em>Marketplace com painel</em></span>
-            </a>
-            <a class="strip-card" href="portfolio-projects/norte/index.html" target="_blank" rel="noopener">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/norte.webp?v=3" alt="NORTE: plataforma de busca de vagas e guia de carreira"></span>
-              <span class="strip-name">NORTE <em>Vagas por região e carreira</em></span>
-            </a>
-          </div>
-
-          <div class="marquee-group" aria-hidden="true">
-            <a class="strip-card" href="portfolio-projects/arcx-finance/index.html" target="_blank" rel="noopener" tabindex="-1">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/arcx.webp" alt=""></span>
-              <span class="strip-name">Arcx Finance <em>Cripto via PIX</em></span>
-            </a>
-            <a class="strip-card" href="portfolio-projects/nova/index.html" target="_blank" rel="noopener" tabindex="-1">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/nova.webp" alt=""></span>
-              <span class="strip-name">NOVA <em>Assistente de IA agêntica</em></span>
-            </a>
-            <a class="strip-card" href="portfolio-projects/barbearia/index.html" target="_blank" rel="noopener" tabindex="-1">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/barbearia.webp" alt=""></span>
-              <span class="strip-name">Barbearia Império <em>Agendamento online</em></span>
-            </a>
-            <a class="strip-card" href="portfolio-projects/psicologia/index.html" target="_blank" rel="noopener" tabindex="-1">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/psicologia.webp" alt=""></span>
-              <span class="strip-name">Ânima Psicologia <em>Agenda e área do paciente</em></span>
-            </a>
-            <a class="strip-card" href="portfolio-projects/vanta/index.html" target="_blank" rel="noopener" tabindex="-1">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/vanta.webp" alt=""></span>
-              <span class="strip-name">VANTA <em>Marketplace com painel</em></span>
-            </a>
-            <a class="strip-card" href="portfolio-projects/norte/index.html" target="_blank" rel="noopener" tabindex="-1">
-              <span class="strip-shot"><img src="assets/img/portfolio/strip/norte.webp?v=3" alt=""></span>
-              <span class="strip-name">NORTE <em>Vagas por região e carreira</em></span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <a class="scroll-cue" href="#especialidades" aria-label="Rolar para a próxima seção"><span aria-hidden="true"></span></a>
-  </section>
-
-  <section id="especialidades" class="section especialidades">
-    <div class="container">
-      <span class="eyebrow" data-reveal>Especialidades</span>
-      <h2 data-reveal>O que fazemos de melhor</h2>
-
-      <div class="cards-grid">
-        <div class="spec-card" data-reveal data-spotlight>
-          <div class="spec-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M3 9H21" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M8 3V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M16 3V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M7.5 13H9.5V15H7.5V13Z" fill="currentColor"/>
-              <path d="M11.25 13H13.25V15H11.25V13Z" fill="currentColor"/>
-              <path d="M15 13H17V15H15V13Z" fill="currentColor"/>
-            </svg>
-          </div>
-          <h3>Agendamento</h3>
-          <p>Sistemas de agendamento integrados ao seu site, para clientes marcarem horários sem depender de WhatsApp ou telefone.</p>
-        </div>
-
-        <div class="spec-card" data-reveal data-delay="1" data-spotlight>
-          <div class="spec-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="6" cy="7" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-              <circle cx="18" cy="7" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-              <circle cx="12" cy="17" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M7.8 8.8L10.5 15" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M16.2 8.8L13.5 15" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-          </div>
-          <h3>Marketplace</h3>
-          <p>Plataformas de marketplace que conectam compradores e vendedores em um só lugar, com estrutura pensada para escalar.</p>
-        </div>
-
-        <div class="spec-card" data-reveal data-delay="2" data-spotlight>
-          <div class="spec-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 3L20 7V12C20 16.5 16.5 20.5 12 21C7.5 20.5 4 16.5 4 12V7L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-              <path d="M9 12L11 14L15.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <h3>Gestão de Dados</h3>
-          <p>Diários de bordo, rastreamento e catálogos: organizamos as informações do seu negócio de forma clara e acessível.</p>
-        </div>
-
-        <div class="spec-card" data-reveal data-delay="3" data-spotlight>
-          <div class="spec-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 3L13.5 9L19 10.5L13.5 12L12 18L10.5 12L5 10.5L10.5 9L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-              <path d="M19 15L19.6 17.4L22 18L19.6 18.6L19 21L18.4 18.6L16 18L18.4 17.4L19 15Z" fill="currentColor"/>
-            </svg>
-          </div>
-          <h3>Design &amp; Animações</h3>
-          <p>Identidade visual, microinterações e animações que dão vida ao site sem pesar a performance.</p>
-        </div>
-      </div>
     </div>
   </section>
 
-  <section id="como-funciona" class="section como-funciona">
+  <section class="section" id="processo" aria-labelledby="processo-title">
     <div class="container">
-      <span class="eyebrow" data-reveal>Como Funcionamos</span>
-      <h2 data-reveal>Do primeiro contato ao site no ar</h2>
+      <div class="section-head">
+        <h2 id="processo-title">Como é trabalhar com a APX.</h2>
+        <p class="lead">Quatro etapas, com a mesma dupla do começo ao fim. Você sempre sabe em que ponto o projeto está e o que vai receber em seguida.</p>
+      </div>
 
-      <div class="steps-grid">
-        <div class="step" data-reveal>
-          <span class="step-number">01</span>
-          <h3>Conversa inicial</h3>
-          <p>Entendemos seu negócio, seu público e o que você precisa que o site resolva.</p>
-        </div>
-        <div class="step" data-reveal data-delay="1">
-          <span class="step-number">02</span>
+      <div class="process" data-process>
+        <div class="process-track" aria-hidden="true"><span></span></div>
+        <ol class="process-steps">
+        <li class="process-step">
+          <span class="process-num">01</span>
+          <h3>Conversa</h3>
+          <p>Você conta como o negócio funciona e o que precisa resolver. Pode ser pelo WhatsApp, sem formulário longo.</p>
+          <p class="process-get"><span>Você recebe</span>Uma primeira ideia do que faz sentido construir.</p>
+        </li>
+        <li class="process-step">
+          <span class="process-num">02</span>
           <h3>Proposta e design</h3>
-          <p>Definimos escopo, prazo, valor e apresentamos um layout alinhado com sua marca.</p>
-        </div>
-        <div class="step" data-reveal data-delay="2">
-          <span class="step-number">03</span>
+          <p>Definimos escopo, prazo e valor. Depois desenhamos as telas principais com a cara da sua marca.</p>
+          <p class="process-get"><span>Você recebe</span>A proposta por escrito e o layout para aprovar.</p>
+        </li>
+        <li class="process-step">
+          <span class="process-num">03</span>
           <h3>Desenvolvimento</h3>
-          <p>Construímos o site, revisando com você em cada etapa do processo.</p>
-        </div>
-        <div class="step" data-reveal data-delay="3">
-          <span class="step-number">04</span>
+          <p>Construímos o site ou sistema e mostramos o andamento para você revisar em cada etapa.</p>
+          <p class="process-get"><span>Você recebe</span>Versões navegáveis para testar antes de publicar.</p>
+        </li>
+        <li class="process-step">
+          <span class="process-num">04</span>
           <h3>Entrega e suporte</h3>
-          <p>Publicamos o site online e seguimos disponíveis para ajustes e suporte.</p>
-        </div>
+          <p>Publicamos, conferimos no celular e no computador e seguimos disponíveis para ajustes.</p>
+          <p class="process-get"><span>Você recebe</span>O site no ar e contato direto com quem programou.</p>
+        </li>
+        </ol>
+      </div>
+
+      <div class="process-note">
+        <p>Sem atendente no meio. <span>Quem responde a sua mensagem é quem desenha e programa o seu projeto.</span></p>
+        <a class="btn btn-secondary" href="#contato">Começar pela conversa</a>
       </div>
     </div>
   </section>
 
-  <section id="trabalhos" class="section trabalhos">
+  <section class="section section-tight" id="depoimentos" aria-labelledby="depoimentos-title">
     <div class="container">
-      <span class="eyebrow" data-reveal>Nossos Trabalhos</span>
-      <h2 data-reveal>Portfólio</h2>
-      <p class="lead" data-reveal>Projetos que criamos por conta própria para mostrar, na prática, o que a APX Web sabe fazer.</p>
-
-      <div class="portfolio-grid">
-        <a class="portfolio-card" href="portfolio-projects/arcx-finance/index.html" target="_blank" rel="noopener" data-reveal>
-          <div class="portfolio-thumb">
-            <span class="portfolio-tag">Empresa encerrada · no ar com autorização</span>
-            <img src="assets/img/portfolio/arcx.png" alt="Arcx Finance: plataforma de compra e venda de criptomoedas" loading="lazy">
-          </div>
-          <div class="portfolio-info">
-            <h3>Arcx Finance</h3>
-            <p>Plataforma de compra e venda de criptomoedas via PIX, com simulador de cotação em tempo real e acompanhamento da operação.</p>
-            <p class="portfolio-note">Projeto real, que chegou a ir para o ar. A empresa encerrou as atividades depois, mas o fundador autorizou manter o site aqui como demonstração.</p>
-            <span class="portfolio-link">Ver projeto <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-
-        <a class="portfolio-card" href="portfolio-projects/nova/index.html" target="_blank" rel="noopener" data-reveal data-delay="1">
-          <div class="portfolio-thumb">
-            <img src="assets/img/portfolio/nova.png" alt="NOVA: assistente de IA agêntica pessoal" loading="lazy">
-          </div>
-          <div class="portfolio-info">
-            <h3>NOVA</h3>
-            <p>Assistente de IA pessoal e agêntica: entende o pedido em português, monta um plano, pede permissão e executa de forma reversível em tarefas, agenda, metas, hábitos e finanças.</p>
-            <span class="portfolio-link">Ver projeto <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-
-        <a class="portfolio-card" href="portfolio-projects/barbearia/index.html" target="_blank" rel="noopener" data-reveal data-delay="2">
-          <div class="portfolio-thumb">
-            <img src="assets/img/portfolio/barbearia.png" alt="Barbearia Império: site com agendamento online e catálogo de serviços" loading="lazy">
-          </div>
-          <div class="portfolio-info">
-            <h3>Barbearia Império</h3>
-            <p>Site para barbearia com agendamento online, catálogo de serviços com filtros, preços, horários e aviso de aberto ou fechado em tempo real.</p>
-            <span class="portfolio-link">Ver projeto <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-
-        <a class="portfolio-card" href="portfolio-projects/psicologia/index.html" target="_blank" rel="noopener" data-reveal data-delay="3">
-          <div class="portfolio-thumb">
-            <img src="assets/img/portfolio/psicologia.png" alt="Ânima Psicologia: site para consultório de psicologia com agendamento online e área do paciente" loading="lazy">
-          </div>
-          <div class="portfolio-info">
-            <h3>Ânima Psicologia</h3>
-            <p>Site para consultório de psicologia com agendamento online, remarcação e lembrete na agenda, área do paciente e exercício de respiração guiada.</p>
-            <span class="portfolio-link">Ver projeto <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-
-        <a class="portfolio-card" href="portfolio-projects/vanta/index.html" target="_blank" rel="noopener" data-reveal data-delay="4">
-          <div class="portfolio-thumb">
-            <img src="assets/img/portfolio/vanta.png" alt="VANTA: marketplace com catálogo, checkout e painel administrativo" loading="lazy">
-          </div>
-          <div class="portfolio-info">
-            <h3>VANTA</h3>
-            <p>Marketplace completo: catálogo com filtros, página de produto, carrinho, checkout em cinco etapas, área do cliente e painel administrativo com dashboard, gráficos, gestão de produtos, pedidos e promoções.</p>
-            <p class="portfolio-note">Loja fictícia criada para demonstrar um sistema inteiro funcionando, e não apenas uma página de apresentação. Tudo pode ser testado: dá para comprar, acompanhar o pedido e administrar a loja.</p>
-            <span class="portfolio-link">Ver projeto <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-        <a class="portfolio-card" href="portfolio-projects/norte/index.html" target="_blank" rel="noopener" data-reveal data-delay="5">
-          <div class="portfolio-thumb">
-            <img src="assets/img/portfolio/norte.png?v=3" alt="NORTE: plataforma de busca de vagas por profissão e região, com guia de carreira" loading="lazy">
-          </div>
-          <div class="portfolio-info">
-            <h3>NORTE</h3>
-            <p>Plataforma de carreira: escolha a profissão e a região e veja as oportunidades num mapa, com salário por nível, demanda do mercado, o que estudar e o caminho completo até chegar lá. Tem comparação entre profissões, alertas de vaga, área do usuário e painel administrativo.</p>
-            <p class="portfolio-note">Projeto fictício feito para mostrar um produto de dados inteiro funcionando: os filtros filtram de verdade, os gráficos são desenhados à mão em SVG e o que o painel edita aparece na hora para quem está usando o site.</p>
-            <span class="portfolio-link">Ver projeto <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-      </div>
-
-      <p class="portfolio-footnote" data-reveal data-delay="6">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 8V13L15 15.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/>
-        </svg>
-        <span>Também temos outros sites já prontos, mas ainda são só propostas em conversa: nada fechado com o cliente ainda. Por isso não colocamos aqui; assim que confirmar, entram no portfólio.</span>
-      </p>
-    </div>
-  </section>
-
-  <section id="depoimentos" class="section depoimentos">
-    <div class="container">
-      <span class="eyebrow" data-reveal>Depoimentos</span>
-      <h2 data-reveal>O que nossos clientes dizem</h2>
-      <p class="lead" data-reveal>Veja o que quem já trabalhou com a gente tem a dizer.</p>
-
-      <div class="testimonials-grid" id="testimonials-grid" data-reveal data-delay="1">
-        <div class="testimonial-card">
-          <p class="testimonial-quote">"Eles fizeram o site exatamente do jeito que eu queria, ficou muito prático e fácil de usar e principalmente com um visual muito bonito, os dois são muito bons em negociar o preço também, chegamos num acordo bom para os dois no final. Recomendo bastante o trabalho dos dois."</p>
-          <div class="testimonial-author">
+      <h2 id="depoimentos-title" class="sr-only">Depoimentos</h2>
+      <div class="voice">
+        <figure class="quote">
+          <blockquote>
+            <p>“Eles fizeram o site exatamente do jeito que eu queria, ficou muito prático e fácil de usar e principalmente com um visual muito bonito. Os dois são muito bons em negociar o preço também, chegamos num acordo bom para os dois no final. Recomendo bastante o trabalho dos dois.”</p>
+          </blockquote>
+          <figcaption>
             <strong>Vitor Spinola</strong>
-            <span>ARCX Finance</span>
-          </div>
-          <p class="testimonial-note">A ARCX Finance encerrou as atividades, mas o Vitor permitiu que o projeto continuasse no nosso portfólio como demonstração.</p>
-        </div>
-      </div>
+            <span>ARCX Finance · <a class="link-arrow is-muted" href="projetos/arcx-finance/" style="display:inline-flex; font-size:inherit">ver o projeto <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
+          </figcaption>
+          <p class="quote-note">A ARCX Finance encerrou as atividades, mas o Vitor permitiu que o projeto continuasse no nosso portfólio como demonstração. Este é, por enquanto, o nosso único depoimento publicado, e preferimos assim a inventar outros.</p>
+        </figure>
 
-      <div class="testimonial-form-card" data-reveal data-delay="2">
-        <h3>Deixe seu depoimento</h3>
-        <p class="testimonial-form-sub">É cliente da APX Web? Conte como foi sua experiência: seu depoimento pode aparecer aqui no site.</p>
-
-        <form id="testimonial-form" novalidate>
-          <p class="bot-field-wrap"><label>Não preencha isto: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-
-          <div class="form-grid-2">
-            <div class="form-field">
-              <label for="testimonial-name">Seu nome</label>
-              <input type="text" id="testimonial-name" name="nome" placeholder="Seu nome" required>
+        <details class="review">
+          <summary>
+            <div>
+              <h3>Já é cliente da APX?</h3>
+              <p>Conte como foi. Seu depoimento pode aparecer aqui.</p>
             </div>
-            <div class="form-field">
-              <label for="testimonial-business">Sua empresa <span class="optional-tag">(opcional)</span></label>
-              <input type="text" id="testimonial-business" name="empresa" placeholder="Nome do seu negócio">
+            <span class="review-plus" aria-hidden="true"></span>
+          </summary>
+          <form id="review-form" novalidate>
+            <label class="bot-field" aria-hidden="true">Não preencha: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+            <div class="field">
+              <label for="review-name">Seu nome</label>
+              <input class="input" id="review-name" name="nome" autocomplete="name" required>
             </div>
+            <div class="field">
+              <label for="review-business">Empresa <span class="optional">(opcional)</span></label>
+              <input class="input" id="review-business" name="empresa" autocomplete="organization">
+            </div>
+            <div class="field">
+              <label for="review-text">Depoimento</label>
+              <textarea class="input" id="review-text" name="depoimento" rows="4" required></textarea>
+            </div>
+            <p class="form-error" id="review-error" role="alert" hidden></p>
+            <button class="btn btn-primary" type="submit"><svg aria-hidden="true"><use href="#i-chat"/></svg> Enviar pelo WhatsApp</button>
+            <p class="fine">O WhatsApp abre com a mensagem pronta. É só apertar enviar.</p>
+          </form>
+          <div class="review-success" id="review-success" role="status" hidden>
+            <p>Mensagem pronta no WhatsApp. Obrigado! Depois de enviar, seu depoimento pode aparecer aqui.</p>
           </div>
-
-          <div class="form-field">
-            <label for="testimonial-text">Seu depoimento</label>
-            <textarea id="testimonial-text" name="depoimento" rows="4" placeholder="Conte como foi trabalhar com a APX Web" required></textarea>
-          </div>
-
-          <p class="form-error" id="testimonial-error" hidden></p>
-
-          <button type="submit" class="btn btn-primary btn-block">Enviar pelo WhatsApp</button>
-          <p class="form-fineprint">Vamos abrir o WhatsApp com sua mensagem pronta, é só apertar enviar.</p>
-        </form>
-
-        <div class="testimonial-success" id="testimonial-success" hidden>
-          <div class="success-icon">✓</div>
-          <p>Mensagem pronta no WhatsApp! Depois de enviar, seu depoimento pode aparecer aqui no site.</p>
-        </div>
+        </details>
       </div>
     </div>
   </section>
 
-  <section id="contato" class="section cta">
-    <div class="hero-bg" aria-hidden="true">
-      <span class="blob blob-1"></span>
-    </div>
-    <div class="container cta-content">
-      <h2 data-reveal>Vamos conversar?</h2>
-      <p data-reveal>Conte pra gente sobre o seu negócio e vamos pensar juntos na melhor forma de colocá-lo online.</p>
-      <div class="hero-actions" data-reveal>
-        <a href="https://wa.me/5511944815707?text=Ol%C3%A1!%20Vi%20o%20site%20da%20APX%20Web%20e%20quero%20saber%20mais." target="_blank" rel="noopener" class="btn btn-primary">Chamar no WhatsApp</a>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ppsm2010@gmail.com" target="_blank" rel="noopener" class="btn btn-ghost">Enviar e-mail</a>
-        <a href="https://www.instagram.com/apx_.web" target="_blank" rel="noopener" class="btn btn-ghost">Seguir no Instagram</a>
+  <section class="section" id="contato" aria-labelledby="contato-title">
+    <div class="container contact">
+      <div class="contact-copy">
+        <h2 id="contato-title">Conte o que o seu negócio precisa.</h2>
+        <p class="lead">Monte a mensagem aqui e ela chega pronta no nosso WhatsApp. Quem responde é quem vai programar.</p>
+        <div class="contact-alt">
+          <p>Prefere outro caminho?</p>
+          <ul>
+            <li><a class="link-arrow is-muted" href="mailto:ppsm2010@gmail.com"><svg aria-hidden="true"><use href="#i-mail"/></svg> ppsm2010@gmail.com</a></li>
+            <li><a class="link-arrow is-muted" href="https://www.instagram.com/apx_.web" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-instagram"/></svg> @apx_.web</a></li>
+          </ul>
+        </div>
       </div>
+
+      <form class="composer" id="composer" novalidate>
+        <fieldset>
+          <legend class="field-label">O que você precisa?</legend>
+          <div class="chips" data-chips>
+            <button class="chip" type="button" aria-pressed="false" data-value="um site para o meu negócio"><svg aria-hidden="true"><use href="#i-check"/></svg>Site</button>
+            <button class="chip" type="button" aria-pressed="false" data-value="agendamento online"><svg aria-hidden="true"><use href="#i-check"/></svg>Agendamento online</button>
+            <button class="chip" type="button" aria-pressed="false" data-value="uma loja virtual"><svg aria-hidden="true"><use href="#i-check"/></svg>Loja virtual</button>
+            <button class="chip" type="button" aria-pressed="false" data-value="um sistema ou painel"><svg aria-hidden="true"><use href="#i-check"/></svg>Sistema ou painel</button>
+            <button class="chip" type="button" aria-pressed="false" data-value="identidade visual"><svg aria-hidden="true"><use href="#i-check"/></svg>Identidade visual</button>
+            <button class="chip" type="button" aria-pressed="false" data-value="ajuda para descobrir o que faz sentido"><svg aria-hidden="true"><use href="#i-check"/></svg>Ainda não sei</button>
+          </div>
+        </fieldset>
+
+        <div class="composer-row">
+          <div class="field">
+            <label for="composer-business">Seu negócio <span class="optional">(opcional)</span></label>
+            <input class="input" id="composer-business" name="negocio" autocomplete="organization" placeholder="Ex.: Barbearia do Zé">
+          </div>
+          <div class="field">
+            <label for="composer-note">Algo mais? <span class="optional">(opcional)</span></label>
+            <input class="input" id="composer-note" name="detalhe" placeholder="Ex.: clientes marcando sozinhos">
+          </div>
+        </div>
+
+        <div class="composer-preview" aria-live="polite">
+          <p class="composer-preview-head"><span>Prévia da mensagem</span><span>WhatsApp</span></p>
+          <p class="composer-bubble" id="composer-message">Olá! Vi o site da APX Web e quero conversar sobre um projeto.</p>
+        </div>
+
+        <div class="composer-foot">
+          <p>Nada é enviado daqui. O WhatsApp abre com a mensagem e você decide se manda.</p>
+          <button class="btn btn-primary" type="submit"><svg aria-hidden="true"><use href="#i-chat"/></svg> Abrir no WhatsApp</button>
+        </div>
+      </form>
     </div>
   </section>
 
 </main>
 
+<!-- build:footer -->
 <footer class="site-footer">
-  <div class="container footer-content">
-    <img src="assets/img/logo-icon.png" alt="APX Web" class="footer-logo">
-    <div class="footer-social">
-      <a href="https://wa.me/5511944815707" target="_blank" rel="noopener">WhatsApp</a>
-      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ppsm2010@gmail.com" target="_blank" rel="noopener">E-mail</a>
-      <a href="https://www.instagram.com/apx_.web" target="_blank" rel="noopener">Instagram</a>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-intro">
+        <a class="brand" href="#" aria-label="APX Web, página inicial">
+          <svg viewBox="0 0 940 278" aria-hidden="true"><use href="#apx-logo"/></svg>
+        </a>
+        <p>Sites, sistemas e design feitos sob medida por uma dupla que atende direto quem contrata.</p>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <ul>
+          <li><a href="#trabalho">Trabalho</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#processo">Processo</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2>Projetos</h2>
+        <ul>
+          <li><a href="projetos/arcx-finance/">ARCX Finance</a></li>
+          <li><a href="projetos/vanta/">VANTA</a></li>
+          <li><a href="projetos/norte/">NORTE</a></li>
+          <li><a href="projetos/nova/">NOVA</a></li>
+          <li><a href="projetos/barbearia/">Barbearia Império</a></li>
+          <li><a href="projetos/psicologia/">Ânima Psicologia</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2>Contato</h2>
+        <ul>
+          <li><a href="https://wa.me/5511944815707" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="mailto:ppsm2010@gmail.com">ppsm2010@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/apx_.web" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </div>
     </div>
-    <p>&copy; 2026 APX Web. Ideias que constroem o seu futuro.</p>
+    <div class="footer-base">
+      <p>© 2026 APX Web</p>
+      <p>Desenhado e programado pela APX.</p>
+    </div>
+  </div>
+  <div class="footer-mark container" aria-hidden="true">
+    <svg viewBox="0 0 940 278"><use href="#apx-logo"/></svg>
   </div>
 </footer>
+<!-- /build:footer -->
 
-<button class="back-to-top" id="back-to-top" aria-label="Voltar ao topo">
-  <svg class="btt-ring" viewBox="0 0 52 52" aria-hidden="true">
-    <circle class="btt-track" cx="26" cy="26" r="24"></circle>
-    <circle class="btt-bar" id="btt-bar" cx="26" cy="26" r="24"></circle>
-  </svg>
-  <svg class="btt-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    <path d="M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</button>
-
-<script src="script.js"></script>
+<script src="assets/js/site.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,422 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-23T04:26:47.176849+00:00",
+  "title": "Design System: APX Web",
+  "extensions": {
+    "colorMeta": {
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Grafite",
+        "tonalRamp": [
+          "#242428",
+          "#3d3d43",
+          "#55555e",
+          "#6d6d78",
+          "#878792",
+          "#aaaab1",
+          "#cfcfd3",
+          "#f2f2f3"
+        ]
+      },
+      "graphite-1": {
+        "role": "neutral",
+        "displayName": "Grafite 1",
+        "tonalRamp": [
+          "#242428",
+          "#3c3c43",
+          "#54545e",
+          "#6c6c79",
+          "#868693",
+          "#a9a9b2",
+          "#cfcfd4",
+          "#f2f2f3"
+        ]
+      },
+      "graphite-2": {
+        "role": "neutral",
+        "displayName": "Grafite 2",
+        "tonalRamp": [
+          "#242428",
+          "#3c3c44",
+          "#54545e",
+          "#6c6c7a",
+          "#868693",
+          "#a9a9b2",
+          "#ceced4",
+          "#f2f2f3"
+        ]
+      },
+      "graphite-3": {
+        "role": "neutral",
+        "displayName": "Grafite 3",
+        "tonalRamp": [
+          "#242428",
+          "#3c3c43",
+          "#54545e",
+          "#6c6c79",
+          "#868693",
+          "#a9a9b2",
+          "#ceced4",
+          "#f2f2f3"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "tonalRamp": [
+          "#242428",
+          "#3c3c43",
+          "#54545e",
+          "#6c6c79",
+          "#868693",
+          "#a9a9b2",
+          "#ceced4",
+          "#f2f2f3"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Tinta 2",
+        "tonalRamp": [
+          "#242428",
+          "#3d3d43",
+          "#55555e",
+          "#6d6d79",
+          "#868692",
+          "#a9a9b2",
+          "#cfcfd3",
+          "#f2f2f3"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Tinta 3",
+        "tonalRamp": [
+          "#252528",
+          "#3e3e42",
+          "#56565c",
+          "#6f6f77",
+          "#888890",
+          "#ababb0",
+          "#d0d0d3",
+          "#f2f2f3"
+        ]
+      },
+      "brand-blue": {
+        "role": "primary",
+        "displayName": "Azul APX",
+        "tonalRamp": [
+          "#001d4c",
+          "#003180",
+          "#0045b2",
+          "#0058e6",
+          "#1a72ff",
+          "#5c9bff",
+          "#a3c6ff",
+          "#e5efff"
+        ]
+      },
+      "brand-blue-text": {
+        "role": "primary",
+        "displayName": "Azul APX em texto",
+        "tonalRamp": [
+          "#001a4c",
+          "#002c80",
+          "#003eb2",
+          "#004fe6",
+          "#1a69ff",
+          "#5c94ff",
+          "#a3c3ff",
+          "#e5eeff"
+        ]
+      },
+      "status-real": {
+        "role": "tertiary",
+        "displayName": "Verde Real",
+        "tonalRamp": [
+          "#0d3f27",
+          "#166941",
+          "#1f935b",
+          "#28bd75",
+          "#42d78f",
+          "#78e3af",
+          "#b3efd2",
+          "#eafbf3"
+        ]
+      },
+      "status-conceitual": {
+        "role": "tertiary",
+        "displayName": "Âmbar Conceitual",
+        "tonalRamp": [
+          "#493004",
+          "#795006",
+          "#a96f09",
+          "#da8f0c",
+          "#f3a925",
+          "#f7c264",
+          "#fadda8",
+          "#fef5e7"
+        ]
+      },
+      "status-demonstracao": {
+        "role": "tertiary",
+        "displayName": "Cinza Demonstração",
+        "tonalRamp": [
+          "#242428",
+          "#3d3d43",
+          "#55555d",
+          "#6d6d78",
+          "#878792",
+          "#aaaab1",
+          "#cfcfd3",
+          "#f2f2f3"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Só o título do hero, dimensionado para caber em duas linhas na coluna."
+      },
+      "headline-lg": {
+        "displayName": "Headline grande",
+        "purpose": "Título do case, do contato e do próximo projeto."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Títulos de seção."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Nome do projeto, painéis do fluxo e etapas do processo."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Frase de apoio sob títulos, em tinta 2."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texto corrido, até 66ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Botões, navegação, rótulos e abas."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Metadados, status e notas."
+      },
+      "data": {
+        "displayName": "Data (Geist Mono)",
+        "purpose": "Somente dados: stack, numeração de etapas, horários e código."
+      }
+    },
+    "shadows": [
+      {
+        "name": "frame",
+        "value": "0 1px 0 0 rgb(255 255 255 / 0.05) inset, 0 30px 60px -30px rgb(0 0 0 / 0.75)",
+        "purpose": "Moldura de navegador; só objetos projetam sombra."
+      },
+      {
+        "name": "float",
+        "value": "0 20px 40px -16px rgb(0 0 0 / 0.7)",
+        "purpose": "Moldura de celular sobreposta."
+      },
+      {
+        "name": "focus-field",
+        "value": "inset 0 0 0 1px #6ea0ff, 0 0 0 3px rgb(0 98 255 / 0.25)",
+        "purpose": "Campo com foco."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Padrão para entradas, estados e toque."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.77, 0, 0.175, 1)",
+        "purpose": "Movimento que atravessa a tela."
+      },
+      {
+        "name": "dur-1",
+        "value": "120ms",
+        "purpose": "Retorno de toque (escala 0.97)."
+      },
+      {
+        "name": "dur-2",
+        "value": "200ms",
+        "purpose": "Mudanças de cor e contorno."
+      },
+      {
+        "name": "dur-3",
+        "value": "300ms",
+        "purpose": "Estados de UI, menu mobile."
+      },
+      {
+        "name": "dur-reveal",
+        "value": "1100ms",
+        "purpose": "Revelação de imagem por clip-path, só em mídia."
+      },
+      {
+        "name": "showcase",
+        "value": "6s linear",
+        "purpose": "Tempo de cada slide da vitrine, com barra de progresso."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "960px"
+      },
+      {
+        "name": "lg",
+        "value": "1200px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botão principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal da tela (conversa no WhatsApp). No máximo um por tela.",
+      "html": "<button class=\"ds-btn-primary\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M7.9 20A9 9 0 1 0 4 16.1L2 22Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linejoin=\"round\"/></svg>Conversar no WhatsApp</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border:0;border-radius:999px;background:#0062ff;color:#fff;font:500 15px/1 Geist,system-ui,sans-serif;cursor:pointer;transition:background-color 200ms ease,transform 120ms cubic-bezier(.23,1,.32,1)}.ds-btn-primary svg{width:18px;height:18px}.ds-btn-primary:hover{background:#1a5ff0}.ds-btn-primary:active{background:#0053d9;transform:scale(.97)}.ds-btn-primary:focus-visible{outline:2px solid #6ea0ff;outline-offset:3px}"
+    },
+    {
+      "name": "Botão secundário",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ação de apoio em superfícies grafite.",
+      "html": "<button class=\"ds-btn-secondary\">Começar pela conversa</button>",
+      "css": ".ds-btn-secondary{height:44px;padding:0 18px;border:0;border-radius:999px;background:#18181b;color:#ededef;box-shadow:inset 0 0 0 1px rgb(255 255 255/.14);font:500 15px/1 Geist,system-ui,sans-serif;cursor:pointer;transition:background-color 200ms ease,box-shadow 200ms ease,transform 120ms cubic-bezier(.23,1,.32,1)}.ds-btn-secondary:hover{background:#212125;box-shadow:inset 0 0 0 1px rgb(255 255 255/.22)}.ds-btn-secondary:active{transform:scale(.97)}.ds-btn-secondary:focus-visible{outline:2px solid #6ea0ff;outline-offset:3px}"
+    },
+    {
+      "name": "Link com seta",
+      "kind": "custom",
+      "refersTo": "link-arrow",
+      "description": "A ação secundária é sempre um link de texto, nunca um segundo botão.",
+      "html": "<a class=\"ds-link\" href=\"#\">Ver case <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
+      "css": ".ds-link{display:inline-flex;align-items:center;gap:6px;color:#ededef;text-decoration:none;font:500 15px/1.4 Geist,system-ui,sans-serif}.ds-link svg{width:16px;height:16px;transition:transform 200ms cubic-bezier(.23,1,.32,1)}.ds-link:hover svg{transform:translateX(3px)}.ds-link:focus-visible{outline:2px solid #6ea0ff;outline-offset:3px;border-radius:6px}"
+    },
+    {
+      "name": "Status do projeto",
+      "kind": "chip",
+      "refersTo": "status-pill",
+      "description": "Natureza do projeto: real, conceitual ou demonstração. Fica abaixo do título.",
+      "html": "<span class=\"ds-status\" data-s=\"real\">Projeto real</span> <span class=\"ds-status\" data-s=\"conceitual\">Projeto conceitual</span> <span class=\"ds-status\" data-s=\"demo\">Demonstração</span>",
+      "css": ".ds-status{display:inline-flex;align-items:center;gap:8px;padding:4px 10px;border-radius:999px;background:#18181b;box-shadow:inset 0 0 0 1px rgb(255 255 255/.08);color:#a1a1aa;font:500 13px/1.4 Geist,system-ui,sans-serif}.ds-status::before{content:\"\";width:6px;height:6px;border-radius:50%;background:#9b9ba4}.ds-status[data-s=real]::before{background:#3dd68c}.ds-status[data-s=conceitual]::before{background:#f5b544}"
+    },
+    {
+      "name": "Chip de seleção",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Escolhas múltiplas do compositor de contato.",
+      "html": "<button class=\"ds-chip\" aria-pressed=\"true\">Agendamento online</button> <button class=\"ds-chip\" aria-pressed=\"false\">Loja virtual</button>",
+      "css": ".ds-chip{height:36px;padding:0 14px;border:0;border-radius:999px;background:#0a0a0b;box-shadow:inset 0 0 0 1px rgb(255 255 255/.14);color:#a1a1aa;font:400 14px/1 Geist,system-ui,sans-serif;cursor:pointer;transition:background-color 200ms ease,color 200ms ease,box-shadow 200ms ease}.ds-chip:hover{color:#ededef;box-shadow:inset 0 0 0 1px rgb(255 255 255/.22)}.ds-chip[aria-pressed=true]{background:rgb(0 98 255/.14);box-shadow:inset 0 0 0 1px rgb(110 160 255/.55);color:#ededef}.ds-chip:focus-visible{outline:2px solid #6ea0ff;outline-offset:3px}"
+    },
+    {
+      "name": "Campo de texto",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Campo com rótulo acima; \"(opcional)\" em tinta 3.",
+      "html": "<label class=\"ds-field\"><span>Seu negócio <em>(opcional)</em></span><input placeholder=\"Ex.: Barbearia do Zé\"></label>",
+      "css": ".ds-field{display:grid;gap:8px;font:500 14px/1.4 Geist,system-ui,sans-serif;color:#ededef}.ds-field em{font-style:normal;font-weight:400;color:#818189}.ds-field input{min-height:44px;padding:10px 14px;border:0;border-radius:10px;background:#0a0a0b;color:#ededef;box-shadow:inset 0 0 0 1px rgb(255 255 255/.14);font:400 16px/1.5 Geist,system-ui,sans-serif;transition:box-shadow 200ms ease}.ds-field input::placeholder{color:#818189}.ds-field input:hover{box-shadow:inset 0 0 0 1px rgb(255 255 255/.22)}.ds-field input:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #6ea0ff,0 0 0 3px rgb(0 98 255/.25)}"
+    },
+    {
+      "name": "Navegação",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Links em pílula no cabeçalho; seção atual em tinta.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" aria-current=\"true\">Trabalho</a><a href=\"#\">Serviços</a><a href=\"#\">Processo</a><a href=\"#\">Contato</a></nav>",
+      "css": ".ds-nav{display:flex;gap:4px}.ds-nav a{display:inline-flex;align-items:center;height:36px;padding:0 12px;border-radius:999px;color:#a1a1aa;text-decoration:none;font:400 14px/1 Geist,system-ui,sans-serif;transition:color 200ms ease,background-color 200ms ease}.ds-nav a:hover{color:#ededef;background:#18181b}.ds-nav a[aria-current]{color:#ededef}.ds-nav a:focus-visible{outline:2px solid #6ea0ff;outline-offset:3px}"
+    },
+    {
+      "name": "Moldura de navegador",
+      "kind": "card",
+      "refersTo": "frame",
+      "description": "Assinatura do sistema: todo trabalho aparece dentro dela, em 16:10.",
+      "html": "<div class=\"ds-frame\"><div class=\"ds-frame-bar\"><i></i><i></i><i></i></div><div class=\"ds-frame-view\"></div></div>",
+      "css": ".ds-frame{width:360px;border-radius:14px;background:#111113;outline:1px solid rgb(255 255 255/.14);outline-offset:-1px;overflow:hidden;box-shadow:0 1px 0 0 rgb(255 255 255/.05) inset,0 30px 60px -30px rgb(0 0 0/.75);transition:outline-color 300ms ease}.ds-frame:hover{outline-color:rgb(255 255 255/.22)}.ds-frame-bar{display:flex;gap:6px;align-items:center;height:32px;padding:0 16px;border-bottom:1px solid rgb(255 255 255/.08)}.ds-frame-bar i{width:9px;height:9px;border-radius:50%;background:#212125}.ds-frame-view{aspect-ratio:16/10;background:#18181b}"
+    },
+    {
+      "name": "Segmento do fluxo",
+      "kind": "custom",
+      "refersTo": "flow-steps",
+      "description": "Controle segmentado em pílula para as etapas do problema ao produto.",
+      "html": "<div class=\"ds-seg\" role=\"tablist\"><button aria-selected=\"true\">Problema</button><button>Estratégia</button><button>Design</button></div>",
+      "css": ".ds-seg{display:inline-flex;gap:4px;padding:4px;border-radius:999px;background:#111113;box-shadow:inset 0 0 0 1px rgb(255 255 255/.08)}.ds-seg button{height:36px;padding:0 16px;border:0;border-radius:999px;background:none;color:#a1a1aa;font:500 14px/1 Geist,system-ui,sans-serif;cursor:pointer;transition:background-color 200ms ease,color 200ms ease}.ds-seg button:hover{color:#ededef}.ds-seg button[aria-selected=true]{background:#212125;color:#ededef;box-shadow:inset 0 0 0 1px rgb(255 255 255/.14)}.ds-seg button:focus-visible{outline:2px solid #6ea0ff;outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "A Bancada de Produto",
+    "overview": "O site da APX é uma bancada onde o trabalho fica exposto e ligado: o padrão da categoria, na régua de Linear/Vercel, Stripe e Rauno/Emil, executado sem ironia. Grafite neutro, tinta quase branca, linhas finíssimas e um único azul de marca. O protagonista é a interface real de cada projeto, sempre dentro de uma moldura de navegador ou de celular.\n\nA densidade é de produto, não de agência: seções que respiram e informação compacta dentro delas. A profundidade vem de camadas tonais do grafite e de contornos internos de 1px. O movimento é curto, com ease-out forte, e se concentra na vitrine e na revelação das imagens.",
+    "keyCharacteristics": [
+      "Grafite neutro sem tom azulado, com quatro degraus de superfície e três de linha.",
+      "Um único acento: o azul da marca, só para a ação principal, o foco e a seleção.",
+      "Pontos de status de 6px (real, conceitual, demonstração) como única cor semântica.",
+      "Geist em todo o texto; Geist Mono só para dados.",
+      "Molduras de navegador e de celular como recipiente-assinatura do trabalho.",
+      "Movimento com ease-out, UI em até 300ms, desligado em prefers-reduced-motion."
+    ],
+    "rules": [
+      {
+        "name": "The One Blue Rule",
+        "body": "O azul da marca é o único acento cromático. Marca a ação principal, o foco e a seleção. No máximo um botão azul cheio por tela.",
+        "section": "colors"
+      },
+      {
+        "name": "The Status Is Truth Rule",
+        "body": "Verde, âmbar e cinza significam real, conceitual e demonstração. Nunca decoração.",
+        "section": "colors"
+      },
+      {
+        "name": "The Guest Color Rule",
+        "body": "As cores dos projetos só aparecem dentro das capturas e num filete de 2px na capa do case.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono Is Data Rule",
+        "body": "Geist Mono só em stack, numeração, horários e código.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Case Rule",
+        "body": "Rótulos em caixa normal, sem tracking positivo e sem sobretítulos acima de títulos.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hairline Rule",
+        "body": "Contorno é um inset de 1px em branco a 8%, 14% ou 22%, subindo um degrau no hover.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Objects Cast Shadows Rule",
+        "body": "Só molduras de navegador e celular projetam sombra.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do coloque todo trabalho dentro da moldura de navegador (16:10) ou de celular (390:844).",
+      "Do use o azul da marca só na ação principal, no foco e na seleção; em texto, #6ea0ff.",
+      "Do marque a natureza de cada projeto com o ponto de status, abaixo do título.",
+      "Do recorte as telas com zoom para que a interface fique legível no tamanho exibido.",
+      "Do dê à ação secundária a forma de link de texto com seta.",
+      "Do anime com cubic-bezier(0.23, 1, 0.32, 1) e desligue tudo com prefers-reduced-motion."
+    ],
+    "donts": [
+      "Don't use aurora azul, gradiente decorativo, brilho ou vidro sem função.",
+      "Don't monte cards de serviço com ícone, dois botões grandes lado a lado ou marquee.",
+      "Don't use as cores de status ou as cores dos projetos como decoração.",
+      "Don't escreva rótulos em caixa alta espaçada nem ponha sobretítulos acima dos títulos.",
+      "Don't aplique sombra projetada em painéis, campos, chips ou abas.",
+      "Don't anime blocos de texto ao rolar; só a vitrine e as imagens se movem."
+    ]
+  }
+}
