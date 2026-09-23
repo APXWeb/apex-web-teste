@@ -960,9 +960,9 @@ body.menu-open {
   align-content: center;
 }
 
-/* O título do hero precisa caber em duas linhas na coluna: ~8.8em por linha */
+/* O título do hero precisa caber em duas linhas na coluna: ~9.4em por linha */
 .hero h1 {
-  font-size: clamp(2.25rem, 1.1rem + 5.2vw, 4.5rem);
+  font-size: clamp(2.125rem, 0.9rem + 5.2vw, 4.25rem);
   line-height: 0.96;
   letter-spacing: var(--tracking-display);
   font-weight: 560;
@@ -998,7 +998,7 @@ body.menu-open {
 
 @media (min-width: 960px) {
   .hero h1 {
-    font-size: clamp(2.5rem, 4.4vw, 4rem);
+    font-size: clamp(2.5rem, 4.1vw, 3.75rem);
   }
 
   .hero-grid {

@@ -23,7 +23,7 @@ colors:
 typography:
   display:
     fontFamily: "Geist, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "clamp(2.5rem, 4.4vw, 4rem)"
+    fontSize: "clamp(2.5rem, 4.1vw, 3.75rem)"
     fontWeight: 560
     lineHeight: 0.96
     letterSpacing: "-0.04em"
@@ -231,7 +231,7 @@ Uma paleta monocromática de grafite com um único azul elétrico de marca e tr�
 **Character:** Uma única família geométrica neutra, com peso 560 e tracking negativo nos títulos, dá o tom de ferramenta de produto. O corpo usa o conjunto estilístico ss01. A Mono aparece em escala pequena, como etiqueta de dado, nunca como voz.
 
 ### Hierarchy
-- **Display** (560, `clamp(2.5rem, 4.4vw, 4rem)` no desktop e `clamp(2.25rem, 1.1rem + 5.2vw, 4.5rem)` abaixo de 960px, 0.96, -0.04em): só o título do hero, dimensionado para caber em duas linhas na coluna.
+- **Display** (560, `clamp(2.5rem, 4.1vw, 3.75rem)` no desktop e `clamp(2.125rem, 0.9rem + 5.2vw, 4.25rem)` abaixo de 960px, 0.96, -0.04em): só o título do hero, dimensionado para caber em duas linhas na coluna.
 - **Headline grande** (560, headline-lg, 1.02, -0.04em): título do case, título de contato e o nome do próximo case.
 - **Headline** (560, headline, 1.05, -0.03em, máx. 18–20ch): títulos de seção.
 - **Title** (560, title, 1.2, -0.03em): nome do projeto na lista de trabalho, painéis do fluxo e processo (1.375rem).
