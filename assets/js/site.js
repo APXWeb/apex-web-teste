@@ -343,25 +343,21 @@
     const note = $('#composer-note', composer);
     const preview = $('#composer-message', composer);
 
-    // Mensagem no formato do WhatsApp: *negrito* nos rótulos e um item por linha
+    // Texto simples, um item por linha. Sem emoji (o redirecionamento do wa.me
+    // corrompe alguns) e sem *negrito* (no campo de digitação os asteriscos
+    // aparecem crus: o WhatsApp só formata depois do envio).
     const buildMessage = () => {
       const needs = chips.filter((c) => c.getAttribute('aria-pressed') === 'true').map((c) => c.dataset.value);
       const name = business.value.trim();
       const extra = note.value.trim();
-      const lines = ['Olá, APX! 👋', 'Vi o site de vocês e quero conversar sobre um projeto.'];
-      const details = [];
-      if (name) details.push(`*Meu negócio:* ${name}`);
-      if (needs.length) details.push('*O que eu preciso:*', ...needs.map((n) => `• ${n}`));
-      if (extra) details.push(`*Detalhes:* ${extra}`);
-      if (details.length) lines.push('', ...details);
+      const lines = ['Olá, APX! Vi o site de vocês e quero conversar sobre um projeto.'];
+      if (name) lines.push('', `Meu negócio: ${name}`);
+      if (needs.length) lines.push('', 'O que eu preciso:', ...needs.map((n) => `• ${n}`));
+      if (extra) lines.push('', `Detalhes: ${extra}`);
       return lines.join('\n');
     };
 
-    // A prévia imita o WhatsApp: o texto entre asteriscos aparece em negrito
-    const escapeHtml = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-    const render = () => {
-      preview.innerHTML = escapeHtml(buildMessage()).replace(/\*([^*\n]+)\*/g, '<strong>$1</strong>');
-    };
+    const render = () => { preview.textContent = buildMessage(); };
 
     chips.forEach((chip) => chip.addEventListener('click', () => {
       chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true'));
